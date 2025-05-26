@@ -1,7 +1,5 @@
 # 💤 LazyVim
 
-## This Repo will be archived soon and replaced by the new DOTFILES repository
-
 ## Neovim Configuration Overview
 
 This Neovim configuration enhances the editing experience with a selection of powerful plugins and custom key mappings.
