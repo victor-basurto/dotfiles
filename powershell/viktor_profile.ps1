@@ -112,10 +112,10 @@ function xmdir {
 }
 # Utility
 function l {
-  eza -l --tree --group-directories-first --icons=always --color=always --all --git-ignore --no-permissions --no-time --no-user --no-filesize $args
+  eza -l --tree --group-directories-first --icons=always --color=always --all --git-ignore --no-permissions --no-time --no-user --no-filesize --git $args
 }
 function l-all {
-  eza -l --tree --group-directories-first --icons=always --color=always --all --git-ignore $args
+  eza -l --tree --group-directories-first --icons=always --color=always --all --git-ignore --git $args
 }
 function which ($command) {
   Get-Command -Name $command -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Path -ErrorAction SilentlyContinue
