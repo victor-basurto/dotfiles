@@ -30,10 +30,14 @@ Set-Alias -Name "grep" -Value "findstr"
 Set-Alias -Name "tig" -Value "C:\Program Files\Git\usr\bin\tig.exe"
 Set-Alias -Name "less" -Value "C:\Program Files\Git\usr\bin\less.exe"
 
+# eza theme
+$env:EZA_THEME_DIR = "$env:USERPROFILE\.config\.dotfiles\eza\theme.yaml"
 # working directories
 $ObsidianDir = Join-Path $env:USERPROFILE "obsidian-work"
-$NvimDir = Join-Path $env:USERPROFILE "AppData\Local\nvim"
-$PowerShellDir = Join-Path $env:USERPROFILE ".config\powershell"
+$ConfigDir = Join-Path $env:USERPROFILE ".config"
+$DotfilesDir = Join-Path $env:USERPROFILE ".config\.dotfiles"
+$NvimDir = Join-Path $env:USERPROFILE ".config\.dotfiles\nvim"
+$PowerShellDir = Join-Path $env:USERPROFILE ".config\.dotfiles\powershell"
 $WebsitesDir = Join-Path $env:USERPROFILE "projects\brookfield\websites"
 $SitecoreDir = Join-Path $env:USERPROFILE "projects\brookfield\sitecore"
 
@@ -44,6 +48,26 @@ function oo {
     Write-Host "switched to: $ObsidianDir"
   } else {
     Write-Host "Error: $ObsidianDir not found" -ForegroundColor Red
+  }
+}
+
+# Configuration directory
+function configdir {
+  if (Test-Path $ConfigDir -PathType Container) {
+    Set-Location -Path $ConfigDir
+    Write-Host "switched to: $ConfigDir"
+  } else {
+    Write-Host "Error: $ConfigDir not found" -ForegroundColor Red
+  }
+}
+
+# DotFiles directory
+function dotfiles {
+  if (Test-Path $DotfilesDir -PathType Container) {
+    Set-Location -Path $DotfilesDir
+    Write-Host "switched to: $DotfilesDir"
+  } else {
+    Write-Host "Error: $DotfilesDir not found" -ForegroundColor Red
   }
 }
 
@@ -100,6 +124,8 @@ function list-dirs {
     $customDirs = @(
         @{ Keyword = "oo";        Description = "Obsidian-work vault"; Path = $ObsidianDir },
         @{ Keyword = "vimdir";    Description = "nvim configuration directory"; Path = $NvimDir },
+        @{ Keyword = "configdir"; Description = "Configuration directory"; Path = $ConfigDir },
+        @{ Keyword = "dotfiles";  Description = "Dotfiles directory"; Path = $DotfilesDir },
         @{ Keyword = "psdir";     Description = "PowerShell configuration directory"; Path = $PowerShellDir },
         @{ Keyword = "webdir";    Description = "Brookfield websites project directory"; Path = $WebsitesDir },
         @{ Keyword = "xmdir";    Description = "XMCloud project directory"; Path = $SitecoreDir }
