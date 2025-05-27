@@ -1,4 +1,4 @@
-# $HOME/.config/zsh/functions/handy-funcs.zsh
+# $HOME/.config/.dotfiles/zsh/functions/utils.zsh
 
 # Function to display a directory tree using 'eza' with a customizable depth.
 #
@@ -25,5 +25,9 @@ ltree() {
 
   # All remaining arguments are passed to eza.
   # This allows for additional eza flags or a specific path.
-  eza --tree --level="$level_arg" --icons --git --git-ignore --group-directories-first "$@"
+  eza --tree --level="$level_arg" --icons --color --git --git-ignore --group-directories-first "$@"
+  # eza -l --tree --level="$level_arg" --group-directories-first --icons=always --color=always --all --git-ignore --no-permissions --no-time --no-user --no-filesize --git "$@"
 }
+
+# EZA Theme
+export EZA_CONFIG_DIR="$HOME/.config/.dotfiles/eza"
