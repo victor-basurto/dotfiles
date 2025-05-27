@@ -31,7 +31,7 @@ Set-Alias -Name "tig" -Value "C:\Program Files\Git\usr\bin\tig.exe"
 Set-Alias -Name "less" -Value "C:\Program Files\Git\usr\bin\less.exe"
 
 # eza theme
-$env:EZA_THEME_DIR = "$env:USERPROFILE\.config\.dotfiles\eza\theme.yaml"
+$env:EZA_CONFIG_DIR = "$env:USERPROFILE\.config\.dotfiles\eza"
 # working directories
 $ObsidianDir = Join-Path $env:USERPROFILE "obsidian-work"
 $ConfigDir = Join-Path $env:USERPROFILE ".config"
@@ -111,6 +111,12 @@ function xmdir {
   }
 }
 # Utility
+function l {
+  eza -l --tree --group-directories-first --icons=always --color=always --all --git-ignore --no-permissions --no-time --no-user --no-filesize $args
+}
+function l-all {
+  eza -l --tree --group-directories-first --icons=always --color=always --all --git-ignore $args
+}
 function which ($command) {
   Get-Command -Name $command -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Path -ErrorAction SilentlyContinue
 }
