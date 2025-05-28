@@ -1,4 +1,5 @@
 . "$HOME\.config\powershell\on_obsidian_util.ps1"
+. "$HOME\.config\powershell\or_obsidian_util.ps1"
 # Prompt
 Import-Module posh-git
 # Import-Module oh-my-posh
