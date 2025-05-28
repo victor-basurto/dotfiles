@@ -83,12 +83,37 @@ keymap.set("n", "<leader>rn", ":IncRename ")
 keymap.set("n", "<leader>on", ":ObsidianTemplate notes<CR> :lua vim.cmd([[1,/^\\S/s/^\\n\\{1,}//]])<CR>")
 -- strip date from note title and replace dashes with spaces
 keymap.set("n", "<leader>of", ":s/\\(# \\)[^_]*_/\\1/ | s/-/ /g<cr>")
--- TODO: add keymap to move file in current buffer to zettelkasten folder
 -- delete file in current buffer MacOs
 keymap.set("n", "<leader>odd", ":!rm '%:p'<cr>:bd<cr>")
+
+-- Windows Keymaps
+-- WOK: Move current file to zettelkasten folder
+-- WOD: Delete current file in buffer
+
+-- add keymap to move file in current buffer to zettelkasten folder
+keymap.set("n", "<leader>wok", function()
+  local current_file = vim.fn.expand("%:p")
+  local zettelkasten_folder_expanded = vim.fn.expand("~/obsidian-work/zettelkasten")
+
+  -- Escape single quotes within the paths for PowerShell's -Command parameter
+  -- PowerShell uses '' to escape ' inside a single-quoted string.
+  local escaped_current_file = current_file:gsub("'", "''")
+  local escaped_zettelkasten_folder = zettelkasten_folder_expanded:gsub("'", "''")
+
+  -- Construct the PowerShell command string.
+  -- -LiteralPath is robust for handling paths with spaces/special characters.
+  local powershell_cmd_str =
+    string.format("Move-Item -LiteralPath '%s' -Destination '%s'", escaped_current_file, escaped_zettelkasten_folder)
+
+  -- The entire -Command argument needs to be correctly wrapped in double quotes for powershell.exe -Command.
+  local final_shell_command = 'powershell.exe -Command "' .. powershell_cmd_str .. '"'
+
+  -- Execute the command silently
+  vim.cmd("silent !" .. final_shell_command)
+  vim.cmd(":bd") -- Close the current buffer after moving the file
+end, { desc = "Move current file to zettelkasten folder (PowerShell)" })
 -- delete file in current buffer windows
--- This custom function is used to delete the current buffer from the system in windows OS
-keymap.set("n", "<leader>owd", function()
+keymap.set("n", "<leader>wod", function()
   local buffer_functions = require("utilities.delete_current_buffer_win")
   buffer_functions.del_buffer_win()
 end, { desc = "Delete current buffer from system" })
