@@ -30,7 +30,7 @@
 # Configuration:
 # Adjust the VAULT_DIR, SOURCE_DIR, and DEST_DIR variables below to match your Obsidian setup.
 # Directory containing markdown files
-VAULT_DIR="$HOME/obsidian-work"
+VAULT_DIR="${OBSIDIAN_VAULT:-$HOME/obsidian-work}"
 SOURCE_DIR="zettelkasten"
 DEST_DIR="notes"
 

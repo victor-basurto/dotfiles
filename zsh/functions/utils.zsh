@@ -33,4 +33,4 @@ ltree() {
 export EZA_CONFIG_DIR="$HOME/.config/.dotfiles/eza"
 
 # obsidian review
-alias or="cd $HOME/obsidian-work && nvim ./inbox/*.md"
+alias or="cd ${OBSIDIAN_VAULT:-$HOME/obsidian-work} && nvim ./inbox/*.md"
