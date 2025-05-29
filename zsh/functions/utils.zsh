@@ -29,6 +29,22 @@ ltree() {
   # eza -l --tree --level="$level_arg" --group-directories-first --icons=always --color=always --all --git-ignore --no-permissions --no-time --no-user --no-filesize --git "$@"
 }
 
+# Function to handle Obsidian vault note creation.
+# It ensures a file name is provided and then sources the main logic
+# from 'on.zsh'.
+#
+# Usage:
+#   on "My New Note Title"
+#   on 'Another Note'
+on() {
+  if [ -z "$1" ]; then
+    echo "Error: a file name must be provided., e.g. on \"The Space Oddyssey\""
+    exit 1
+  fi
+  # source the logic to handle the `on` functionality
+  source $HOME/.config/zsh/functions/on.zsh
+}
+
 # EZA Theme
 export EZA_CONFIG_DIR="$HOME/.config/.dotfiles/eza"
 
