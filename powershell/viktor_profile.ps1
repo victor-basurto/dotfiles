@@ -1,5 +1,7 @@
-. "$HOME\.config\powershell\on_obsidian_util.ps1"
-. "$HOME\.config\powershell\or_obsidian_util.ps1"
+. (Join-Path (Split-Path $MyInvocation.MyCommand.Path) "og_obsidian_util.ps1")
+. (Join-Path (Split-Path $MyInvocation.MyCommand.Path) "on_obsidian_util.ps1")
+. (Join-Path (Split-Path $MyInvocation.MyCommand.Path) "or_obsidian_util.ps1")
+. (Join-Path (Split-Path $MyInvocation.MyCommand.Path) "utils.ps1")
 # Prompt
 Import-Module posh-git
 # Import-Module oh-my-posh
@@ -22,5 +24,3 @@ Set-PSReadLineOption -PredictionViewStyle ListView
 # fzf
 Import-Module PSFzf
 Set-PSFzfOption -PSReadlineChordProvider 'Ctrl+f' -PSReadlineChordReverseHistory 'Ctrl+r'
-# Utility functions - Refer to utils.ps1 for more details.
-. (Join-Path (Split-Path $MyInvocation.MyCommand.Path) "utils.ps1")
