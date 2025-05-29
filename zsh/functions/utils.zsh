@@ -31,3 +31,6 @@ ltree() {
 
 # EZA Theme
 export EZA_CONFIG_DIR="$HOME/.config/.dotfiles/eza"
+
+# obsidian review
+alias or="cd $HOME/obsidian-work && nvim ./inbox/*.md"
