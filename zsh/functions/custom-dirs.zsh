@@ -8,6 +8,7 @@ typeset -A CUSTOM_DIRS_PATH
 CUSTOM_DIRS_PATH=(
   brookfielddir "$HOME/projects/brookfield"
   configdir     "$HOME/.config"
+  dotfiles      "$HOME/.config/.dotfiles"
   jsdir         "$HOME/projects/js-projects"
   oo            "$HOME/obsidian-work"
   ppdir         "$HOME/projects/personal-projects"
@@ -25,6 +26,7 @@ CUSTOM_DIRS_PATH=(
 CUSTOM_DIRS_DESC=(
   brookfielddir "Brookfield Projects Directory"
   configdir     "Configuration Files Directory"
+  dotfiles      "Dotfiles Directory"
   jsdir         "JavaScript Projects Directory"
   oo            "Obsidian Work Directory"
   ppdir         "Personal Projects Directory"
@@ -86,6 +88,10 @@ function brookfielddir {
 # configdir "Configuration Files Directory"
 function configdir {
   cd "$CUSTOM_DIRS_PATH[configdir]" || echo "Error: configdir not found at ${CUSTOM_DIRS_PATH[configdir]}"
+}
+# dotfiles "Dotfiles Directory"
+function dotfiles {
+  cd "$CUSTOM_DIRS_PATH[dotfiles]" || echo "Error: dotfiles not found at ${CUSTOM_DIRS_PATH[dotfiles]}"
 }
 # jsdir "JavaScript Projects Directory"
 function jsdir {
