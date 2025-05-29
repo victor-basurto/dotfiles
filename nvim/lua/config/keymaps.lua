@@ -94,23 +94,21 @@ keymap.set("n", "<leader>odd", ":!rm '%:p'<cr>:bd<cr>")
 keymap.set("n", "<leader>wok", function()
   local current_file = vim.fn.expand("%:p")
   local zettelkasten_folder_expanded = vim.fn.expand("~/obsidian-work/zettelkasten")
+  local filename = vim.fn.fnamemodify(current_file, ":t") -- Get the filename without the path
+  local destination_path = zettelkasten_folder_expanded .. "\\" .. filename
 
-  -- Escape single quotes within the paths for PowerShell's -Command parameter
-  -- PowerShell uses '' to escape ' inside a single-quoted string.
-  local escaped_current_file = current_file:gsub("'", "''")
-  local escaped_zettelkasten_folder = zettelkasten_folder_expanded:gsub("'", "''")
-
-  -- Construct the PowerShell command string.
-  -- -LiteralPath is robust for handling paths with spaces/special characters.
-  local powershell_cmd_str =
-    string.format("Move-Item -LiteralPath '%s' -Destination '%s'", escaped_current_file, escaped_zettelkasten_folder)
-
-  -- The entire -Command argument needs to be correctly wrapped in double quotes for powershell.exe -Command.
-  local final_shell_command = 'powershell.exe -Command "' .. powershell_cmd_str .. '"'
-
-  -- Execute the command silently
-  vim.cmd("silent !" .. final_shell_command)
-  vim.cmd(":bd") -- Close the current buffer after moving the file
+  if vim.fn.isdirectory(zettelkasten_folder_expanded) == 0 then
+    vim.notify("Zettelkasten folder does not exist: " .. zettelkasten_folder_expanded, vim.log.levels.ERROR)
+    return
+  end
+  -- Rename/Move the file
+  local status = vim.fn.rename(current_file, destination_path)
+  if status == 0 then
+    print("File moved successfully to: " .. destination_path)
+    vim.cmd(":bd") -- Close the current buffer after moving the file
+  else
+    print("Error moving file, Status: " .. status)
+  end
 end, { desc = "Move current file to zettelkasten folder (PowerShell)" })
 -- delete file in current buffer windows
 keymap.set("n", "<leader>wod", function()
