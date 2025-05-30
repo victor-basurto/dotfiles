@@ -84,7 +84,7 @@ keymap.set("n", "<leader>on", ":ObsidianTemplate notes<CR> :lua vim.cmd([[1,/^\\
 -- strip date from note title and replace dashes with spaces
 keymap.set("n", "<leader>of", ":s/\\(# \\)[^_]*_/\\1/ | s/-/ /g<cr>")
 -- add keymap to move file in current buffer to zettelkasten folder
-vim.keymap.set("n", "<leader>ok", ":!mv '%:p' ~/obsidian-work/zettelkasten/<cr>:bd<cr>")
+vim.keymap.set("n", "<leader>ok", ":!mv '%:p' G:/My Drive/obsidian-work/zettelkasten/<cr>:bd<cr>")
 -- delete file in current buffer MacOs
 keymap.set("n", "<leader>odd", ":!rm '%:p'<cr>:bd<cr>")
 
@@ -95,7 +95,7 @@ keymap.set("n", "<leader>odd", ":!rm '%:p'<cr>:bd<cr>")
 -- add keymap to move file in current buffer to zettelkasten folder
 keymap.set("n", "<leader>wok", function()
   local current_file = vim.fn.expand("%:p")
-  local zettelkasten_folder_expanded = vim.fn.expand("~/obsidian-work/zettelkasten")
+  local zettelkasten_folder_expanded = vim.fn.expand("G:/My Drive/obsidian-work/zettelkasten")
   local filename = vim.fn.fnamemodify(current_file, ":t") -- Get the filename without the path
   local destination_path = zettelkasten_folder_expanded .. "\\" .. filename
 

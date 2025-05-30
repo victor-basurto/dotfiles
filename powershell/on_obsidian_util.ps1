@@ -1,5 +1,5 @@
 # obsidian vault directory
-$vaultPath = Join-Path $env:USERPROFILE "obsidian-work"
+$vaultPath = "G:\My Drive\obsidian-work"
 $inboxPath = Join-Path $vaultPath "inbox"
 
 function on {

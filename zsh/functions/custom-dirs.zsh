@@ -10,7 +10,7 @@ CUSTOM_DIRS_PATH=(
   configdir     "$HOME/.config"
   dotfiles      "$HOME/.config/.dotfiles"
   jsdir         "$HOME/projects/js-projects"
-  oo            "$HOME/obsidian-work"
+  oo            "G:/My Drive/obsidian-work"
   ppdir         "$HOME/projects/personal-projects"
   reactdir      "$HOME/projects/react-projects"
   saferdir      "$HOME/projects/safer-projects"

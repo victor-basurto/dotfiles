@@ -12,7 +12,7 @@ return {
     workspaces = {
       {
         name = "ObsidianWork",
-        path = "~/obsidian-work",
+        path = "G:/My Drive/obsidian-work",
       },
     },
     log_level = vim.log.levels.INFO,

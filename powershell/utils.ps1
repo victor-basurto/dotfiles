@@ -26,7 +26,7 @@ Set-Alias -Name "less" -Value "C:\Program Files\Git\usr\bin\less.exe"
 $env:EZA_CONFIG_DIR = "$env:USERPROFILE\.config\.dotfiles\eza"
 
 # Working directory definitions
-$ObsidianDir = Join-Path $env:USERPROFILE "obsidian-work"
+$ObsidianDir = "G:\My Drive\obsidian-work"
 $ConfigDir = Join-Path $env:USERPROFILE ".config"
 $DotfilesDir = Join-Path $env:USERPROFILE ".config\.dotfiles"
 $NvimDir = Join-Path $env:USERPROFILE ".config\.dotfiles\nvim"
