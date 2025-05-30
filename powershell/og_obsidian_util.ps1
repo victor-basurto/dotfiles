@@ -7,7 +7,7 @@ within the 'notes' directory. If the tag's subdirectory does not exist, it will 
 # obsidian vault directory
 $VAULT_PATH = Join-Path $env:USERPROFILE "obsidian-work"
 $ZETTELKASTEN_DIR = Join-Path $VAULT_PATH "zettelkasten"
-$NOTES_DIR = Join-Path $vaultPath "notes"
+$NOTES_DIR = Join-Path $VAULT_PATH "notes"
 
 function og {
   # check if zettelkasten directory exists
@@ -29,6 +29,9 @@ function og {
     Write-Host "Processing file: $fileName"
     # Read the file content
     $content = Get-Content -Path $filePath -Raw
+    # Regular expression to extract primary tags from the 'tags: []' front matter
+    # It looks for 'tags: [' followed by anything not ']' (non-greedy), then ']'
+    $tagMatch = [regex]::Match($content, 'tags:\s*\[([^\]]*)\]')
     # Regular expression to extract parent tags from the 'parent: []' frontmatter
     # It looks for 'parent: [' followed by anything not ']' (non-greedy), them ']'
     $parentMatch = [regex]::Match($content, 'parent:\s*\[([^\]]*)\]')
@@ -37,11 +40,11 @@ function og {
     $parentTag = $null
 
     # extract primary tag
-    if ($tagMatch.Succes) {
+    if ($tagMatch.Success) {
       $tagsString = $tagMatch.Groups[1].Value.Trim()
       if (-not [string]::IsNullOrEmpty($tagsString)) {
         # ensure the result is always an array of string, even for a single tag
-        $tempTags = @($tagsString.Split(',') | ForEach-Object { $_.Trim() | Where-Object { -not [string]::IsNullOrEmpty($_)})
+        $tempTags = @($tagsString.Split(',') | ForEach-Object { $_.Trim() } | Where-Object { -not [string]::IsNullOrEmpty($_)})
         if ($tempTags.Count -gt 0) {
           $firstTag = $tempTags[0]  # Get the first tag
         }
@@ -49,11 +52,11 @@ function og {
     }
 
     # extract parent tag
-    if ($parentMatch.Succes) {
+    if ($parentMatch.Success) {
       $parentString = $parentMatch.Groups[1].Value.Trim()
       if (-not [string]::IsNullOrEmpty($parentString)) {
         # ensure the result is always an array of string, even for a single tag
-        $tempParentTags = @($parentString.Split(',') | ForEach-Object { $_.Trim() | Where-Object { -not [string]::IsNullOrEmpty($_)})
+        $tempParentTags = @($parentString.Split(',') | ForEach-Object { $_.Trim() } | Where-Object { -not [string]::IsNullOrEmpty($_)})
         if ($tempParentTags.Count -gt 0) {
           $parentTag = $tempParentTags[0]  # Get the first tag
         }
@@ -65,7 +68,6 @@ function og {
 
     if (-not [string]::IsNullOrEmpty($firstTag)) {
       $targetBaseDir = $NOTES_DIR
-      
       # construct the target directory path based on parent tag
       if (-not [string]::IsNullOrEmpty($parentTag)) {
         $targetTagDir = Join-Path (Join-Path $targetBaseDir $parentTag) $firstTag

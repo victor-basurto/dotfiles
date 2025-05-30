@@ -30,6 +30,7 @@ return {
           "html",
           "jsonls",
           "yamlls",
+          "powershell_es",
         },
       })
     end,
