@@ -49,4 +49,4 @@ on() {
 export EZA_CONFIG_DIR="$HOME/.config/.dotfiles/eza"
 
 # obsidian review
-alias or="cd ${OBSIDIAN_VAULT:-G:/My Drive/obsidian-work} && nvim ./inbox/*.md"
+alias or='cd ${OBSIDIAN_VAULT:-$HOME/Google Drive/My Drive/obsidian-work} && nvim ./inbox/*.md'

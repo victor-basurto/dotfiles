@@ -1,3 +1,15 @@
+local obsidian_path
+
+if vim.fn.has("mac") == 1 then
+  -- macOS path
+  obsidian_path = vim.fn.expand("~/Google Drive/My Drive/obsidian-work")
+elseif vim.fn.has("win32") == 1 then
+  -- Windows path
+  obsidian_path = "G:/My Drive/obsidian-work"
+else
+  -- Default for Linux or other systems (adjust as needed)
+  obsidian_path = vim.fn.expand("~/.config/obsidian-vault") -- Example Linux path
+end
 return {
   "epwalsh/obsidian.nvim",
   version = "*",
@@ -12,7 +24,7 @@ return {
     workspaces = {
       {
         name = "ObsidianWork",
-        path = "G:/My Drive/obsidian-work",
+        path = obsidian_path, -- path to your Obsidian vault
       },
     },
     log_level = vim.log.levels.INFO,
