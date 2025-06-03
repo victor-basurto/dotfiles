@@ -18,6 +18,7 @@ export OBSIDIAN_VAULT="$HOME/Google Drive/My Drive/obsidian-work"
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="powerlevel10k/powerlevel10k"
+# ZSH_THEME="jonathan"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -141,3 +142,8 @@ source $HOME/.config/zsh/functions/custom-dirs.zsh
 source $HOME/.config/zsh/functions/utils.zsh
 # Obsidian Organize and Review
 source $HOME/.config/zsh/functions/og.zsh
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+export PATH="$HOME/.cargo/bin:$PATH"
