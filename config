@@ -78,7 +78,7 @@ theme = catppuccin-frappe
 # clipboard-trim-trailing-spaces = true
 
 background-opacity = 0.9
-# background-blur = 20
+background-blur = 10
 # selection-background = #a063eb
 # selection-foreground = #1b1b22
 mouse-hide-while-typing = true
