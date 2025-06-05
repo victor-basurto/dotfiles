@@ -42,7 +42,7 @@ keymap.set("n", "+", "<C-a>")
 keymap.set("n", "-", "<C-x>")
 
 -- Select All
-keymap.set("n", "<C-a>", "gg<S-v>G")
+-- keymap.set("n", "<C-a>", "gg<S-v>G")
 
 -- new tab
 keymap.set("n", "te", ":tabedit", opts)
