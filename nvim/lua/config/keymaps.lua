@@ -79,10 +79,19 @@ end, { desc = "Open in Browser" })
 keymap.set("n", "<leader>rn", ":IncRename ")
 
 -- obsidian
+-- These commands below are tested and fully working in Ubuntu, MacOS, and Win
 -- apply template `notes.md` to new notes
 keymap.set("n", "<leader>on", ":ObsidianTemplate notes<CR> :lua vim.cmd([[1,/^\\S/s/^\\n\\{1,}//]])<CR>")
+-- TODO Command coming soon!
+-- This command is woring for windows, ubuntu and mac
+-- but it still requires extra configuration for tittle formatting, note saving, folder creation, etc.
+keymap.set("n", "<leader>todo", ":ObsidianTemplate todo<CR> :lua vim.cmd([[1,/^\\S/s/^\\n\\{1,}//]])<CR>")
 -- strip date from note title and replace dashes with spaces
 keymap.set("n", "<leader>of", ":s/\\(# \\)[^_]*_/\\1/ | s/-/ /g<cr>")
+-- Create command to strip date from title and replace dashes with space followed by `TODO`
+-- should be similar to "<leader>of"
+-- name: TBD
+-- suggestions: ['<leader>otf', '<leader>ottf']
 
 -- macOS keymaps
 -- OK: Move current file to zettelkasten folder
