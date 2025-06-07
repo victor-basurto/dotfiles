@@ -83,7 +83,7 @@ keymap.set("n", "<leader>rn", ":IncRename ")
 -- apply template `notes.md` to new notes
 keymap.set("n", "<leader>on", ":ObsidianTemplate notes<CR> :lua vim.cmd([[1,/^\\S/s/^\\n\\{1,}//]])<CR>")
 -- TODO Command coming soon!
--- This command is woring for windows, ubuntu and mac
+-- This command is working for windows, ubuntu and mac
 -- but it still requires extra configuration for tittle formatting, note saving, folder creation, etc.
 keymap.set("n", "<leader>todo", ":ObsidianTemplate todo<CR> :lua vim.cmd([[1,/^\\S/s/^\\n\\{1,}//]])<CR>")
 -- strip date from note title and replace dashes with spaces
