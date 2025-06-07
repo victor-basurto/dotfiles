@@ -86,7 +86,7 @@ keymap.set("n", "<leader>on", ":ObsidianTemplate notes<CR> :lua vim.cmd([[1,/^\\
 keymap.set("n", "<leader>todo", ":ObsidianTemplate todo<CR> :lua vim.cmd([[1,/^\\S/s/^\\n\\{1,}//]])<CR>")
 -- strip date from note title and replace dashes with spaces
 keymap.set("n", "<leader>of", ":s/\\(# \\)[^_]*_/\\1/ | s/-/ /g<cr>")
--- strip date and keep word `todo` e.g `# Todo: My New Note`
+-- strip date, ignore `# Todo` e.g `# Todo: My New Note`
 keymap.set("n", "<leader>otf", ":s/\\(# TODO: \\)[^_]*_\\(.*\\)/\\1\\2/ | s/-/ /g<cr>")
 
 -- macOS keymaps
