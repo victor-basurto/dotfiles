@@ -29,6 +29,7 @@ return {
         "sql",
         "scss",
         "go",
+        "xml",
       },
       ignore_install = {},
       highlight = { enable = true },
