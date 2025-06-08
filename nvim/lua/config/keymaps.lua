@@ -67,8 +67,8 @@ keymap.set("n", "<C-w><down>", "<C-w>-")
 
 -- diagnostics
 keymap.set("n", "<C-j>", function()
-  vim.diagnostic.get_next({ buffer = 0, severity = vim.diagnostic.severity.ERROR })
-end)
+  vim.diagnostic.goto_next({ buffer = 0, severity = vim.diagnostic.severity.ERROR })
+end, { desc = "Get next diagnostics error" })
 
 -- open html files in the browser
 keymap.set("n", "<leader>O", function()
