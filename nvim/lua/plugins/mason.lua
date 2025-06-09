@@ -54,6 +54,7 @@ return {
       -- vim.lsp.enable("omnisharp")
       lspconfig.omnisharp.setup({
         capabilities = capabilities,
+        cmd = { "omnisharp", "--languageserver" },
       })
 
       lspconfig.lua_ls.setup({
