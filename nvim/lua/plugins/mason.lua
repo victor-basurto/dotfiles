@@ -50,6 +50,7 @@ return {
     config = function()
       local lspconfig = require("lspconfig")
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
+      local util = require("lspconfig.util")
 
       -- vim.lsp.enable("omnisharp")
       lspconfig.omnisharp.setup({
@@ -59,8 +60,30 @@ return {
 
       lspconfig.lua_ls.setup({
         capabilities = capabilities,
+        root_dir = util.root_pattern(".git", ".nvim-root", "init.lua", "lua"),
         settings = {
           Lua = {
+            workspace = {
+              checkThirdParty = false,
+              library = {
+                vim.fn.expand("$VIMRUNTIME/lua"),
+                vim.fn.stdpath("config") .. "/lua",
+              },
+              ignoreDir = {
+                ".git",
+                "node_modules",
+                "venv",
+                "dist",
+                "build",
+                "__pycache__",
+                "target",
+                ".next",
+                "AppData",
+                "Downloads",
+                "Documents",
+                "OneDrive",
+              },
+            },
             hint = {
               enable = true,
               array_index = "Enable",
