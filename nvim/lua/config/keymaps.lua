@@ -78,6 +78,9 @@ end, { desc = "Open in Browser" })
 -- inc rename
 keymap.set("n", "<leader>rn", ":IncRename ")
 
+-- markdown TOC
+keymap.set("n", "<leader>mtoc", ":Mtoc<cr>", opts)
+
 -- obsidian
 -- These commands below are tested and fully working in Ubuntu, MacOS, and Win
 -- apply template `notes.md` to new notes using `<leader>on`
