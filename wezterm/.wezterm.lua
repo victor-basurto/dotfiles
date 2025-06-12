@@ -42,7 +42,7 @@ config.default_prog = { "pwsh" }
 -- rose-pine-moon
 config.color_scheme = "Catppuccin Frappe"
 -- font
-config.font = wezterm.font("Monaco")
+config.font = wezterm.font("JetBrains Mono")
 config.bold_brightens_ansi_colors = "BrightOnly"
 config.font_size = 11
 config.window_background_opacity = 0.95
