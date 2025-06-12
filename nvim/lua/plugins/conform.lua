@@ -14,10 +14,11 @@ return {
       ["markdown.mdx"] = { "prettier", "markdownlint-cli2", "markdown-toc" },
     },
     formatters = {
+      -- is better to handle prettier per project
       prettier = {
         prepend_args = {
-          "--print-width",
-          "290",
+          -- "--print-width",
+          -- "290",
         },
       },
       ["markdown-toc"] = {
