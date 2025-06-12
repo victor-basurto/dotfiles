@@ -20,11 +20,11 @@ config.keys = {
 	{ key = "k", mods = "LEADER", action = act.ActivatePaneDirection("Up") },
 	{ key = "j", mods = "LEADER", action = act.ActivatePaneDirection("Down") },
 
-	-- Resize bassed on Vim-style pane navigation
-	{ key = "H", mods = "LEADER", action = act.AdjustPaneSize({ "Left", 1 }) },
-	{ key = "L", mods = "LEADER", action = act.AdjustPaneSize({ "Right", 1 }) },
-	{ key = "K", mods = "LEADER", action = act.AdjustPaneSize({ "Up", 1 }) },
-	{ key = "J", mods = "LEADER", action = act.AdjustPaneSize({ "Down", 1 }) },
+	-- Resize panes using ALT + (h,j,k,l)
+	{ key = "h", mods = "ALT", action = act.AdjustPaneSize({ "Left", 1 }) },
+	{ key = "l", mods = "ALT", action = act.AdjustPaneSize({ "Right", 1 }) },
+	{ key = "k", mods = "ALT", action = act.AdjustPaneSize({ "Up", 1 }) },
+	{ key = "j", mods = "ALT", action = act.AdjustPaneSize({ "Down", 1 }) },
 }
 -- Define your leader key
 config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 1000 }
