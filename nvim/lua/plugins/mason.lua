@@ -51,11 +51,29 @@ return {
       local lspconfig = require("lspconfig")
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
       local util = require("lspconfig.util")
-
+      vim.env.DOTNET_ROOT = "/usr/local/share/dotnet"
       -- vim.lsp.enable("omnisharp")
       lspconfig.omnisharp.setup({
         capabilities = capabilities,
         cmd = { "omnisharp", "--languageserver" },
+        enable_import_completion = true,
+        organize_imports_on_format = true,
+        enable_roslyn_analyzers = true,
+        settings = {
+          RoslynExtensionsOptions = {
+            EnableAnalyzersSupport = true,
+            EnableDecompilationSupport = true,
+            EnableEditorConfigSupport = true,
+            EnableImportCompletion = true,
+            EnableUpdateDiagnosticNetAnalyzers = true,
+          },
+          -- Also explicitly tell Omnisharp's settings where to find .NET CLI tools
+          DotNetCliPaths = {
+            vim.env.DOTNET_ROOT,
+          },
+          -- Consider adding this if you still see older .NET version issues
+          -- UseModernNet = true, -- This is sometimes a setting for Omnisharp
+        },
       })
 
       lspconfig.lua_ls.setup({
