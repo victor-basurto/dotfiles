@@ -80,6 +80,13 @@ keymap.set("n", "<leader>rn", ":IncRename ")
 
 -- markdown TOC
 keymap.set("n", "<leader>mtoc", ":Mtoc<cr>", opts)
+vim.keymap.set("n", "<leader>mtf", function()
+  local line = vim.api.nvim_get_current_line()
+  local new_line = line:gsub("^(#+)%s+(.*)", function(hashes, text)
+    return hashes .. " " .. text:gsub("%s+", "-")
+  end)
+  vim.api.nvim_set_current_line(new_line)
+end, { noremap = true, silent = true })
 
 -- obsidian
 -- These commands below are tested and fully working in Ubuntu, MacOS, and Win
