@@ -19,6 +19,7 @@ CUSTOM_DIRS_PATH=(
   vimdir        "$HOME/.config/nvim"
   webdir        "$HOME/projects/brookfield/websites"
   xmdir         "$HOME/projects/brookfield/xm-cloud"
+  xmwork        "$HOME/projects/brookfield/xm-cloud/work/brookfield-monorepo/"
   zshdir        "$HOME/.config/zsh/functions/"
 )
 
@@ -37,6 +38,7 @@ CUSTOM_DIRS_DESC=(
   vimdir        "Neovim Configuration Directory"
   webdir        "Websites Directory"
   xmdir         "XM Cloud Projects Directory"
+  xmwork        "XM Cloud Work Project Directory"
   zshdir        "ZSH Custom Functions Directory"
 )
 
@@ -132,6 +134,10 @@ function webdir {
 # xmdir "XM Cloud Projects Directory"
 function xmdir {
   cd "$CUSTOM_DIRS_PATH[xmdir]" || echo "Error: xmdir not found at ${CUSTOM_DIRS_PATH[xmdir]}"
+}
+# xmwork "XMCloud Wrok Project Directory"
+function xmwork {
+  cd "$CUSTOM_DIRS_PATH[xmwork]" || echo "Error: xmwork not found at ${CUSTOM_DIRS_PATH[xmwork]}"
 }
 # zshdir "zshdir custom directory"
 function zshdir {
