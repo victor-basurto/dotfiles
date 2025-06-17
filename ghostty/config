@@ -65,7 +65,7 @@ theme = catppuccin-frappe
 # rebecca
 font-size = 12
 # font-style = medium
-# bold-is-bright = true
+bold-is-bright = true
 
 # # # cursor
 # cursor-style = block
