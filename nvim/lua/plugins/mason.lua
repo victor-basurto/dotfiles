@@ -65,7 +65,7 @@ return {
       -- vim.lsp.enable("omnisharp")
       lspconfig.omnisharp.setup({
         capabilities = capabilities,
-        on_attach = lsp_utils.enable_hints,
+        on_attach = lsp_utils.on_attach,
         cmd = { "omnisharp", "--languageserver" },
         enable_import_completion = true,
         organize_imports_on_format = true,
@@ -89,7 +89,7 @@ return {
 
       lspconfig.lua_ls.setup({
         capabilities = capabilities,
-        on_attach = lsp_utils.enable_hints,
+        on_attach = lsp_utils.on_attach,
         root_dir = util.root_pattern(".git", ".nvim-root", "init.lua", "lua"),
         settings = {
           Lua = {
@@ -129,7 +129,7 @@ return {
       })
       lspconfig.tsserver.setup({
         capabilities = capabilities,
-        on_attach = lsp_utils.enable_hints,
+        on_attach = lsp_utils.on_attach,
         settings = {
           typescript = {
             inlayHints = {
@@ -158,8 +158,8 @@ return {
       lspconfig.jsonls.setup({})
       lspconfig.yamlls.setup({})
       lspconfig.marksman.setup({})
-      vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
-      vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
+      -- vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
+      -- vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
       vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
       vim.diagnostic.config({
         virtual_text = true,

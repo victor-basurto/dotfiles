@@ -2,12 +2,27 @@ return {
   "stevearc/conform.nvim",
   dependencies = { "mason.nvim" },
   lazy = true,
+  keys = {
+    {
+      "<leader>ccf",
+      function()
+        -- When manually formatting, ensure `lsp_fallback` is still active or conform is aware of LSP
+        require("conform").format({ async = true, lsp_fallback = true })
+      end,
+      mode = "n",
+      desc = "Format buffer (Conform)",
+    },
+  },
   opts = {
     formatters_by_ft = {
       lua = { "stylua" },
       javascript = { "prettier" },
+      javascriptreact = { "prettier" },
       typescript = { "prettier" },
+      typescriptreact = { "prettier" },
       css = { "prettier" },
+      scss = { "prettier" },
+      less = { "prettier" },
       json = { "prettier" },
       yaml = { "prettier" },
       ["markdown"] = { "prettier", "markdownlint-cli2", "markdown-toc" },
@@ -39,5 +54,12 @@ return {
         end,
       },
     },
+    init = function()
+      -- Ensure conform is available when format_on_save triggers
+      vim.filetype.add({
+        pattern = { ["%.jsx?$"] = "javascript", ["%.tsx?$"] = "typescript" },
+        -- Use a more comprehensive filetype detection if needed
+      })
+    end,
   },
 }
