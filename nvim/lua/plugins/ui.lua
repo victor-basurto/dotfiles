@@ -8,4 +8,5 @@ return {
       table.insert(opts.sources, { name = "emoji" })
     end,
   },
+  { "bullets-vim/bullets.vim" },
 }
