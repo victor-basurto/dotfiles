@@ -15,12 +15,18 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
+  rocks = { hererocks = true },
   spec = {
     -- add LazyVim and import its plugins
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
     { import = "lazyvim.plugins.extras.lang.json" },
     { import = "lazyvim.plugins.extras.lang.tailwind" },
     { import = "lazyvim.plugins.extras.ai.copilot" },
+
+    {
+      "3rd/image.nvim",
+      opts = {},
+    },
     -- { import = "lazyvim.plugins.extras.lang.typescript" },
     -- import/override with your plugins
     { import = "plugins" },
