@@ -50,4 +50,5 @@ return {
   config = function()
     require("mtoc").setup({})
   end,
+  -- TODO: configure markdown for better readability
 }
