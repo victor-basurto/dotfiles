@@ -48,24 +48,24 @@ return {
   {
     "neovim/nvim-lspconfig",
     config = function()
+      local lsp_utils = require("utilities.lsp_utils")
+      local global_utils = require("utilities.utils")
       local lspconfig = require("lspconfig")
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
       local util = require("lspconfig.util")
-      local lsp_on_attach = require("utilities.lsp_on_attach")
-      local utils = require("utilities.utils")
 
       -- default path for .NET SDK in macOS/Linux
       vim.env.DOTNET_ROOT = "/usr/local/share/dotnet"
 
       -- If running on Windows, set the path to the .NET SDK accordingly
-      if utils.is_windows() then
+      if global_utils.is_windows() then
         vim.env.DOTNET_ROOT = "C:\\Program Files\\dotnet"
       end
 
       -- vim.lsp.enable("omnisharp")
       lspconfig.omnisharp.setup({
         capabilities = capabilities,
-        on_attach = lsp_on_attach.on_attach,
+        on_attach = lsp_utils.enable_hints,
         cmd = { "omnisharp", "--languageserver" },
         enable_import_completion = true,
         organize_imports_on_format = true,
@@ -89,7 +89,7 @@ return {
 
       lspconfig.lua_ls.setup({
         capabilities = capabilities,
-        on_attach = lsp_on_attach.on_attach,
+        on_attach = lsp_utils.enable_hints,
         root_dir = util.root_pattern(".git", ".nvim-root", "init.lua", "lua"),
         settings = {
           Lua = {
@@ -129,7 +129,7 @@ return {
       })
       lspconfig.tsserver.setup({
         capabilities = capabilities,
-        on_attach = lsp_on_attach.on_attach,
+        on_attach = lsp_utils.enable_hints,
         settings = {
           typescript = {
             inlayHints = {
