@@ -9,7 +9,4 @@ return {
     end,
   },
   { "bullets-vim/bullets.vim" },
-  -- TODO: install Flash for faster navigation
-  -- TODO: install snacks (image) ref: youtube linkarzu "images in neovim"
-  -- TODO: install "arnamak/stay-centered" for auto-centering cursor
 }
