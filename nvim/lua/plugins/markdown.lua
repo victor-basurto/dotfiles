@@ -8,47 +8,91 @@ return {
   },
   {
     "hedyhli/markdown-toc.nvim",
-    ft = "markdown", -- Lazy load on markdown filetype
-    cmd = { "Mtoc" }, -- Or, lazy load on "Mtoc" command
+    ft = "markdown",
+    cmd = { "Mtoc" },
     opts = {
-      -- Your configuration here (optional)
-      {
-        headings = {
-          -- Include headings before the ToC (or current line for `:Mtoc insert`).
-          -- Setting to true will include headings that are defined before the ToC
-          -- position to be included in the ToC.
-          before_toc = true,
-        },
-
-        -- Table or boolean. Set to true to use these defaults, set to false to disable completely.
-        -- Fences are needed for the update/remove commands, otherwise you can
-        -- manually select ToC and run update.
-        fences = {
-          enabled = true,
-          -- These fence texts are wrapped within "<!-- % -->", where the '%' is
-          -- substituted with the text.
-          start_text = "mtoc-start",
-          end_text = "mtoc-end",
-          -- An empty line is inserted on top and below the ToC list before the being
-          -- wrapped with the fence texts, same as vim-markdown-toc.
-        },
-
-        -- Enable auto-update of the ToC (if fences found) on buffer save
-        auto_update = true,
-
-        toc_list = {
-          -- string or list of strings (for cycling)
-          -- If cycle_markers = false and markers is a list, only the first is used.
-          -- You can set to '1.' to use a automatically numbered list for ToC (if
-          -- your markdown render supports it).
-          markers = { "*", "+", "-" },
-          cycle_markers = true,
-        },
+      headings = { before_toc = false },
+      fences = {
+        enabled = true,
+        start_text = "mtoc-start",
+        end_text = "mtoc-end",
+      },
+      auto_update = true,
+      toc_list = {
+        markers = { "*", "+", "-" },
+        cycle_markers = true,
+        item_format_string = "${indent}${marker} [[#${name}]]", -- default obsidian TOC style
       },
     },
+    config = function(_, default_opts)
+      local mtoc = require("mtoc")
+      mtoc.setup(default_opts) -- Apply the initial default configuration
+
+      -- Define specific configurations for overrides
+      -- Default Browser
+      local browser_override_opts = vim.tbl_deep_extend("force", {}, default_opts, {
+        fences = {
+          start_text = "mtoc-start",
+          end_text = "mtoc-end",
+        },
+        toc_list = {
+          item_format_string = "${indent}${marker} [${name}](#${link})",
+        },
+      })
+
+      -- Obsidian TOC styles
+      local obsidian_override_opts = vim.tbl_deep_extend("force", {}, default_opts, {
+        fences = {
+          start_text = "mtoc-obsidian-start", -- Use distinct fences for Obsidian if desired
+          end_text = "mtoc-obsidian-end",
+        },
+        toc_list = {
+          item_format_string = "${indent}${marker} [[#${name}]]",
+        },
+      })
+
+      -- Helper function to set config, run command, and revert
+      local function generate_toc_with_temp_config(target_config)
+        -- Set the desired temporary config
+        mtoc.setup(target_config)
+
+        -- Defer the command to ensure config is applied
+        -- We might need a slightly longer deferral or chained deferrals
+        -- to be absolutely sure the config is settled before the command runs.
+        vim.defer_fn(function()
+          vim.cmd("Mtoc insert")
+
+          -- After the command runs, defer the revert as well.
+          -- This ensures the revert doesn't happen *before* the command
+          -- has finished processing its state, which could be relevant
+          -- if the command itself has any async parts.
+          vim.defer_fn(function()
+            mtoc.setup(default_opts)
+          end, 20) -- Small defer for revert
+        end, 50) -- Main defer for setup + command
+      end
+
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "markdown",
+        callback = function()
+          -- NOTE: <leader>mtoc: Generates TOC using the default (browser-compatible) configuration
+          vim.keymap.set("n", "<leader>mtoc", function()
+            -- Even for the default, use the helper to ensure consistent behavior
+            generate_toc_with_temp_config(browser_override_opts)
+          end, {
+            desc = "Insert Markdown TOC (browser-compatible)",
+            buffer = true,
+          })
+
+          -- NOTE: <leader>motoc: Generates TOC using Obsidian wikilinks
+          vim.keymap.set("n", "<leader>motoc", function()
+            generate_toc_with_temp_config(obsidian_override_opts)
+          end, {
+            desc = "Insert Markdown TOC (Obsidian wikilinks)",
+            buffer = true,
+          })
+        end,
+      })
+    end,
   },
-  config = function()
-    require("mtoc").setup({})
-  end,
-  -- TODO: configure markdown for better readability
 }

@@ -78,8 +78,7 @@ end, { desc = "Open in Browser" })
 -- inc rename
 keymap.set("n", "<leader>rn", ":IncRename ")
 
--- markdown TOC
-keymap.set("n", "<leader>mtoc", ":Mtoc<cr>", opts)
+-- Markdown, adds dashes to headings
 vim.keymap.set("n", "<leader>mtf", function()
   local line = vim.api.nvim_get_current_line()
   local new_line = line:gsub("^(#+)%s+(.*)", function(hashes, text)
