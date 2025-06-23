@@ -155,3 +155,12 @@ function y() {
 	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
 	rm -f -- "$tmp"
 }
+
+# Load environment variables
+for env_file in \
+    "$HOME/.config/zshenv/env-public.zsh" \
+    "$HOME/.config/zshenv/env-private.zsh"; do
+  if [ -f "$env_file" ]; then
+    source "$env_file"
+  fi
+done
