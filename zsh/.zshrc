@@ -158,8 +158,8 @@ function y() {
 
 # Load environment variables
 for env_file in \
-    "$HOME/.config/zshenv/env-public.zsh" \
-    "$HOME/.config/zshenv/env-private.zsh"; do
+    "$HOME/.config/zshenv/env-private.zsh" \
+    "$HOME/.config/zshenv/env-public.zsh"; do
   if [ -f "$env_file" ]; then
     source "$env_file"
   fi
