@@ -125,6 +125,51 @@ return {
         })
       )
 
+      table.insert(
+        snippets,
+        s({
+          trig = "linkt",
+          name = 'Add this -> [](){:target="_blank"}',
+          desc = 'Add this -> [](){:target="_blank"}',
+        }, {
+          t("["),
+          i(1),
+          t("]("),
+          i(2),
+          t('){:target="_blank"}'),
+        })
+      )
+
+      -- TODOSection
+      table.insert(
+        snippets,
+        s({
+          trig = "todo",
+          name = "Add TODO: item",
+          desc = "Add TODO: item",
+        }, {
+          t("<!-- TODO: "),
+          i(1),
+          t(" -->"),
+        })
+      )
+
+      -- TODOList
+      table.insert(
+        snippets,
+        s({
+          trig = "todolist",
+          name = "Add TODO-List: item",
+          desc = "Add TODO-List: item",
+        }, {
+          t("<!-- TODO-List -->"),
+          t({
+            " ",
+            "- [ ] ",
+          }),
+          i(1),
+        })
+      )
       ls.add_snippets("markdown", snippets)
 
       -- Configure Tab behavior
