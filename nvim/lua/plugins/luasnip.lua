@@ -1,16 +1,18 @@
 return {
   {
-    "hrsh7th/nvim-cmp",
-    disabled = true,
+    "L3MON4D3/LuaSnip",
+    lazy = true,
     dependencies = {
-      "hrsh7th/cmp-emoji",
-      "saadparwaiz1/cmp_luasnip",
+      {
+        "rafamadriz/friendly-snippets",
+        config = function()
+          require("luasnip.loaders.from_vscode").lazy_load()
+          require("luasnip.loaders.from_vscode").lazy_load({ paths = { vim.fn.stdpath("config") .. "/snippets" } })
+        end,
+      },
     },
-    ---@class CustomCmpConfig : cmp.ConfigSchema
-    ---@param opts CustomCmpConfig
-    opts = function(_, opts)
+    config = function(_, opts)
       local ls = require("luasnip")
-      local cmp = require("cmp")
 
       -- local environment settings
       local s = ls.snippet
@@ -18,26 +20,22 @@ return {
       local i = ls.insert_node
       local f = ls.function_node
 
-      opts.snippet = {
-        expand = function(args)
-          ls.lsp_expand(args.body)
-        end,
-      }
-
-      -- add sources
-      table.insert(opts.sources, { name = "emoji" })
-      table.insert(opts.sources, { name = "luasnip" })
-
-      -- clipboard for easy copy-paste
+      -- Your clipboard function (if used in snippets)
       local function clipboard()
         return vim.fn.getreg("+")
       end
 
-      -- ########################################
-      --    Markdown
-      -- ########################################
+      ---@tag Markdown
+      ----------------------------------------
+      -- Markdown
+      ----------------------------------------
+      -- Helper function to create code block snippets
       local function create_code_block_snippet(lang)
-        return s(lang, {
+        return s({
+          trig = lang,
+          name = "Codeblock",
+          desc = lang .. " codeblock",
+        }, {
           t({ "```" .. lang, "" }),
           i(1),
           t({ "", "```" }),
@@ -69,36 +67,24 @@ return {
       for _, lang in ipairs(languages) do
         table.insert(snippets, create_code_block_snippet(lang))
       end
-      -- Jekill
+
       table.insert(
         snippets,
         s({
-          trig = "chirpy",
-          name = "Disable markdownlint and prettier for chirpy",
-          desc = "Disable markdownlint and prettier for chirpy",
+          trig = "markdownlint",
+          name = "Add markdownlint disable and restore headings",
+          desc = "Add markdownlint disable and restore headings",
         }, {
           t({
             " ",
             "<!-- markdownlint-disable -->",
-            "<!-- prettier-ignore-start -->",
-            " ",
-            "<!-- tip=green, info=blue, warning=yellow, danger=red -->",
             " ",
             "> ",
           }),
           i(1),
           t({
-            "",
-            "{: .prompt-",
-          }),
-          -- In case you want to add a default value "tip" here, but I'm having
-          -- issues with autosave
-          -- i(2, "tip"),
-          i(2),
-          t({
-            " }",
             " ",
-            "<!-- prettier-ignore-end -->",
+            " ",
             "<!-- markdownlint-restore -->",
           }),
         })
@@ -141,7 +127,6 @@ return {
         })
       )
 
-      -- TODOSection
       table.insert(
         snippets,
         s({
@@ -155,6 +140,38 @@ return {
         })
       )
 
+      -- Paste clipboard contents in link section, move cursor to ()
+      table.insert(
+        snippets,
+        s({
+          trig = "linkc",
+          name = "Paste clipboard as .md link",
+          desc = "Paste clipboard as .md link",
+        }, {
+          t("["),
+          i(1),
+          t("]("),
+          f(clipboard, {}),
+          t(")"),
+        })
+      )
+
+      -- Paste clipboard contents in link section, move cursor to ()
+      table.insert(
+        snippets,
+        s({
+          trig = "linkex",
+          name = "Paste clipboard as EXT .md link",
+          desc = "Paste clipboard as EXT .md link",
+        }, {
+          t("["),
+          i(1),
+          t("]("),
+          f(clipboard, {}),
+          t('){:target="_blank"}'),
+        })
+      )
+
       -- TODOList
       table.insert(
         snippets,
@@ -163,45 +180,17 @@ return {
           name = "Add TODO-List: item",
           desc = "Add TODO-List: item",
         }, {
-          t("<!-- TODO-List -->"),
+          t(""),
           t({
-            " ",
+            "",
             "- [ ] ",
           }),
           i(1),
         })
       )
+
       ls.add_snippets("markdown", snippets)
-
-      -- Configure Tab behavior
-      opts.mapping = cmp.mapping.preset.insert({
-        ["<Tab>"] = cmp.mapping(function(fallback)
-          if cmp.visible() then
-            cmp.select_next_item()
-          elseif ls.expand_or_jumpable() then
-            ls.expand_or_jump()
-          else
-            fallback()
-          end
-        end, { "i", "s" }),
-
-        ["<S-Tab>"] = cmp.mapping(function(fallback)
-          if cmp.visible() then
-            cmp.select_prev_item()
-          elseif ls.jumpable(-1) then
-            ls.jump(-1)
-          else
-            fallback()
-          end
-        end, { "i", "s" }),
-
-        ["<CR>"] = cmp.mapping.confirm({ select = true }),
-      })
+      return opts
     end,
-    -- stylua: ignore
-    keys = {
-      { "<tab>", function() require("luasnip").jump(1) end, mode = "s" },
-      { "<s-tab>", function() require("luasnip").jump(-1) end, mode = { "i", "s" } },
-    },
   },
 }

@@ -51,8 +51,26 @@ return {
       local lsp_utils = require("utilities.lsp_utils")
       local global_utils = require("utilities.utils")
       local lspconfig = require("lspconfig")
-      local capabilities = require("cmp_nvim_lsp").default_capabilities()
+      -- local capabilities = require("cmp_nvim_lsp").default_capabilities()
       local util = require("lspconfig.util")
+
+      local capabilities = {
+        textDocument = {
+          completion = {
+            completionItem = {
+              snippetSupport = true,
+              resolveSupport = {
+                properties = {
+                  "documentation",
+                  "detail",
+                  "additionalTextEdits",
+                },
+              },
+            },
+          },
+        },
+      }
+      capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
 
       -- default path for .NET SDK in macOS/Linux
       vim.env.DOTNET_ROOT = "/usr/local/share/dotnet"
