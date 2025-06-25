@@ -4,10 +4,17 @@
 local opts = { noremap = true, silent = true }
 local keymap = vim.keymap
 -- discipline, custom plugin inspired by `craftzdog-max/devaslife`
+-------------------------------------------------------
+--               Discipline
+-------------------------------------------------------
 local discipline = require("utilities.discipline")
 discipline.strict()
--- end discipline
--- telescope
+-------------------------------------------------------
+--              END Discipline
+-------------------------------------------------------
+-------------------------------------------------------
+--               Telescope
+-------------------------------------------------------
 local telescopeBuiltin = require("telescope.builtin")
 local telescope = require("telescope")
 keymap.set("n", "<leader>ff", telescopeBuiltin.find_files, { desc = "Telescope find files" })
@@ -32,62 +39,413 @@ keymap.set("n", "<leader>fl", function()
     layout_config = { height = 40 },
   })
 end)
--- end telescope
+-------------------------------------------------------
+--              END Telescope
+-------------------------------------------------------
 
--- neoGen
+-------------------------------------------------------
+--                  NeoGen
+-------------------------------------------------------
 vim.api.nvim_set_keymap("n", "<leader>ng", ":lua require('neogen').generate()<CR>", opts)
 
--- Increment / Decrement
+-------------------------------------------------------
+--         Increment / Decrement
+-------------------------------------------------------
 keymap.set("n", "+", "<C-a>")
 keymap.set("n", "-", "<C-x>")
-
--- Select All
--- keymap.set("n", "<C-a>", "gg<S-v>G")
-
--- new tab
+-------------------------------------------------------
+--              New Tab
+-------------------------------------------------------
 keymap.set("n", "te", ":tabedit", opts)
 keymap.set("n", "<tab>", ":tabnext<Return>", opts)
 keymap.set("n", "<s-tab>", ":tabprev<Return>", opts)
 
--- split window
+-------------------------------------------------------
+--              Split Window
+-------------------------------------------------------
 keymap.set("n", "ss", ":split<Return>", opts)
 keymap.set("n", "sv", ":vsplit<Return>", opts)
 
--- move windows
+-------------------------------------------------------
+--              Move Windows
+-------------------------------------------------------
 keymap.set("n", "sh", "<C-w>h")
 keymap.set("n", "sk", "<C-w>k")
 keymap.set("n", "sj", "<C-w>j")
 keymap.set("n", "sl", "<C-w>l")
 
--- resize window
+-------------------------------------------------------
+--              Resize Window
+-------------------------------------------------------
 keymap.set("n", "<C-w><left>", "<C-w><")
 keymap.set("n", "<C-w><right>", "<C-w>>")
 keymap.set("n", "<C-w><up>", "<C-w>+")
 keymap.set("n", "<C-w><down>", "<C-w>-")
-
--- diagnostics
+-------------------------------------------------------
+--              Diagnostics
+-------------------------------------------------------
 keymap.set("n", "<C-j>", function()
   vim.diagnostic.jump({ buffer = 0, severity = vim.diagnostic.severity.ERROR })
 end, { desc = "Get next diagnostics error" })
 
--- open html files in the browser
+-------------------------------------------------------
+--         Open HTML Files in Browser
+-------------------------------------------------------
 keymap.set("n", "<leader>O", function()
   vim.ui.open(vim.fn.expand("%"))
 end, { desc = "Open in Browser" })
 
--- inc rename
+-------------------------------------------------------
+--               IncRename
+-------------------------------------------------------
 keymap.set("n", "<leader>rn", ":IncRename ")
 
+-- ############################################################################
+--                          Markdown
+-- ############################################################################
+local wk = require("which-key")
+wk.add({
+  {
+    mode = { "n" },
+    { "<leader>t", group = "[P]todo" },
+  },
+  {
+    mode = { "n", "v" },
+    { "<leader>m", group = "[P]markdown" },
+    { "<leader>mf", group = "[P]fold" },
+    { "<leader>mh", group = "[P]headings increase/decrease" },
+    { "<leader>ml", group = "[P]links" },
+    { "<leader>ms", group = "[P]spell" },
+  },
+})
+-- paset a github link and add it in this format
+vim.keymap.set({ "n", "v", "i" }, "<M-:>", function()
+  -- Insert the text in the desired format
+  vim.cmd('normal! a[](){:target="_blank"} ')
+  vim.cmd("normal! F(pv2F/lyF[p")
+  -- Leave me in normal mode or command mode
+  vim.cmd("stopinsert")
+end, { desc = "[P]Paste Github link" })
+-- markdown headings
+-------------------------------------------------------------------------------
+--                       Markdown Headings section
+-------------------------------------------------------------------------------
+local function get_markdown_headings()
+  local cursor_line = vim.fn.line(".")
+  local parser = vim.treesitter.get_parser(0, "markdown")
+  if not parser then
+    vim.notify("Markdown parser not available", vim.log.levels.ERROR)
+    return nil, nil, nil, nil, nil, nil
+  end
+  local tree = parser:parse()[1]
+  local query = vim.treesitter.query.parse(
+    "markdown",
+    [[
+    (atx_heading (atx_h1_marker) @h1)
+    (atx_heading (atx_h2_marker) @h2)
+    (atx_heading (atx_h3_marker) @h3)
+    (atx_heading (atx_h4_marker) @h4)
+    (atx_heading (atx_h5_marker) @h5)
+    (atx_heading (atx_h6_marker) @h6)
+  ]]
+  )
+  -- Collect and sort all headings
+  local headings = {}
+  for id, node in query:iter_captures(tree:root(), 0) do
+    local start_line = node:start() + 1 -- Convert to 1-based
+    table.insert(headings, { line = start_line, level = id })
+  end
+  table.sort(headings, function(a, b)
+    return a.line < b.line
+  end)
+  -- Find current heading and track its index
+  local current_heading, current_idx, next_heading, next_same_heading
+  for idx, h in ipairs(headings) do
+    if h.line <= cursor_line then
+      current_heading = h
+      current_idx = idx
+    elseif not next_heading then
+      next_heading = h -- First heading after cursor
+    end
+  end
+  -- Find next same-level heading if current exists
+  if current_heading then
+    -- Look for next same-level after current index
+    for i = current_idx + 1, #headings do
+      local h = headings[i]
+      if h.level == current_heading.level then
+        next_same_heading = h
+        break
+      end
+    end
+  end
+  -- Return all values (nil if not found)
+  return current_heading and current_heading.line or nil,
+    current_heading and current_heading.level or nil,
+    next_heading and next_heading.line or nil,
+    next_heading and next_heading.level or nil,
+    next_same_heading and next_same_heading.line or nil,
+    next_same_heading and next_same_heading.level or nil
+end
+-- Print details of current markdown heading, next heading and next same level heading
+vim.keymap.set("n", "<leader>mT", function()
+  local cl, clvl, nl, nlvl, nsl, nslvl = get_markdown_headings()
+  local message_parts = {}
+  if cl then
+    table.insert(message_parts, string.format("Current: H%d (line %d)", clvl, cl))
+  else
+    table.insert(message_parts, "Not in a section")
+  end
+  if nl then
+    table.insert(message_parts, string.format("Next: H%d (line %d)", nlvl, nl))
+  end
+  if nsl then
+    table.insert(message_parts, string.format("Next H%d: line %d", nslvl, nsl))
+  end
+  vim.notify(table.concat(message_parts, " | "), vim.log.levels.INFO)
+end, { desc = "Show current, next, and same-level Markdown headings" })
+
+-------------------------------------------------------------------------------
+--                       END Markdown Headings section
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+--                           Folding section
+-------------------------------------------------------------------------------
+
+-- Checks each line to see if it matches a markdown heading (#, ##, etc.):
+-- It’s called implicitly by Neovim’s folding engine by vim.opt_local.foldexpr
+function _G.markdown_foldexpr()
+  local lnum = vim.v.lnum
+  local line = vim.fn.getline(lnum)
+  local heading = line:match("^(#+)%s")
+  if heading then
+    local level = #heading
+    if level == 1 then
+      -- Special handling for H1
+      if lnum == 1 then
+        return ">1"
+      else
+        local frontmatter_end = vim.b.frontmatter_end
+        if frontmatter_end and (lnum == frontmatter_end + 1) then
+          return ">1"
+        end
+      end
+    elseif level >= 2 and level <= 6 then
+      -- Regular handling for H2-H6
+      return ">" .. level
+    end
+  end
+  return "="
+end
+
+local function set_markdown_folding()
+  vim.opt_local.foldmethod = "expr"
+  vim.opt_local.foldexpr = "v:lua.markdown_foldexpr()"
+  vim.opt_local.foldlevel = 99
+
+  -- Detect frontmatter closing line
+  local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+  local found_first = false
+  local frontmatter_end = nil
+  for i, line in ipairs(lines) do
+    if line == "---" then
+      if not found_first then
+        found_first = true
+      else
+        frontmatter_end = i
+        break
+      end
+    end
+  end
+  vim.b.frontmatter_end = frontmatter_end
+end
+
+-- Use autocommand to apply only to markdown files
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "markdown",
+  callback = set_markdown_folding,
+})
+
+-- Function to fold all headings of a specific level
+local function fold_headings_of_level(level)
+  -- Move to the top of the file without adding to jumplist
+  vim.cmd("keepjumps normal! gg")
+  -- Get the total number of lines
+  local total_lines = vim.fn.line("$")
+  for line = 1, total_lines do
+    -- Get the content of the current line
+    local line_content = vim.fn.getline(line)
+    -- "^" -> Ensures the match is at the start of the line
+    -- string.rep("#", level) -> Creates a string with 'level' number of "#" characters
+    -- "%s" -> Matches any whitespace character after the "#" characters
+    -- So this will match `## `, `### `, `#### ` for example, which are markdown headings
+    if line_content:match("^" .. string.rep("#", level) .. "%s") then
+      -- Move the cursor to the current line without adding to jumplist
+      vim.cmd(string.format("keepjumps call cursor(%d, 1)", line))
+      -- Check if the current line has a fold level > 0
+      local current_foldlevel = vim.fn.foldlevel(line)
+      if current_foldlevel > 0 then
+        -- Fold the heading if it matches the level
+        if vim.fn.foldclosed(line) == -1 then
+          vim.cmd("normal! za")
+        end
+        -- else
+        --   vim.notify("No fold at line " .. line, vim.log.levels.WARN)
+      end
+    end
+  end
+end
+
+local function fold_markdown_headings(levels)
+  -- I save the view to know where to jump back after folding
+  local saved_view = vim.fn.winsaveview()
+  for _, level in ipairs(levels) do
+    fold_headings_of_level(level)
+  end
+  vim.cmd("nohlsearch")
+  -- Restore the view to jump to where I was
+  vim.fn.winrestview(saved_view)
+end
+
+-- HACK: Fold markdown headings in Neovim with a keymap
+-- https://youtu.be/EYczZLNEnIY
+--
+-- Keymap for folding markdown headings of level 1 or above
+vim.keymap.set("n", "zj", function()
+  -- "Update" saves only if the buffer has been modified since the last save
+  vim.cmd("silent update")
+  -- vim.keymap.set("n", "<leader>mfj", function()
+  -- Reloads the file to refresh folds, otheriise you have to re-open neovim
+  vim.cmd("edit!")
+  -- Unfold everything first or I had issues
+  vim.cmd("normal! zR")
+  fold_markdown_headings({ 6, 5, 4, 3, 2, 1 })
+  vim.cmd("normal! zz") -- center the cursor line on screen
+end, { desc = "[P]Fold all headings level 1 or above" })
+
+-- HACK: Fold markdown headings in Neovim with a keymap
+-- https://youtu.be/EYczZLNEnIY
+--
+-- Keymap for folding markdown headings of level 2 or above
+-- I know, it reads like "madafaka" but "k" for me means "2"
+vim.keymap.set("n", "zk", function()
+  -- "Update" saves only if the buffer has been modified since the last save
+  vim.cmd("silent update")
+  -- vim.keymap.set("n", "<leader>mfk", function()
+  -- Reloads the file to refresh folds, otherwise you have to re-open neovim
+  vim.cmd("edit!")
+  -- Unfold everything first or I had issues
+  vim.cmd("normal! zR")
+  fold_markdown_headings({ 6, 5, 4, 3, 2 })
+  vim.cmd("normal! zz") -- center the cursor line on screen
+end, { desc = "[P]Fold all headings level 2 or above" })
+
+-- HACK: Fold markdown headings in Neovim with a keymap
+-- https://youtu.be/EYczZLNEnIY
+--
+-- Keymap for folding markdown headings of level 3 or above
+vim.keymap.set("n", "zl", function()
+  -- "Update" saves only if the buffer has been modified since the last save
+  vim.cmd("silent update")
+  -- vim.keymap.set("n", "<leader>mfl", function()
+  -- Reloads the file to refresh folds, otherwise you have to re-open neovim
+  vim.cmd("edit!")
+  -- Unfold everything first or I had issues
+  vim.cmd("normal! zR")
+  fold_markdown_headings({ 6, 5, 4, 3 })
+  vim.cmd("normal! zz") -- center the cursor line on screen
+end, { desc = "[P]Fold all headings level 3 or above" })
+
+-- HACK: Fold markdown headings in Neovim with a keymap
+-- https://youtu.be/EYczZLNEnIY
+--
+-- Keymap for folding markdown headings of level 4 or above
+vim.keymap.set("n", "z;", function()
+  -- "Update" saves only if the buffer has been modified since the last save
+  vim.cmd("silent update")
+  -- vim.keymap.set("n", "<leader>mf;", function()
+  -- Reloads the file to refresh folds, otherwise you have to re-open neovim
+  vim.cmd("edit!")
+  -- Unfold everything first or I had issues
+  vim.cmd("normal! zR")
+  fold_markdown_headings({ 6, 5, 4 })
+  vim.cmd("normal! zz") -- center the cursor line on screen
+end, { desc = "[P]Fold all headings level 4 or above" })
+
+-- HACK: Fold markdown headings in Neovim with a keymap
+-- https://youtu.be/EYczZLNEnIY
+--
+-- Use <CR> to fold when in normal mode
+-- To see help about folds use `:help fold`
+vim.keymap.set("n", "<CR>", function()
+  -- Get the current line number
+  local line = vim.fn.line(".")
+  -- Get the fold level of the current line
+  local foldlevel = vim.fn.foldlevel(line)
+  if foldlevel == 0 then
+    vim.notify("No fold found", vim.log.levels.INFO)
+  else
+    vim.cmd("normal! za")
+    vim.cmd("normal! zz") -- center the cursor line on screen
+  end
+end, { desc = "[P]Toggle fold" })
+
+-- HACK: Fold markdown headings in Neovim with a keymap
+-- https://youtu.be/EYczZLNEnIY
+--
+-- Keymap for unfolding markdown headings of level 2 or above
+-- Changed all the markdown folding and unfolding keymaps from <leader>mfj to
+-- zj, zk, zl, z; and zu respectively lamw25wmal
+vim.keymap.set("n", "zu", function()
+  -- "Update" saves only if the buffer has been modified since the last save
+  vim.cmd("silent update")
+  -- vim.keymap.set("n", "<leader>mfu", function()
+  -- Reloads the file to reflect the changes
+  vim.cmd("edit!")
+  vim.cmd("normal! zR") -- Unfold all headings
+  vim.cmd("normal! zz") -- center the cursor line on screen
+end, { desc = "[P]Unfold all headings level 2 or above" })
+
+-- HACK: Fold markdown headings in Neovim with a keymap
+-- https://youtu.be/EYczZLNEnIY
+--
+-- gk jummps to the markdown heading above and then folds it
+-- zi by default toggles folding, but I don't need it lamw25wmal
+vim.keymap.set("n", "zi", function()
+  -- "Update" saves only if the buffer has been modified since the last save
+  vim.cmd("silent update")
+  -- Difference between normal and normal!
+  -- - `normal` executes the command and respects any mappings that might be defined.
+  -- - `normal!` executes the command in a "raw" mode, ignoring any mappings.
+  vim.cmd("normal gk")
+  -- This is to fold the line under the cursor
+  vim.cmd("normal! za")
+  vim.cmd("normal! zz") -- center the cursor line on screen
+end, { desc = "[P]Fold the heading cursor currently on" })
+
+-------------------------------------------------------------------------------
+--                         End Folding section
+-------------------------------------------------------------------------------
+
 -- Markdown, adds dashes to headings
-vim.keymap.set("n", "<leader>mtf", function()
+keymap.set("n", "<leader>mthf", function()
   local line = vim.api.nvim_get_current_line()
   local new_line = line:gsub("^(#+)%s+(.*)", function(hashes, text)
     return hashes .. " " .. text:gsub("%s+", "-")
   end)
   vim.api.nvim_set_current_line(new_line)
-end, { noremap = true, silent = true })
+end, { noremap = true, silent = true, desc = "mthf - add dashes to headings" })
 
--- obsidian
+-- ############################################################################
+--                          END Markdown
+-- ############################################################################
+
+-- ############################################################################
+--                          Obsidian
+-- ############################################################################
+-------------------------------------------------------------------------------
+--                         Obsidian Keymaps
+-------------------------------------------------------------------------------
 -- These commands below are tested and fully working in Ubuntu, MacOS, and Win
 -- apply template `notes.md` to new notes using `<leader>on`
 keymap.set("n", "<leader>on", ":ObsidianTemplate notes<CR> :lua vim.cmd([[1,/^\\S/s/^\\n\\{1,}//]])<CR>")
@@ -98,7 +456,9 @@ keymap.set("n", "<leader>of", ":s/\\(# \\)[^_]*_/\\1/ | s/-/ /g<cr>")
 -- strip date, ignore `# Todo` e.g `# Todo: My New Note`
 keymap.set("n", "<leader>otf", ":s/\\(# TODO: \\)[^_]*_\\(.*\\)/\\1\\2/ | s/-/ /g<cr>")
 
--- macOS keymaps
+-------------------------------------------------------------------------------
+--                         MacOS section
+-------------------------------------------------------------------------------
 -- OK: Move current file to zettelkasten folder
 -- ODD: Delete current file in buffer
 -- add keymap to move file in current buffer to zettelkasten folder
@@ -111,9 +471,13 @@ keymap.set("n", "<leader>ok", function()
 end)
 -- delete file in current buffer MacOs
 keymap.set("n", "<leader>odd", ":!rm '%:p'<cr>:bd<cr>")
--- end macOS
+-------------------------------------------------------------------------------
+--                         END MacOS section
+-------------------------------------------------------------------------------
 
--- Windows Keymaps
+-------------------------------------------------------------------------------
+--                         Windows section
+-------------------------------------------------------------------------------
 -- WOK: Move current file to zettelkasten folder
 -- WOD: Delete current file in buffer
 
@@ -142,4 +506,9 @@ keymap.set("n", "<leader>wod", function()
   local buffer_functions = require("utilities.delete_current_buffer_win")
   buffer_functions.del_buffer_win()
 end, { desc = "Delete current buffer from system" })
--- end obsidian
+-------------------------------------------------------------------------------
+--                         END Windows section
+-------------------------------------------------------------------------------
+-- ############################################################################
+--                          END Obsidian
+-- ############################################################################
