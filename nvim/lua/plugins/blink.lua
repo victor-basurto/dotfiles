@@ -1,5 +1,8 @@
--- followed configuration by: linkarzu
---
+-- followed configuration by:
+-- linkarzu
+-- -- https://github.com/linkarzu
+-- -- https://www.youtube.com/watch?v=1YEbKDlxfss
+
 -- https://www.lazyvim.org/extras/coding/blink
 -- https://github.com/saghen/blink.cmp
 -- Documentation site: https://cmp.saghen.dev/
