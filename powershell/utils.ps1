@@ -33,6 +33,7 @@ $NvimDir = Join-Path $env:USERPROFILE ".config\.dotfiles\nvim"
 $PowerShellDir = Join-Path $env:USERPROFILE ".config\.dotfiles\powershell"
 $WebsitesDir = Join-Path $env:USERPROFILE "projects\brookfield\websites"
 $SitecoreDir = Join-Path $env:USERPROFILE "projects\brookfield\sitecore"
+$XMDir = Join-Path $env:USERPROFILE "projects\brookfield\xmcloud\work"
 
 # Custom directory navigation functions
 function oo {
@@ -89,12 +90,21 @@ function webdir {
   }
 }
 
-function xmdir {
+function sitecoredir {
   if (Test-Path $SitecoreDir -PathType Container) {
     Set-Location -Path $SitecoreDir
     Write-Host "switched to: $SitecoreDir"
   } else {
     Write-Host "Error: $SitecoreDir not found" -ForegroundColor Red
+  }
+}
+
+function xmdir {
+  if (Test-Path $XMDir -PathType Container) {
+    Set-Location -Path $XMDir
+    Write-Host "switched to: $XMDir"
+  } else {
+    Write-Host "Error: $XMDir not found" -ForegroundColor Red
   }
 }
 
@@ -116,7 +126,9 @@ function list-dirs {
     @{ Keyword = "dotfiles";  Description = "Dotfiles directory"; Path = $DotfilesDir },
     @{ Keyword = "psdir";     Description = "PowerShell configuration directory"; Path = $PowerShellDir },
     @{ Keyword = "webdir";    Description = "Brookfield websites project directory"; Path = $WebsitesDir },
-    @{ Keyword = "xmdir";     Description = "XMCloud project directory"; Path = $SitecoreDir }
+    @{ Keyword = "sitecoredir";     Description = "Sitecore project directory"; Path = $SitecoreDir }
+    @{ Keyword = "xmdir";     Description = "XMCloud project directory"; Path = $XMDir }
+
   )
 
   # Iterate through the array and display each function's details.
