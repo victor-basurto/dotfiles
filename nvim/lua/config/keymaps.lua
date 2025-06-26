@@ -1,7 +1,3 @@
----@module [TODO:description]
----@author [TODO:description]
----@license [TODO:description]
-
 -- Keymaps are automatically loaded on the VeryLazy event
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
@@ -107,7 +103,7 @@ keymap.set("n", "<leader>rn", ":IncRename ")
 -- ############################################################################
 --                          Markdown
 -- ############################################################################
-
+local wk = require("which-key")
 -------------------------------------------------------------------------------
 --                       Markdown Headings Local Function
 -------------------------------------------------------------------------------
@@ -164,6 +160,32 @@ end
 -------------------------------------------------------------------------------
 --               Markdown Folding Keymaps
 -------------------------------------------------------------------------------
+wk.add({
+  mode = { "n", "v" }, -- Applies to normal and visual modes for these groups
+  { "<leader>m", group = "[P]markdown" }, -- Main markdown group
+  { "<leader>mf", group = "[P]Fold Markdown" }, -- Subgroup for folding actions (e.g., <leader>mfj, <leader>mfk)
+  { "<leader>mh", group = "[P]Headings Adjust" }, -- For mthf etc.
+  -- Add other leader-prefixed groups here as needed, e.g., for links (<leader>ml), spell (<leader>ms)
+})
+
+-- Add group for direct 'z' commands related to folding
+wk.add({
+  mode = { "n" },
+  { "z", group = "[P]Folds" }, -- A group for all 'z' commands (e.g., zj, zk)
+})
+
+-- Add specific standalone keymaps to which-key
+wk.add({
+  mode = { "n" },
+  { "<leader>mT", desc = "Show current, next, and same-level Markdown headings" },
+  { "<leader>mthf", desc = "mthf - add dashes to headings" },
+  { "<CR>", desc = "[P]Toggle fold (Current)" }, -- Explicitly add CR
+})
+
+wk.add({
+  mode = { "n", "v", "i" }, -- For the <M-:> mapping
+  { "<M-:>", desc = "[P]Paste Github link" },
+})
 keymap.set("n", "<leader>mfj", function()
   vim.cmd("silent update")
   vim.cmd("edit!")
