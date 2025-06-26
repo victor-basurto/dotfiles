@@ -1,3 +1,7 @@
+---@module [TODO:description]
+---@author [TODO:description]
+---@license [TODO:description]
+
 -- Keymaps are automatically loaded on the VeryLazy event
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
@@ -103,32 +107,125 @@ keymap.set("n", "<leader>rn", ":IncRename ")
 -- ############################################################################
 --                          Markdown
 -- ############################################################################
-local wk = require("which-key")
-wk.add({
-  {
-    mode = { "n" },
-    { "<leader>t", group = "[P]todo" },
-  },
-  {
-    mode = { "n", "v" },
-    { "<leader>m", group = "[P]markdown" },
-    { "<leader>mf", group = "[P]fold" },
-    { "<leader>mh", group = "[P]headings increase/decrease" },
-    { "<leader>ml", group = "[P]links" },
-    { "<leader>ms", group = "[P]spell" },
-  },
-})
--- paset a github link and add it in this format
-vim.keymap.set({ "n", "v", "i" }, "<M-:>", function()
-  -- Insert the text in the desired format
-  vim.cmd('normal! a[](){:target="_blank"} ')
-  vim.cmd("normal! F(pv2F/lyF[p")
-  -- Leave me in normal mode or command mode
-  vim.cmd("stopinsert")
-end, { desc = "[P]Paste Github link" })
--- markdown headings
+
 -------------------------------------------------------------------------------
---                       Markdown Headings section
+--                       Markdown Headings Local Function
+-------------------------------------------------------------------------------
+-- Function to fold all headings of a specific level
+local function fold_headings_of_level(level)
+  -- Move to the top of the file without adding to jumplist
+  vim.cmd("keepjumps normal! gg")
+  -- Get the total number of lines
+  local total_lines = vim.fn.line("$")
+  for line = 1, total_lines do
+    -- Get the content of the current line
+    local line_content = vim.fn.getline(line)
+    -- "^" -> Ensures the match is at the start of the line
+    -- string.rep("#", level) -> Creates a string with 'level' number of "#" characters
+    -- "%s" -> Matches any whitespace character after the "#" characters
+    -- So this will match `## `, `### `, `#### ` for example, which are markdown headings
+    if line_content:match("^" .. string.rep("#", level) .. "%s") then
+      -- Move the cursor to the current line without adding to jumplist
+      vim.cmd(string.format("keepjumps call cursor(%d, 1)", line))
+      -- Check if the current line has a fold level > 0
+      local current_foldlevel = vim.fn.foldlevel(line)
+      if current_foldlevel > 0 then
+        -- Fold the heading if it matches the level
+        if vim.fn.foldclosed(line) == -1 then
+          vim.cmd("normal! za")
+        end
+        -- else
+        --   vim.notify("No fold at line " .. line, vim.log.levels.WARN)
+      end
+    end
+  end
+end
+
+--- Folds markdown headings based on specified levels.
+--- This function first saves the current view (cursor position, scroll, etc.),
+--- then iterates through the provided `levels` table, applying folding to all
+--- headings that match each specified level using `fold_headings_of_level`.
+--- After folding, it clears any active search highlighting and restores the
+--- saved view to bring the user back to their original position.
+---@param levels table A table of numbers representing the heading levels to fold (e.g., `{1, 2, 3}` to fold H1, H2, and H3).
+local function fold_markdown_headings(levels)
+  -- I save the view to know where to jump back after folding
+  local saved_view = vim.fn.winsaveview()
+  for _, level in ipairs(levels) do
+    fold_headings_of_level(level)
+  end
+  vim.cmd("nohlsearch")
+  -- Restore the view to jump to where I was
+  vim.fn.winrestview(saved_view)
+end
+-------------------------------------------------------------------------------
+--               END Markdown Headings Local Function
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+--               Markdown Folding Keymaps
+-------------------------------------------------------------------------------
+keymap.set("n", "<leader>mfj", function()
+  vim.cmd("silent update")
+  vim.cmd("edit!")
+  vim.cmd("normal! zR")
+  fold_markdown_headings({ 6, 5, 4, 3, 2, 1 })
+  vim.cmd("normal! zz")
+end, { desc = "[P]Fold all headings level 1 or above" })
+
+keymap.set("n", "<leader>mfk", function()
+  vim.cmd("silent update")
+  vim.cmd("edit!")
+  vim.cmd("normal! zR")
+  fold_markdown_headings({ 6, 5, 4, 3, 2 })
+  vim.cmd("normal! zz")
+end, { desc = "[P]Fold all headings level 2 or above" })
+
+keymap.set("n", "<leader>mfl", function()
+  vim.cmd("silent update")
+  vim.cmd("edit!")
+  vim.cmd("normal! zR")
+  fold_markdown_headings({ 6, 5, 4, 3 })
+  vim.cmd("normal! zz")
+end, { desc = "[P]Fold all headings level 3 or above" })
+
+keymap.set("n", "<leader>mf;", function() -- Changed to <leader>mf; to match your current keymap
+  vim.cmd("silent update")
+  vim.cmd("edit!")
+  vim.cmd("normal! zR")
+  fold_markdown_headings({ 6, 5, 4 })
+  vim.cmd("normal! zz")
+end, { desc = "[P]Fold all headings level 4 or above" })
+
+keymap.set("n", "<leader>mfu", function()
+  vim.cmd("silent update")
+  vim.cmd("edit!")
+  vim.cmd("normal! zR")
+  vim.cmd("normal! zz")
+end, { desc = "[P]Unfold all headings" })
+
+keymap.set("n", "<leader>mfi", function()
+  vim.cmd("silent update")
+  vim.cmd("normal gk")
+  vim.cmd("normal! za")
+  vim.cmd("normal! zz")
+end, { desc = "[P]Fold the heading cursor currently on" })
+
+-- Toggle fold keymap - consider if you want this under <leader>mf or direct
+keymap.set("n", "<leader>mfc", function() -- Example: <leader>mfc for "fold Current"
+  local line = vim.fn.line(".")
+  local foldlevel = vim.fn.foldlevel(line)
+  if foldlevel == 0 then
+    vim.notify("No fold found", vim.log.levels.INFO)
+  else
+    vim.cmd("normal! za")
+    vim.cmd("normal! zz")
+  end
+end, { desc = "[P]Toggle fold" })
+-------------------------------------------------------------------------------
+--               END Markdown Folding Keymaps
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+--                  Markdown Headings section
 -------------------------------------------------------------------------------
 local function get_markdown_headings()
   local cursor_line = vim.fn.line(".")
@@ -214,28 +311,30 @@ end, { desc = "Show current, next, and same-level Markdown headings" })
 
 -- Checks each line to see if it matches a markdown heading (#, ##, etc.):
 -- It’s called implicitly by Neovim’s folding engine by vim.opt_local.foldexpr
-function _G.markdown_foldexpr()
-  local lnum = vim.v.lnum
-  local line = vim.fn.getline(lnum)
-  local heading = line:match("^(#+)%s")
-  if heading then
-    local level = #heading
-    if level == 1 then
-      -- Special handling for H1
-      if lnum == 1 then
-        return ">1"
-      else
-        local frontmatter_end = vim.b.frontmatter_end
-        if frontmatter_end and (lnum == frontmatter_end + 1) then
+if not _G.markdown_foldexpr then
+  function _G.markdown_foldexpr()
+    local lnum = vim.v.lnum
+    local line = vim.fn.getline(lnum)
+    local heading = line:match("^(#+)%s")
+    if heading then
+      local level = #heading
+      if level == 1 then
+        -- Special handling for H1
+        if lnum == 1 then
           return ">1"
+        else
+          local frontmatter_end = vim.b.frontmatter_end
+          if frontmatter_end and (lnum == frontmatter_end + 1) then
+            return ">1"
+          end
         end
+      elseif level >= 2 and level <= 6 then
+        -- Regular handling for H2-H6
+        return ">" .. level
       end
-    elseif level >= 2 and level <= 6 then
-      -- Regular handling for H2-H6
-      return ">" .. level
     end
+    return "="
   end
-  return "="
 end
 
 local function set_markdown_folding()
@@ -265,47 +364,6 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = "markdown",
   callback = set_markdown_folding,
 })
-
--- Function to fold all headings of a specific level
-local function fold_headings_of_level(level)
-  -- Move to the top of the file without adding to jumplist
-  vim.cmd("keepjumps normal! gg")
-  -- Get the total number of lines
-  local total_lines = vim.fn.line("$")
-  for line = 1, total_lines do
-    -- Get the content of the current line
-    local line_content = vim.fn.getline(line)
-    -- "^" -> Ensures the match is at the start of the line
-    -- string.rep("#", level) -> Creates a string with 'level' number of "#" characters
-    -- "%s" -> Matches any whitespace character after the "#" characters
-    -- So this will match `## `, `### `, `#### ` for example, which are markdown headings
-    if line_content:match("^" .. string.rep("#", level) .. "%s") then
-      -- Move the cursor to the current line without adding to jumplist
-      vim.cmd(string.format("keepjumps call cursor(%d, 1)", line))
-      -- Check if the current line has a fold level > 0
-      local current_foldlevel = vim.fn.foldlevel(line)
-      if current_foldlevel > 0 then
-        -- Fold the heading if it matches the level
-        if vim.fn.foldclosed(line) == -1 then
-          vim.cmd("normal! za")
-        end
-        -- else
-        --   vim.notify("No fold at line " .. line, vim.log.levels.WARN)
-      end
-    end
-  end
-end
-
-local function fold_markdown_headings(levels)
-  -- I save the view to know where to jump back after folding
-  local saved_view = vim.fn.winsaveview()
-  for _, level in ipairs(levels) do
-    fold_headings_of_level(level)
-  end
-  vim.cmd("nohlsearch")
-  -- Restore the view to jump to where I was
-  vim.fn.winrestview(saved_view)
-end
 
 -- HACK: Fold markdown headings in Neovim with a keymap
 -- https://youtu.be/EYczZLNEnIY
@@ -426,7 +484,14 @@ end, { desc = "[P]Fold the heading cursor currently on" })
 -------------------------------------------------------------------------------
 --                         End Folding section
 -------------------------------------------------------------------------------
-
+-- paset a github link and add it in this format
+vim.keymap.set({ "n", "v", "i" }, "<M-:>", function()
+  -- Insert the text in the desired format
+  vim.cmd('normal! a[](){:target="_blank"} ')
+  vim.cmd("normal! F(pv2F/lyF[p")
+  -- Leave me in normal mode or command mode
+  vim.cmd("stopinsert")
+end, { desc = "[P]Paste Github link" })
 -- Markdown, adds dashes to headings
 keymap.set("n", "<leader>mthf", function()
   local line = vim.api.nvim_get_current_line()
