@@ -135,6 +135,9 @@ return {
       substitutions = {},
     },
 
+    ui = {
+      enable = false,
+    },
     -- picker configuration
     picker = {
       -- 'telescope.nvim' as default picker

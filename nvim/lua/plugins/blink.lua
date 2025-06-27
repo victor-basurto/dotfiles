@@ -22,6 +22,11 @@ return {
   -- LazyVim's default for blink.cmp is usually `event = "InsertEnter"`.
   -- If you're not seeing completion, ensure this is set or inherited.
   event = "InsertEnter",
+  opts_extend = {
+    "sources.completion.enabled_providers",
+    "sources.compat",
+    "sources.default",
+  },
 
   dependencies = {
     "moyiz/blink-emoji.nvim",
@@ -30,6 +35,12 @@ return {
     -- (they should be top-level plugins, but listed here for clarity if not already implicitly handled)
     "L3MON4D3/LuaSnip",
     "rafamadriz/friendly-snippets",
+    {
+      "saghen/blink.compat",
+      optional = true, -- make optional so it's only enabled if any extras need it
+      opts = {},
+      version = not vim.g.lazyvim_blink_main and "*",
+    },
     {
       "catppuccin/nvim",
       name = "catppuccin",
