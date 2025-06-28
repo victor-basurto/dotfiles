@@ -24,3 +24,8 @@ api.nvim_create_autocmd("BufWritePre", {
     vim.b.autoformat = false
   end,
 })
+vim.filetype.add({
+  pattern = {
+    ["%.sicpackage"] = "json",
+  },
+})

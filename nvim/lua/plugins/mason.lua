@@ -180,7 +180,28 @@ return {
       })
       lspconfig.cssls.setup({})
       lspconfig.html.setup({})
-      lspconfig.jsonls.setup({})
+      lspconfig.jsonls.setup({
+        settings = {
+          json = {
+            schemas = {
+              {
+                fileMatch = { "/sitecore.json" },
+                url = vim.fn.stdpath("config") .. "/.sitecore/schemas/RootConfigurationFile.schema.json",
+              },
+              {
+                fileMatch = { "/.sitecore/user.json" },
+                url = vim.fn.stdpath("config") .. "/.sitecore/schemas/UserConfiguration.schema.json",
+                -- Or: url = vim.fn.getcwd() .. "/.sitecore/schemas/UserConfiguration.schema.json",
+              },
+              {
+                fileMatch = { "*.module.json" },
+                url = vim.fn.stdpath("config") .. "/.sitecore/schemas/ModuleFile.schema.json",
+                -- Or: url = vim.fn.getcwd() .. "/.sitecore/schemas/ModuleFile.schema.json",
+              },
+            },
+          },
+        },
+      })
       lspconfig.yamlls.setup({})
       lspconfig.marksman.setup({})
       -- vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
