@@ -34,6 +34,7 @@ $PowerShellDir = Join-Path $env:USERPROFILE ".config\.dotfiles\powershell"
 $WebsitesDir = Join-Path $env:USERPROFILE "projects\brookfield\websites"
 $SitecoreDir = Join-Path $env:USERPROFILE "projects\brookfield\sitecore"
 $XMDir = Join-Path $env:USERPROFILE "projects\brookfield\xmcloud\work"
+$XMWork = Join-Path $env:USERPROFILE "projects\brookfield\xmcloud\work\brookfield-monorepo"
 
 # Custom directory navigation functions
 function oo {
@@ -108,6 +109,15 @@ function xmdir {
   }
 }
 
+# Custom directory navigation functions
+function xmwork {
+  if (Test-Path $XMWork -PathType Container) {
+    Set-Location -Path $XMWork
+    Write-Host "switched to: $XMWork"
+  } else {
+    Write-Host "Error: $XMWork not found" -ForegroundColor Red
+  }
+}
 # Custom 'which' command
 function which ($command) {
   Get-Command -Name $command -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Path -ErrorAction SilentlyContinue
@@ -126,9 +136,9 @@ function list-dirs {
     @{ Keyword = "dotfiles";  Description = "Dotfiles directory"; Path = $DotfilesDir },
     @{ Keyword = "psdir";     Description = "PowerShell configuration directory"; Path = $PowerShellDir },
     @{ Keyword = "webdir";    Description = "Brookfield websites project directory"; Path = $WebsitesDir },
-    @{ Keyword = "sitecoredir";     Description = "Sitecore project directory"; Path = $SitecoreDir }
+    @{ Keyword = "sitecoredir";Description = "Sitecore project directory"; Path = $SitecoreDir }
     @{ Keyword = "xmdir";     Description = "XMCloud project directory"; Path = $XMDir }
-
+    @{ Keyword = "xmwork";    Description = "XMCloud Work project directory"; Path = $XMDir }
   )
 
   # Iterate through the array and display each function's details.
