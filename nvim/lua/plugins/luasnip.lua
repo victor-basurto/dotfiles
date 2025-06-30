@@ -189,6 +189,54 @@ return {
         })
       )
 
+      -- Warning Notes
+      table.insert(
+        snippets,
+        s({
+          trig = "note-warning",
+          name = "Add a warning note",
+          desc = "Add a quick warning note",
+        }, {
+          t({
+            "",
+            "> :warning: **warning:** ",
+          }),
+          i(1),
+        })
+      )
+
+      -- Memo Notes
+      table.insert(
+        snippets,
+        s({
+          trig = "note-memo",
+          name = "Add a memo note",
+          desc = "Add a quick memo note",
+        }, {
+          t({
+            "",
+            "> :memo: **Note:** ",
+          }),
+          i(1),
+        })
+      )
+
+      -- Tip Notes
+      table.insert(
+        snippets,
+        s({
+          trig = "note-tips",
+          name = "Add tips note",
+          desc = "Add a quick tip note",
+        }, {
+          t({
+            "",
+            "> :bulb: **Tip:** ",
+          }),
+          i(1),
+        })
+      )
+
       ls.add_snippets("markdown", snippets)
       return opts
     end,
