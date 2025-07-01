@@ -24,6 +24,8 @@ keymap.set("n", "<leader>fh", telescopeBuiltin.help_tags, { desc = "Telescope he
 keymap.set("n", "<leader>fi", telescopeBuiltin.resume, { desc = "Telescope resume" })
 keymap.set("n", "<leader>fj", telescopeBuiltin.diagnostics, { desc = "Telescope diagnostics" })
 keymap.set("n", "<leader>fk", telescopeBuiltin.treesitter, { desc = "Telescope treesitter" })
+keymap.set("n", "<leader>fI", telescopeBuiltin.lsp_definitions, { desc = "Telescope Got to LSP Implementation" })
+keymap.set("n", "<leader>fd", telescopeBuiltin.lsp_type_definitions, { desc = "Telescope Got to Type Definition" })
 keymap.set("n", "<leader>fl", function()
   local function telescope_buffer_dir()
     return vim.fn.expand("%:p:h")
