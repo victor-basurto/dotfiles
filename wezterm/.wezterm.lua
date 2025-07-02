@@ -25,6 +25,33 @@ config.keys = {
 	{ key = "l", mods = "ALT", action = act.AdjustPaneSize({ "Right", 1 }) },
 	{ key = "k", mods = "ALT", action = act.AdjustPaneSize({ "Up", 1 }) },
 	{ key = "j", mods = "ALT", action = act.AdjustPaneSize({ "Down", 1 }) },
+	-- NEW: Keybindings for tab navigation (from your provided snippet)
+	-- CTRL+ALT + number to activate that tab
+	{ key = "1", mods = "CTRL|ALT", action = act.ActivateTab(0) },
+	{ key = "2", mods = "CTRL|ALT", action = act.ActivateTab(1) },
+	{ key = "3", mods = "CTRL|ALT", action = act.ActivateTab(2) },
+	{ key = "4", mods = "CTRL|ALT", action = act.ActivateTab(3) },
+	{ key = "5", mods = "CTRL|ALT", action = act.ActivateTab(4) },
+	{ key = "6", mods = "CTRL|ALT", action = act.ActivateTab(5) },
+	{ key = "7", mods = "CTRL|ALT", action = act.ActivateTab(6) },
+	{ key = "8", mods = "CTRL|ALT", action = act.ActivateTab(7) },
+
+	-- F1 through F8 to activate that tab
+	{ key = "F1", action = act.ActivateTab(0) },
+	{ key = "F2", action = act.ActivateTab(1) },
+	{ key = "F3", action = act.ActivateTab(2) },
+	{ key = "F4", action = act.ActivateTab(3) },
+	{ key = "F5", action = act.ActivateTab(4) },
+	{ key = "F6", action = act.ActivateTab(5) },
+	{ key = "F7", action = act.ActivateTab(6) },
+	{ key = "F8", action = act.ActivateTab(7) },
+
+	-- OPTIONAL BUT RECOMMENDED: Explicitly re-add the standard Ctrl+Shift+T and arrow keys
+	-- These are WezTerm defaults, but adding them explicitly can sometimes help if
+	-- something else is interfering or if you accidentally overrode them.
+	{ key = "t", mods = "CTRL|SHIFT", action = act.SpawnTab("CurrentPaneDomain") },
+	{ key = "LeftArrow", mods = "CTRL|SHIFT", action = act.ActivateTabRelative(-1) },
+	{ key = "RightArrow", mods = "CTRL|SHIFT", action = act.ActivateTabRelative(1) },
 }
 -- Define your leader key
 config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 1000 }
