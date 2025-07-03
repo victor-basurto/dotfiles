@@ -16,7 +16,7 @@
   "dressing.nvim": { "branch": "master", "commit": "2d7c2db2507fa3c4956142ee607431ddb2828639" },
   "flash.nvim": { "branch": "main", "commit": "3c942666f115e2811e959eabbdd361a025db8b63" },
   "friendly-snippets": { "branch": "main", "commit": "572f5660cf05f8cd8834e096d7b4c921ba18e175" },
-  "gitsigns.nvim": { "branch": "main", "commit": "588264bee92993df92535b6742576f5655c91b1c" },
+  "gitsigns.nvim": { "branch": "main", "commit": "d16d4ed864478c13d9bdd74230af0a4cc12e644b" },
   "grug-far.nvim": { "branch": "main", "commit": "b3f9412b1ed76f14cfc68e1ee899873544330c80" },
   "harpoon": { "branch": "harpoon2", "commit": "ed1f853847ffd04b2b61c314865665e1dadf22c7" },
   "hydra.nvim": { "branch": "main", "commit": "8c4a9f621ec7cdc30411a1f3b6d5eebb12b469dc" },
