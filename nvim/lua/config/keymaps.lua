@@ -40,7 +40,7 @@ keymap.set("n", "<leader>fl", function()
     initial_mode = "normal",
     layout_config = { height = 40 },
   })
-end)
+end, { desc = "Telescope files in current directory" })
 -------------------------------------------------------
 --              END Telescope
 -------------------------------------------------------
