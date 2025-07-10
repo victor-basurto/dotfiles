@@ -35,6 +35,9 @@ $WebsitesDir = Join-Path $env:USERPROFILE "projects\brookfield\websites"
 $SitecoreDir = Join-Path $env:USERPROFILE "projects\brookfield\sitecore"
 $XMDir = Join-Path $env:USERPROFILE "projects\brookfield\xmcloud\work"
 $XMWork = Join-Path $env:USERPROFILE "projects\brookfield\xmcloud\work\brookfield-monorepo"
+$NextJSDir = Join-Path $env:USERPROFILE "projects\nextjs-projects"
+$StrapiDir = Join-Path $env:USERPROFILE "projects\nextjs-projects\strapi-cms"
+
 
 # Custom directory navigation functions
 function oo {
@@ -109,13 +112,30 @@ function xmdir {
   }
 }
 
-# Custom directory navigation functions
 function xmwork {
   if (Test-Path $XMWork -PathType Container) {
     Set-Location -Path $XMWork
     Write-Host "switched to: $XMWork"
   } else {
     Write-Host "Error: $XMWork not found" -ForegroundColor Red
+  }
+}
+
+function nextjsdir {
+  if (Test-Path $NextJSDir -PathType Container) {
+    Set-Location -Path $NextJSDir
+    Write-Host "switched to: $NextJSDir"
+  } else {
+    Write-Host "Error: $NextJSDir not found" -ForegroundColor Red
+  }
+}
+
+function strapidir {
+  if (Test-Path $StrapiDir -PathType Container) {
+    Set-Location -Path $StrapiDir
+    Write-Host "switched to: $StrapiDir"
+  } else {
+    Write-Host "Error: $StrapiDir not found" -ForegroundColor Red
   }
 }
 # Custom 'which' command
@@ -139,6 +159,8 @@ function list-dirs {
     @{ Keyword = "sitecoredir";Description = "Sitecore project directory"; Path = $SitecoreDir }
     @{ Keyword = "xmdir";     Description = "XMCloud project directory"; Path = $XMDir }
     @{ Keyword = "xmwork";    Description = "XMCloud Work project directory"; Path = $XMDir }
+    @{ Keyword = "nextjsdir"; Description = "NextJS project directory"; Path = $NextJSDir }
+    @{ Keyword = "strapidir"; Description = "Strapi project directory"; Path = $StrapiDir }
   )
 
   # Iterate through the array and display each function's details.
