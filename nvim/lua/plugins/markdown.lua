@@ -5,6 +5,33 @@ return {
   {
     "MeanderingProgrammer/render-markdown.nvim",
     dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.nvim" },
+    config = function()
+      local rm = require("render-markdown")
+      rm.setup({
+        completions = { coq = { enabled = true } },
+        heading = {
+          -- additional icons and marks on headings
+          render_modes = true,
+
+          -- Determines if a border is added above and below headings.
+          -- Can also be a list of booleans evaluated by `clamp(value, context.level)`.
+          border = true,
+          -- Always use virtual lines for heading borders instead of attempting to use empty lines.
+          border_virtual = false,
+        },
+        code = {
+          border = "thick",
+        },
+      })
+      vim.api.nvim_set_hl(0, "RenderMarkdownH1Bg", { bg = "#ad1457", fg = "white" })
+      vim.api.nvim_set_hl(0, "RenderMarkdownH2Bg", { bg = "#7b1fa2", fg = "white" })
+      vim.api.nvim_set_hl(0, "RenderMarkdownH3Bg", { bg = "#4a148c", fg = "white" })
+      vim.api.nvim_set_hl(0, "RenderMarkdownH4Bg", { bg = "#1565c0", fg = "white" })
+      vim.api.nvim_set_hl(0, "RenderMarkdownH5Bg", { bg = "#bf360c", fg = "white" })
+      vim.api.nvim_set_hl(0, "RenderMarkdownH6Bg", { bg = "#546e7a", fg = "white" })
+
+      -- TODO: set colors for codeblock and other elements in markdown
+    end,
   },
   {
     "hedyhli/markdown-toc.nvim",
