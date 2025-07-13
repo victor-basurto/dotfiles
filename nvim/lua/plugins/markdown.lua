@@ -8,7 +8,7 @@ return {
     config = function()
       local rm = require("render-markdown")
       rm.setup({
-        completions = { coq = { enabled = true } },
+        completions = { blink = { enabled = true } },
         heading = {
           -- additional icons and marks on headings
           render_modes = true,
