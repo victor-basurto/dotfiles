@@ -29,7 +29,65 @@ return {
       vim.api.nvim_set_hl(0, "RenderMarkdownH4Bg", { bg = "#1565c0", fg = "white" })
       vim.api.nvim_set_hl(0, "RenderMarkdownH5Bg", { bg = "#bf360c", fg = "white" })
       vim.api.nvim_set_hl(0, "RenderMarkdownH6Bg", { bg = "#546e7a", fg = "white" })
+      -- strikethrough
+      vim.api.nvim_set_hl(0, "@markup.strikethrough.markdown_inline", {
+        fg = "#888888",
+        strikethrough = true,
+      })
+      --[[
+        Markdown Strikethrough Auto-formatter
+        =====================================
 
+        This autocmd automatically applies strikethrough formatting to completed markdown 
+        checklist items in real-time as you type or navigate through markdown files.
+
+        Purpose:
+        - Visually strikes through text following completed checklist items [x]
+        - Provides immediate visual feedback for task completion
+        - Works automatically without manual intervention
+
+        Functionality:
+        - Triggers on buffer enter, text changes, and insert mode text changes
+        - Searches for completed checklist pattern: "[x] " (case sensitive)
+        - Applies strikethrough highlighting to all text after the checkbox
+        - Uses Neovim's extmark system for efficient, non-intrusive highlighting
+        - Clears and reapplies highlighting on each trigger to stay current
+
+        Example transformations:
+        - [x] Buy groceries        -> [x] ~~Buy groceries~~
+        - [ ] Incomplete task      -> [ ] Incomplete task (no change)
+        - [x] Multi-word task here -> [x] ~~Multi-word task here~~
+      --]]
+      vim.api.nvim_create_autocmd({ "BufEnter", "TextChanged", "TextChangedI" }, {
+        pattern = "*.md",
+        callback = function()
+          -- Get current buffer reference
+          local bufnr = vim.api.nvim_get_current_buf()
+          -- Create or get namespace for our strikethrough highlights
+          local ns_id = vim.api.nvim_create_namespace("md_strikethrough")
+          -- Clear existing strikethrough highlights to avoid duplicates
+          vim.api.nvim_buf_clear_namespace(bufnr, ns_id, 0, -1)
+
+          -- Get all lines from the buffer
+          local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+          for i, line in ipairs(lines) do
+            -- Look for completed checkbox pattern: "[x] " (with space after)
+            local _, match_end = line:find("%[x%]%s+")
+            if match_end then
+              -- If found, apply strikethrough to text after the checkbox
+              local start_col = match_end -- Start after "[x]"
+              local end_col = #line -- End at line end
+
+              -- Create extmark with strikethrough highlighting
+              vim.api.nvim_buf_set_extmark(bufnr, ns_id, i - 1, start_col, {
+                end_col = end_col,
+                hl_group = "@markup.strikethrough.markdown_inline",
+                priority = 100,
+              })
+            end
+          end
+        end,
+      })
       -- TODO: set colors for codeblock and other elements in markdown
     end,
   },
