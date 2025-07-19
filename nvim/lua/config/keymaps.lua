@@ -46,6 +46,44 @@ end, { desc = "Telescope files in current directory" })
 -------------------------------------------------------
 
 -------------------------------------------------------
+--               Print Current Directory
+-------------------------------------------------------
+-- print full working directory
+keymap.set("n", "<leader>mpd", function()
+  local filepath = vim.fn.expand("%:p")
+  if filepath == "" then
+    print("no file currently open")
+  else
+    -- Replace home directory with ~
+    local home = vim.fn.expand("~")
+    local display_path = filepath:gsub("^" .. home:gsub("([%(%)%.%+%-%*%?%[%]%^%$%%])", "%%%1"), "~")
+    vim.fn.setreg("+", display_path)
+    print("Copied to clipboard: " .. display_path)
+  end
+end, { desc = "[Dir] Print current file full path (pwd)" })
+
+-- print relative path
+keymap.set("n", "<leader>mpr", function()
+  local filepath = vim.fn.expand("%:.")
+  if filepath == "" then
+    print("no file currently open")
+  else
+    vim.fn.setreg("+", filepath)
+    print("Copied to clipboard", filepath)
+  end
+end, { desc = "[Dir] Print current file relative path" })
+
+-- print current file name
+keymap.set("n", "<leader>mpf", function()
+  local filepath = vim.fn.expand("%:t")
+  if filepath == "" then
+    print("no file currently open")
+  else
+    vim.fn.setreg("+", filepath)
+    print("Copied to clipboard", filepath)
+  end
+end, { desc = "[Dir] Print current file name" })
+-------------------------------------------------------
 --                  NeoGen
 -------------------------------------------------------
 vim.api.nvim_set_keymap("n", "<leader>ng", ":lua require('neogen').generate()<CR>", opts)
