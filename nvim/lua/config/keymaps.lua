@@ -60,7 +60,7 @@ keymap.set("n", "<leader>mpd", function()
     vim.fn.setreg("+", display_path)
     print("Copied to clipboard: " .. display_path)
   end
-end, { desc = "[Dir] Print current file full path (pwd)" })
+end, { desc = "[Dir] Copy current file fullpath (pwd)" })
 
 -- print relative path
 keymap.set("n", "<leader>mpr", function()
@@ -71,7 +71,7 @@ keymap.set("n", "<leader>mpr", function()
     vim.fn.setreg("+", filepath)
     print("Copied to clipboard", filepath)
   end
-end, { desc = "[Dir] Print current file relative path" })
+end, { desc = "[Dir] Copy current file relative path" })
 
 -- print current file name
 keymap.set("n", "<leader>mpf", function()
@@ -82,7 +82,7 @@ keymap.set("n", "<leader>mpf", function()
     vim.fn.setreg("+", filepath)
     print("Copied to clipboard", filepath)
   end
-end, { desc = "[Dir] Print current file name" })
+end, { desc = "[Dir] Copy current file name" })
 -------------------------------------------------------
 --                  NeoGen
 -------------------------------------------------------
