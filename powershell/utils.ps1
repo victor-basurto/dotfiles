@@ -121,7 +121,7 @@ function xmwork {
   }
 }
 
-function nextjsdir {
+function nextdir {
   if (Test-Path $NextJSDir -PathType Container) {
     Set-Location -Path $NextJSDir
     Write-Host "switched to: $NextJSDir"
@@ -159,7 +159,7 @@ function list-dirs {
     @{ Keyword = "sitecoredir";Description = "Sitecore project directory"; Path = $SitecoreDir }
     @{ Keyword = "xmdir";     Description = "XMCloud project directory"; Path = $XMDir }
     @{ Keyword = "xmwork";    Description = "XMCloud Work project directory"; Path = $XMDir }
-    @{ Keyword = "nextjsdir"; Description = "NextJS project directory"; Path = $NextJSDir }
+    @{ Keyword = "nextdir"; Description = "NextJS project directory"; Path = $NextJSDir }
     @{ Keyword = "strapidir"; Description = "Strapi project directory"; Path = $StrapiDir }
   )
 
