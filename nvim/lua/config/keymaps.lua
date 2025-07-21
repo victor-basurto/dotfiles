@@ -17,7 +17,7 @@ discipline.strict()
 -------------------------------------------------------
 local telescopeBuiltin = require("telescope.builtin")
 local telescope = require("telescope")
-keymap.set("n", "<leader>ff", telescopeBuiltin.find_files, { desc = "Telescope find files" })
+keymap.set("n", "<leader>fx", telescopeBuiltin.find_files, { desc = "Telescope find files" })
 keymap.set("n", "<leader>fg", telescopeBuiltin.live_grep, { desc = "Telescope live grep" })
 keymap.set("n", "<leader>fb", telescopeBuiltin.buffers, { desc = "Telescope buffers" })
 keymap.set("n", "<leader>fh", telescopeBuiltin.help_tags, { desc = "Telescope help tags" })
@@ -41,6 +41,14 @@ keymap.set("n", "<leader>fl", function()
     layout_config = { height = 40 },
   })
 end, { desc = "Telescope files in current directory" })
+telescope.load_extension("frecency")
+keymap.set("n", "<leader>faf", ":Telescop frecency <cr>", { desc = "[Frec] Frecency Files" })
+keymap.set(
+  "n",
+  "<leader>ff",
+  ":Telescope frecency workspace=CWD path_display={'smart'} <CR>",
+  { desc = "[Frec] Frecrency" }
+)
 -------------------------------------------------------
 --              END Telescope
 -------------------------------------------------------
