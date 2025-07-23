@@ -158,7 +158,7 @@ function list-dirs {
     @{ Keyword = "webdir";    Description = "Brookfield websites project directory"; Path = $WebsitesDir },
     @{ Keyword = "sitecoredir";Description = "Sitecore project directory"; Path = $SitecoreDir }
     @{ Keyword = "xmdir";     Description = "XMCloud project directory"; Path = $XMDir }
-    @{ Keyword = "xmwork";    Description = "XMCloud Work project directory"; Path = $XMDir }
+    @{ Keyword = "xmwork";    Description = "XMCloud Work project directory"; Path = $XMWork }
     @{ Keyword = "nextdir"; Description = "NextJS project directory"; Path = $NextJSDir }
     @{ Keyword = "strapidir"; Description = "Strapi project directory"; Path = $StrapiDir }
   )
