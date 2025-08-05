@@ -13,6 +13,16 @@ discipline.strict()
 --              END Discipline
 -------------------------------------------------------
 -------------------------------------------------------
+--              Todo-Comments
+-------------------------------------------------------
+keymap.set("n", "<leader>tct", ":TodoTelescope <cr>", { desc = "[TODO] TodoTelescope find" })
+keymap.set("n", "<leader>tcq", ":TodoQuickFix <cr>", { desc = "[TODO] TodoQuickFix fix" })
+keymap.set("n", "<leader>tcl", ":TodoLocList <cr>", { desc = "[TODO] TodoLocList show all" })
+keymap.set("n", "<leader>tcf", ":Trouble todo <cr>", { desc = "[TODO] use Troubles filtering show all" })
+-------------------------------------------------------
+--              END Todo-Comments
+-------------------------------------------------------
+-------------------------------------------------------
 --               Telescope
 -------------------------------------------------------
 local telescopeBuiltin = require("telescope.builtin")
