@@ -1,5 +1,4 @@
 // catpuccin-theme
-// TODO: add symlink for mac
 (
     selected_tab: Some("Reset"),
     command_fg: Some("#c6d0f5"),
