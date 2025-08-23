@@ -19,6 +19,7 @@ return {
     "akinsho/bufferline.nvim",
     optional = true,
     version = "*",
+    priority = 1000,
     dependencies = "nvim-tree/nvim-web-devicons",
     -- TODO: add buffer line configuration
     -- opts = function(_, opts)
