@@ -27,22 +27,14 @@ return {
   },
   {
     "akinsho/bufferline.nvim",
+    after = "catppuccin",
     optional = true,
-    opts = function(_, opts)
-      local ok, buf = pcall(require, "catppuccin.groups.integrations.bufferline")
-      if ok and buf.get_theme then
-        local palettes = require("catppuccin.palettes")
-        local mocha = palettes.get_palette("mocha")
-        opts.highlights = buf.get_theme({
-          styles = { "italic", "bold" },
-          custom = {
-            all = { fill = { bg = "#000000" } },
-            mocha = { background = { fg = mocha.text } },
-            latte = { background = { fg = "#000000" } },
-          },
-        })
-      end
-      return opts
+    priority = 1000,
+    event = "VeryLazy",
+    config = function()
+      require("bufferline").setup({
+        highlights = require("catppuccin.groups.integrations.bufferline").get_theme(),
+      })
     end,
   },
 }
