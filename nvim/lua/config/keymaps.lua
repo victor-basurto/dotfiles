@@ -23,6 +23,29 @@ keymap.set("n", "<leader>tcf", ":Trouble todo <cr>", { desc = "[TODO] use Troubl
 --              END Todo-Comments
 -------------------------------------------------------
 -------------------------------------------------------
+--              Trouble
+-------------------------------------------------------
+keymap.set("n", "<leader>ttd", ":Trouble diagnostics <cr>", { desc = "[TROUBLE] Diagnostics" })
+keymap.set(
+  "n",
+  "<leader>ttx",
+  ":Trouble diagnostics toggle filter.bug=0<cr>",
+  { desc = "[TROUBLE] Buffer Diagnostics" }
+)
+keymap.set("n", "<leader>ttf", ":Trouble symbols toggle focus=false<cr>", { desc = "[TROUBLE] Symbols" })
+keymap.set(
+  "n",
+  "<leader>ttl",
+  ":Trouble lsp toggle focus=false win.position=right <cr>",
+  { desc = "[TROUBLE] LSP Definitions/references/..." }
+)
+keymap.set("n", "<leader>ttL", ":Trouble loclist toggle <cr>", { desc = "[TROUBLE] Location List" })
+keymap.set("n", "<leader>ttQ", ":Trouble qflist toggle <cr>", { desc = "[TROUBLE] QuickFix List" })
+
+-------------------------------------------------------
+--              END Trouble
+-------------------------------------------------------
+-------------------------------------------------------
 --               Telescope
 -------------------------------------------------------
 local telescopeBuiltin = require("telescope.builtin")
