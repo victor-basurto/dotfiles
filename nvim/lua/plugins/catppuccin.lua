@@ -12,7 +12,7 @@ return {
           transparent = false,
           solid = false,
         },
-        flavour = "macchiato",
+        flavour = "frappe",
         integrations = {
           bufferline = {
             enabled = true,
