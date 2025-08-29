@@ -238,6 +238,27 @@ return {
       )
 
       ls.add_snippets("markdown", snippets)
+
+      -- basic function documentation for "javascript", "typescript", "typescriptreact"
+      -- TODO: Install a proper JSDOC plugin like: "ramhejazi/jsdoc" or "heavenshell/vim-jsdoc"
+      for _, ft in ipairs({ "javascript", "typescript", "typescriptreact" }) do
+        ls.add_snippets(ft, {
+          s("jsdoc", {
+            t({ "/**" }),
+            t({ "", " * @ticket " }),
+            i(1, "TICKET_NUMBER"),
+            t({ "", " * @author " }),
+            i(2, "AUTHOR"),
+            t({ "", " * @description " }),
+            i(3, "DESCRIPTION"),
+            t({ "", " * @param " }),
+            i(4, "{type} name - description"),
+            t({ "", " * @returns " }),
+            i(5, "Return description"),
+            t({ "", " */" }),
+          }),
+        })
+      end
       return opts
     end,
   },
