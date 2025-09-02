@@ -12,7 +12,7 @@ function M.strict()
       if vim.v.count > 1 then
         count = 0
       end
-      if count > 10 then
+      if count > 20 then
         ok, id = pcall(vim.notify, "use h/j/k/l to navigate... Key: " .. key, vim.log.levels.WARN, {
           title = "🤬",
           replace = id,
