@@ -1,8 +1,8 @@
 return {
   {
     "catppuccin/nvim",
-    lazy = false,
     name = "catppuccin",
+    event = "VeryLazy",
     priority = 1000,
     config = function()
       local catppuccin = require("catppuccin")
@@ -28,12 +28,11 @@ return {
   {
     "akinsho/bufferline.nvim",
     after = "catppuccin",
-    priority = 1000,
-    event = "VeryLazy",
-    config = function()
-      require("bufferline").setup({
-        highlights = require("catppuccin.groups.integrations.bufferline").get_theme(),
-      })
+    lazy = false,
+    config = function(_, opts)
+      -- local bfline = require("bufferline")
+      local bflineCatppuccin = require("catppuccin.groups.integrations.bufferline")
+      opts.highlights = bflineCatppuccin.get_theme()
     end,
   },
 }
