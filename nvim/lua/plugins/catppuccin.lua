@@ -28,7 +28,6 @@ return {
   {
     "akinsho/bufferline.nvim",
     after = "catppuccin",
-    optional = true,
     priority = 1000,
     event = "VeryLazy",
     config = function()
