@@ -29,10 +29,11 @@ return {
     "akinsho/bufferline.nvim",
     after = "catppuccin",
     lazy = false,
-    config = function(_, opts)
-      -- local bfline = require("bufferline")
+    config = function()
       local bflineCatppuccin = require("catppuccin.groups.integrations.bufferline")
-      opts.highlights = bflineCatppuccin.get_theme()
+      require("bufferline").setup({
+        highlights = bflineCatppuccin.get_theme(),
+      })
     end,
   },
 }
