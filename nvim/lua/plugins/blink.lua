@@ -49,6 +49,7 @@ return {
         integrations = { blink_cmp = true },
       },
     },
+    { "giuxtaposition/blink-cmp-copilot" },
   },
   opts = function(_, opts)
     -- I noticed that telescope was extremeley slow and taking too long to open,
@@ -70,7 +71,8 @@ return {
     -- NOTE: by default lazyvim already includes the lazydev source, so not adding it here again
     opts.sources = vim.tbl_deep_extend("force", opts.sources or {}, {
       -- removed "dadbod" and "dictionary" until I do use it
-      default = { "lsp", "path", "snippets", "buffer", "emoji" },
+      -- if "Copilot" complains about usage, temporary remove it from the list
+      default = { "lsp", "path", "snippets", "buffer", "emoji", "copilot" },
       providers = {
         lsp = {
           name = "lsp",
@@ -200,15 +202,15 @@ return {
         --   },
         -- },
         -- -- Third class citizen mf always talking shit
-        -- copilot = {
-        --   name = "copilot",
-        --   enabled = true,
-        --   module = "blink-cmp-copilot",
-        --   kind = "Copilot",
-        --   min_keyword_length = 6,
-        --   score_offset = -100, -- the higher the number, the higher the priority
-        --   async = true,
-        -- },
+        copilot = {
+          name = "copilot",
+          enabled = true,
+          module = "blink-cmp-copilot",
+          kind = "Copilot",
+          -- min_keyword_length = 6,
+          score_offset = -100, -- the higher the number, the higher the priority
+          async = true,
+        },
       },
     })
 
