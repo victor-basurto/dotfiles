@@ -49,7 +49,7 @@ font-family = Monaco
 # Z003 Medium Italic
 # font-family = "Z003 Medium Italic"
 # theme
-theme = catppuccin-frappe
+theme = "Catppuccin Frappe"
 # default catppuccin-frappe
 # catppuccin-macchiato
 # catppuccin-mocha
