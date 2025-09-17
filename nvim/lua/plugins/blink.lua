@@ -72,7 +72,8 @@ return {
     opts.sources = vim.tbl_deep_extend("force", opts.sources or {}, {
       -- removed "dadbod" and "dictionary" until I do use it
       -- if "Copilot" complains about usage, temporary remove it from the list
-      default = { "lsp", "path", "snippets", "buffer", "emoji", "copilot" },
+      -- otherwise add "copilot" to the list to enable Auto-Completion
+      default = { "lsp", "path", "snippets", "buffer", "emoji" },
       providers = {
         lsp = {
           name = "lsp",
