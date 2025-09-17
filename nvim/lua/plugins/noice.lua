@@ -14,7 +14,7 @@ return {
       table.insert(opts.routes, {
         filter = {
           event = "notify",
-          find = "Upgrade your plan to Copilot Pro",
+          find = "Copilot",
         },
         opts = { skip = true },
       })
