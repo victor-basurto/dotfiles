@@ -10,6 +10,14 @@ return {
         },
         opts = { skip = true },
       })
+      -- skip copilot quota/upgrade nag messages
+      table.insert(opts.routes, {
+        filter = {
+          event = "notify",
+          find = "Upgrade your plan to Copilot Pro",
+        },
+        opts = { skip = true },
+      })
       opts.presets.lsp_doc_border = true
     end,
     dependencies = {
