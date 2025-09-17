@@ -13,8 +13,16 @@ return {
       -- skip copilot quota/upgrade nag messages
       table.insert(opts.routes, {
         filter = {
-          event = "notify",
-          find = "Copilot",
+          any = {
+            {
+              event = "notify",
+              find = "Copilot",
+            },
+            {
+              event = "msg_show",
+              find = "Copilot",
+            },
+          },
         },
         opts = { skip = true },
       })
