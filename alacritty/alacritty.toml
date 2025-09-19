@@ -1,0 +1,102 @@
+# ~/.config/.dotfiles/alacritty/alacritty.toml
+[terminal.shell]
+program = "pwsh.exe"
+args = ["-NoLogo", "-NoExit", "-Command", "Set-Location -Path $env:USERPROFILE"]
+
+[window]
+decorations = "transparent"
+opacity = 0.92
+startup_mode = "Windowed"
+blur = true
+
+[font]
+size = 13.0
+
+[font.normal]
+family = "UbuntuMono Nerd Font"
+style = "Regular"
+
+[font.bold]
+family = "UbuntuMono Nerd Font"
+style = "Bold"
+
+[font.italic]
+family = "UbuntuMono Nerd Font"
+style = "Italic"
+
+[font.offset]
+x = 0
+y = 0
+
+[window.padding]
+x = 4
+y = 4
+
+[cursor]
+style.shape = "Block"
+style.blinking = "Off"
+
+[mouse]
+hide_when_typing = true
+
+# Catppuccin Frappe theme
+[colors.primary]
+background = "0x303446"
+foreground = "0xc6d0f5"
+
+[colors.normal]
+black   = "0x51576d"
+red     = "0xe78284"
+green   = "0xa6d189"
+yellow  = "0xe5c890"
+blue    = "0x8caaee"
+magenta = "0xf4b8e4"
+cyan    = "0x81c8be"
+white   = "0xb5bfe2"
+
+[colors.bright]
+black   = "0x626880"
+red     = "0xe78284"
+green   = "0xa6d189"
+yellow  = "0xe5c890"
+blue    = "0x8caaee"
+magenta = "0xf4b8e4"
+cyan    = "0x81c8be"
+white   = "0xc6d0f5"
+
+# Key bindings
+[[keyboard.bindings]]
+key = "T"
+mods = "Control|Shift"
+action = "SpawnNewInstance"
+
+[[keyboard.bindings]]
+key = "C"
+mods = "Control|Shift"
+action = "Copy"
+
+[[keyboard.bindings]]
+key = "V"
+mods = "Control|Shift"
+action = "Paste"
+
+# Example: send Ctrl-A as "leader" to tmux for tab navigation
+[[keyboard.bindings]]
+key = "Key1"
+mods = "Control|Alt"
+chars = "\u0001"
+
+[[keyboard.bindings]]
+key = "Key2"
+mods = "Control|Alt"
+chars = "\u0001"
+
+[[keyboard.bindings]]
+key = "Key3"
+mods = "Control|Alt"
+chars = "\u0001"
+
+[[keyboard.bindings]]
+key = "Key4"
+mods = "Control|Alt"
+chars = "\u0001"
