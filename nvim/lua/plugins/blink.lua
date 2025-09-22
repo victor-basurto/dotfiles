@@ -50,7 +50,7 @@ return {
       },
     },
     -- NOTE: Enable copilot
-    { "giuxtaposition/blink-cmp-copilot" },
+    -- { "giuxtaposition/blink-cmp-copilot" },
   },
   opts = function(_, opts)
     -- I noticed that telescope was extremeley slow and taking too long to open,
@@ -75,7 +75,7 @@ return {
       -- NOTE: Enable copilot
       -- if "Copilot" complains about usage, temporary remove it from the list
       -- otherwise add "copilot" to the list to enable Auto-Completion
-      default = { "lsp", "path", "snippets", "buffer", "emoji", "copilot" },
+      default = { "lsp", "path", "snippets", "buffer", "emoji" },
       providers = {
         lsp = {
           name = "lsp",
@@ -206,15 +206,15 @@ return {
         -- },
         -- -- Third class citizen mf always talking shit
         -- NOTE: Enable copilot
-        copilot = {
-          name = "copilot",
-          enabled = true,
-          module = "blink-cmp-copilot",
-          kind = "Copilot",
-          -- min_keyword_length = 6,
-          score_offset = -100, -- the higher the number, the higher the priority
-          async = true,
-        },
+        -- copilot = {
+        --   name = "copilot",
+        --   enabled = true,
+        --   module = "blink-cmp-copilot",
+        --   kind = "Copilot",
+        --   -- min_keyword_length = 6,
+        --   score_offset = -100, -- the higher the number, the higher the priority
+        --   async = true,
+        -- },
       },
     })
 
