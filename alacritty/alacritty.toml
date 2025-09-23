@@ -13,15 +13,15 @@ blur = true
 size = 13.0
 
 [font.normal]
-family = "UbuntuMono Nerd Font"
+family = "UbuntuSansMono Nerd Font Mono"
 style = "Regular"
 
 [font.bold]
-family = "UbuntuMono Nerd Font"
+family = "UbuntuSansMono Nerd Font Mono"
 style = "Bold"
 
 [font.italic]
-family = "UbuntuMono Nerd Font"
+family = "UbuntuSansMono Nerd Font Mono"
 style = "Italic"
 
 [font.offset]
