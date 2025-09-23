@@ -69,14 +69,18 @@ config.default_prog = { "pwsh" }
 -- rose-pine-moon
 config.color_scheme = "Catppuccin Frappe"
 -- font
+-- RecMonoDuotone Nerd Font Mono
+-- FiraCode Nerd Font
+-- UbuntuSansMono Nerd Font Mono
+-- Monaco
 config.font = wezterm.font_with_fallback({
-	"UbuntuMono Nerd Font", -- Main programming font
+	{ family = "Monaco", weight = "Medium", stretch = "UltraCondensed", style = "Normal" },
 	"Noto Color Emoji", -- Supports many symbols and emojis
 	"Nerd Font Symbols", -- Covers powerline and other special glyphs
 })
--- wezterm.font("FiraCode Nerd Font", { weight = "Bold", stretch = "Normal", style = "Normal" })
+
 config.bold_brightens_ansi_colors = "BrightAndBold"
-config.font_size = 13
+config.font_size = 12.5
 config.window_background_opacity = 0.95
 
 -- Return the configuration
