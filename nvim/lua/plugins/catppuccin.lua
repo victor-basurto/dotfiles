@@ -39,7 +39,7 @@ return {
     after = "catppuccin",
     lazy = false,
     config = function()
-      local bflineCatppuccin = require("catppuccin.groups.integrations.bufferline")
+      local bflineCatppuccin = require("catppuccin.special.bufferline")
       require("bufferline").setup({
         highlights = bflineCatppuccin.get_theme(),
       })
