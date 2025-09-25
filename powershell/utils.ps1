@@ -36,6 +36,7 @@ $SitecoreDir = Join-Path $env:USERPROFILE "projects\brookfield\sitecore"
 $XMDir = Join-Path $env:USERPROFILE "projects\brookfield\xmcloud\work"
 $XMWork = Join-Path $env:USERPROFILE "projects\brookfield\xmcloud\work\brookfield-monorepo"
 $NextJSDir = Join-Path $env:USERPROFILE "projects\nextjs-projects"
+$ReactDir = Join-Path $env:USERPROFILE "projects\react-projects"
 $StrapiDir = Join-Path $env:USERPROFILE "projects\nextjs-projects\strapi-cms"
 
 
@@ -138,6 +139,14 @@ function strapidir {
     Write-Host "Error: $StrapiDir not found" -ForegroundColor Red
   }
 }
+function reactdir {
+  if (Test-Path $ReactDir -PathType Container) {
+    Set-Location -Path $ReactDir
+    Write-Host "switched to: $ReactDir"
+  } else {
+    Write-Host "Error: $ReactDir not found" -ForegroundColor Red
+  }
+}
 # Custom 'which' command
 function which ($command) {
   Get-Command -Name $command -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Path -ErrorAction SilentlyContinue
@@ -156,11 +165,12 @@ function list-dirs {
     @{ Keyword = "dotfiles";  Description = "Dotfiles directory"; Path = $DotfilesDir },
     @{ Keyword = "psdir";     Description = "PowerShell configuration directory"; Path = $PowerShellDir },
     @{ Keyword = "webdir";    Description = "Brookfield websites project directory"; Path = $WebsitesDir },
-    @{ Keyword = "sitecoredir";Description = "Sitecore project directory"; Path = $SitecoreDir }
-    @{ Keyword = "xmdir";     Description = "XMCloud project directory"; Path = $XMDir }
-    @{ Keyword = "xmwork";    Description = "XMCloud Work project directory"; Path = $XMWork }
-    @{ Keyword = "nextdir"; Description = "NextJS project directory"; Path = $NextJSDir }
-    @{ Keyword = "strapidir"; Description = "Strapi project directory"; Path = $StrapiDir }
+    @{ Keyword = "sitecoredir";Description = "Sitecore project directory"; Path = $SitecoreDir },
+    @{ Keyword = "xmdir";     Description = "XMCloud project directory"; Path = $XMDir },
+    @{ Keyword = "xmwork";    Description = "XMCloud Work project directory"; Path = $XMWork },
+    @{ Keyword = "nextdir"; Description = "NextJS project directory"; Path = $NextJSDir },
+    @{ Keyword = "strapidir"; Description = "Strapi project directory"; Path = $StrapiDir },
+    @{ Keyword = "reactdir"; Description = "React project directory"; Path = $ReactDir }
   )
 
   # Iterate through the array and display each function's details.
