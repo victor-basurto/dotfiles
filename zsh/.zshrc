@@ -12,6 +12,8 @@ fi
 export ZSH="$HOME/.oh-my-zsh"
 # Obsidian Vault
 export OBSIDIAN_VAULT="$HOME/Google Drive/My Drive/obsidian-work"
+# Kitty
+export PATH="/Applications/kitty.app/Contents/MacOS:$PATH"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
