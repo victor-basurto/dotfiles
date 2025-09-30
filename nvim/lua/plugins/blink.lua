@@ -218,6 +218,7 @@ return {
       },
     })
 
+    -- Documentation site: https://cmp.saghen.dev/configuration/appereance.html
     opts.cmdline = {
       enabled = true,
       completion = {
