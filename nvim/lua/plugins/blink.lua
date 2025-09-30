@@ -220,6 +220,11 @@ return {
 
     opts.cmdline = {
       enabled = true,
+      completion = {
+        menu = {
+          auto_show = true,
+        },
+      },
     }
 
     opts.completion = {
