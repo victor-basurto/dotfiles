@@ -21,8 +21,21 @@ return {
             },
           },
         },
+        lazygit = {},
+        image = {
+          enabled = true,
+          doc = {
+            inline = false,
+            float = true,
+          },
+        },
       },
-      lazygit = {},
+      styles = {
+        snacks_image = {
+          relative = "editor",
+          col = -1,
+        },
+      },
     },
   },
 }
