@@ -50,3 +50,15 @@ export EZA_CONFIG_DIR="$HOME/.config/.dotfiles/eza"
 
 # obsidian review
 alias or='cd ${OBSIDIAN_VAULT:-$HOME/Google Drive/My Drive/obsidian-work} && nvim ./inbox/*.md'
+
+# Function to backup Obsidian vault
+# Creates timestamped backups and maintains last 8 backups
+#
+# Usage:
+#   bko
+#
+# Requires OBSIDIAN_VAULT environment variable or uses default path
+bko() {
+  # Source the backup logic
+  source "$HOME/.config/zsh/functions/bko.zsh"
+}
