@@ -175,7 +175,28 @@ end, { desc = "Get next diagnostics error" })
 keymap.set("n", "<leader>O", function()
   vim.ui.open(vim.fn.expand("%"))
 end, { desc = "Open in Browser" })
-
+-------------------------------------------------------
+--         Strikethrough Command
+-------------------------------------------------------
+keymap.set("n", "<leader>ts", function()
+  local line = vim.fn.getline(".")
+  -- get line without leading/trailing spaces
+  local trimmed = line:match("^%s*(.-)%s*$")
+  if trimmed == "" then
+    return
+  end
+  -- check if already has strikethrough
+  if trimmed:match("^~.*~$") then
+    -- remove strikethrough
+    local content = trimmed:match("^~(.*)~$")
+    local indent = line:match("^(%s*)")
+    vim.fn.setline(".", indent .. content)
+  else
+    -- add strikethrough
+    local indent = line:match("^(%s*)")
+    vim.fn.setline(".", indent .. "~" .. trimmed .. "~")
+  end
+end, { desc = "[Text strikethrough] toggle strikethrough line" })
 -------------------------------------------------------
 --               IncRename
 -------------------------------------------------------
