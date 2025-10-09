@@ -198,6 +198,9 @@ keymap.set("n", "<leader>ts", function()
   end
 end, { desc = "[Text strikethrough] toggle strikethrough line" })
 -------------------------------------------------------
+--         END Strikethrough Command
+-------------------------------------------------------
+-------------------------------------------------------
 --               IncRename
 -------------------------------------------------------
 keymap.set("n", "<leader>rn", ":IncRename ")
