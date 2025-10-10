@@ -34,6 +34,12 @@ return {
       opts.extensions = {
         file_browser = {
           theme = "dropdown",
+          -- fix error for telescope mini-icons
+          entry_marker = require("telescope.make_entry").gen_from_file({
+            get_icon = function()
+              return " ", "TelescopeNormal"
+            end,
+          }),
           -- force telescope_file_browser
           hijack_netrw = false,
           mappings = {
