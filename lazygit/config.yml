@@ -1,0 +1,59 @@
+gui:
+  nerdFontsVersion: "3"
+  showIcons: true
+  border: "rounded"
+  mouseEvents: true
+  showBottomLine: false
+  showCommandLog: false
+
+  theme:
+    activeBorderColor:
+      - "#8caaee" # Lavender
+      - bold
+    inactiveBorderColor:
+      - "#626880" # Overlay 0
+    optionsTextColor:
+      - "#ca9ee6" # Mauve
+    selectedLineBgColor:
+      - "#414559" # Surface 1
+    cherryPickedCommitBgColor:
+      - "#a6d189" # Green
+    cherryPickedCommitFgColor:
+      - "#303446" # Base
+    unstagedChangesColor:
+      - "#e78284" # Red
+    defaultFgColor:
+      - "#c6d0f5" # Text
+
+git:
+  paging:
+    colorArg: always
+    pager: delta --dark --paging=never
+  log:
+    order: topo-order
+    showGraph: when-maximised
+    showWholeGraph: false
+
+os:
+  edit: "nvim"
+  open: "xdg-open" # use "open" on macOS, "start" on Windows
+
+keybinding:
+  universal:
+    quit: "q"
+    return: "<esc>"
+  files:
+    commitChanges: "c"
+    stashAllChanges: "S"
+    toggleStagedAll: "a"
+  commits:
+    moveDownCommit: "<down>"
+    moveUpCommit: "<up>"
+  branches:
+    createPullRequest: "p"
+
+customCommands:
+  - key: "D"
+    context: "files"
+    command: "difft --color=always"
+    description: "Run difftastic diff"
