@@ -22,18 +22,35 @@ return {
           },
         },
         lazygit = {},
-        image = {
-          enabled = true,
-          doc = {
-            inline = false,
-            float = true,
-          },
+      },
+      image = {
+        enabled = true,
+        doc = {
+          inline = false,
+          float = true,
+        },
+        formats = {
+          "png",
+          "jpg",
+          "jpeg",
+          "gif",
+          "bmp",
+          "webp",
+          "tiff",
+          "heic",
+          "avif",
+          "mp4",
+          "mov",
+          "avi",
+          "mkv",
+          "webm",
+          "pdf",
         },
       },
       styles = {
         snacks_image = {
           relative = "editor",
-          col = -1,
+          col = 1,
         },
       },
     },
