@@ -21,7 +21,10 @@ return {
             },
           },
         },
-        lazygit = {},
+      },
+      lazygit = {
+        configure = true,
+        enabled = true,
       },
       image = {
         enabled = true,
@@ -52,6 +55,11 @@ return {
           relative = "editor",
           col = 1,
         },
+      },
+      keymaps = {
+        ["<leader>glg"] = function()
+          require("snacks.lazygit").open()
+        end,
       },
     },
   },

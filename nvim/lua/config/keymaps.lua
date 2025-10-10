@@ -85,6 +85,13 @@ keymap.set(
 -------------------------------------------------------
 --              END Telescope
 -------------------------------------------------------
+-------------------------------------------------------
+--              Snacks.LazyGit
+-------------------------------------------------------
+local snacks_lazygit = require("snacks.lazygit")
+keymap.set("n", "<leader>glg", function()
+  snacks_lazygit.open()
+end, { desc = "[LAZYGIT] Open lazygit" })
 
 -------------------------------------------------------
 --               Print Current Directory
