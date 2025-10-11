@@ -15,6 +15,7 @@ return {
         "eslint_d",
         "markdownlint-cli2",
         "markdown-toc",
+        "emmet-language-server",
       },
       ui = {
         icons = {
@@ -37,6 +38,7 @@ return {
         "bashls",
         "cssls",
         "eslint",
+        "emmet_ls",
         "graphql",
         "html",
         "jsonls",
@@ -51,6 +53,37 @@ return {
         "omnisharp",
       },
     },
+    config = function()
+      local mason_lspconfig = require("mason-lspconfig")
+      local lspconfig = require("lspconfig")
+      local lsp_utils = require("utilities.lsp_utils")
+      -- NOTE: You'll need to fetch `capabilities` from somewhere accessible,
+      -- but for this fix, we'll assume it's correctly available or defined here.
+      -- For simplicity, let's just define it inline for the purpose of the fix:
+      local capabilities = require("blink.cmp").get_lsp_capabilities({})
+
+      -- ⚠️ CRITICAL FIX: Use mason_lspconfig.setup({...}) and pass the handlers.
+      mason_lspconfig.setup({
+        handlers = { -- 👈 Handlers is a table *inside* the setup call
+          -- This is the default handler for most servers
+          function(server_name)
+            lspconfig[server_name].setup({
+              capabilities = capabilities,
+              on_attach = lsp_utils.on_attach,
+              -- Add custom settings for emmet_ls here if needed:
+              -- (It's better to put filetypes here instead of in the global handler)
+              -- ["emmet_ls"] = function()
+              --    lspconfig.emmet_ls.setup({
+              --       filetypes = { "html", "typescriptreact", "javascriptreact", "css" },
+              --       capabilities = capabilities,
+              --       on_attach = lsp_utils.on_attach,
+              --    })
+              -- end,
+            })
+          end,
+        },
+      })
+    end,
   },
   {
     "neovim/nvim-lspconfig",
@@ -86,7 +119,6 @@ return {
       if global_utils.is_windows() then
         vim.env.DOTNET_ROOT = "C:\\Program Files\\dotnet"
       end
-
       -- vim.lsp.enable("omnisharp")
       lspconfig.omnisharp.setup({
         capabilities = capabilities,
