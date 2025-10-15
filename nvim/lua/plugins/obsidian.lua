@@ -11,7 +11,7 @@ else
   obsidian_path = vim.fn.expand("~/.config/obsidian-vault") -- Example Linux path
 end
 return {
-  "epwalsh/obsidian.nvim",
+  "obsidian-nvim/obsidian.nvim",
   version = "*",
   lazy = true,
   ft = { "markdown" },
@@ -58,29 +58,28 @@ return {
       min_chars = 2,
     },
 
-    -- custom key mappings
-    mappings = {
-      -- Overrides the 'gf' mapping to work on markdown/wiki links within your vault.
-      ["gf"] = {
-        action = function()
-          return require("obsidian").util.gf_passthrough()
-        end,
-        opts = { noremap = false, expr = true, buffer = true },
-      },
-      -- Toggle check-boxes.
-      ["<leader>cho"] = {
-        action = function()
-          return require("obsidian").util.toggle_checkbox()
-        end,
-        opts = { buffer = true },
-      },
-      -- Smart action depending on context, either follow link or toggle checkbox.
-      -- ["<cr>"] = {
-      --   action = function()
-      --     return require("obsidian").util.smart_action()
-      --   end,
-      --   opts = { buffer = true, expr = true },
-      -- },
+    callbacks = {
+      enter_note = function(_, note)
+        if note == nil then
+          return
+        end
+        vim.keymap.set("n", "<leader>cho", "<cmd>Obsidian toggle_checkbox<cr>", {
+          buffer = note.bufnr,
+          desc = "Toggle checkbox",
+        })
+        vim.keymap.set("n", "<Tab>", function()
+          require("obsidian.api").nav_link("next")
+        end, {
+          buffer = note.bufnr,
+          desc = "Go to next link",
+        })
+        vim.keympa.set("n", "<S-Tab>", function()
+          require("obsidian.api").nav_link("prev")
+        end, {
+          buffer = note.bufnr,
+          desc = "Go to previous link",
+        })
+      end,
     },
 
     -- how note IDs are generated given an optional title.
