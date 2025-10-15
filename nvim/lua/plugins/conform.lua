@@ -29,6 +29,15 @@ return {
       ["markdown.mdx"] = { "prettier", "markdownlint-cli2", "markdown-toc" },
     },
     formatters = {
+
+      stylua = {
+        command = "stylua",
+        args = { "--search-parent-directories", "--stdin-filepath", "$FILENAME", "-" },
+        stdin = true,
+        condition = function(ctx)
+          return vim.bo.filetype == "lua"
+        end,
+      },
       -- is better to handle prettier per project
       prettier = {
         prepend_args = {

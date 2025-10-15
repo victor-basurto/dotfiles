@@ -1,0 +1,39 @@
+{
+  "runtime": {
+    "version": "LuaJIT",
+    "path": ["?.lua", "?/init.lua", "lua/?.lua", "lua/?/init.lua"]
+  },
+  "workspace": {
+    "checkThirdParty": false,
+    "library": [
+      "${3rd}/luv/library",
+      "${workspaceFolder}/lua",
+      "${workspaceFolder}/.config/nvim/lua"
+    ],
+    "ignoreDir": [
+      ".git",
+      "node_modules",
+      "dist",
+      "build",
+      "venv",
+      "__pycache__",
+      "target",
+      ".next",
+      "AppData",
+      "Downloads",
+      "Documents",
+      "OneDrive"
+    ],
+    "maxPreload": 1000,
+    "preloadFileSize": 100
+  },
+  "diagnostics": {
+    "globals": ["vim"]
+  },
+  "format": {
+    "enable": false
+  },
+  "telemetry": {
+    "enable": false
+  }
+}

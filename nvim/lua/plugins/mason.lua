@@ -150,27 +150,6 @@ return {
         root_dir = util.root_pattern(".git", ".nvim-root", "init.lua", "lua"),
         settings = {
           Lua = {
-            workspace = {
-              checkThirdParty = false,
-              library = {
-                vim.fn.expand("$VIMRUNTIME/lua"),
-                vim.fn.stdpath("config") .. "/lua",
-              },
-              ignoreDir = {
-                ".git",
-                "node_modules",
-                "venv",
-                "dist",
-                "build",
-                "__pycache__",
-                "target",
-                ".next",
-                "AppData",
-                "Downloads",
-                "Documents",
-                "OneDrive",
-              },
-            },
             hint = {
               enable = true,
               array_index = "Enable",
