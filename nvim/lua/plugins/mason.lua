@@ -144,21 +144,35 @@ return {
         },
       })
 
+      -- In the 'neovim/nvim-lspconfig' plugin block
       lspconfig.lua_ls.setup({
         capabilities = capabilities,
         on_attach = lsp_utils.on_attach,
         root_dir = util.root_pattern(".git", ".nvim-root", "init.lua", "lua"),
         settings = {
           Lua = {
-            runtime = { version = "LuaJIT" },
-            diagnostics = { globals = { "vim" } }, -- keep essentials only
+            runtime = {
+              version = "LuaJIT", -- Re-added
+            },
+            diagnostics = {
+              globals = { "vim", "LazyVim", "MiniHipatterns", "cmp", "snacks" }, -- Re-added
+            },
             workspace = {
-              checkThirdParty = false,
               library = vim.api.nvim_get_runtime_file("", true),
             },
-            format = { enable = false },
-            telemetry = { enable = false },
-            hint = { enable = true },
+            semanticTokens = { enable = true }, -- Re-added
+            format = { enable = false }, -- Re-added
+            telemetry = { enable = false }, -- Re-added
+            hint = {
+              enable = false,
+              array_index = "Disable",
+              param_name_file = "Disable",
+              param_name_group = "LspHint",
+              param_name_luadoc = "Disable",
+              param_name_only = "Disable",
+              param_name_table = "Disable",
+              semicolon = "Disable",
+            },
           },
         },
       })
@@ -173,7 +187,6 @@ return {
               includeInlayParameterNameHintsWhenArgumentMatchesName = false,
               includeInlayFunctionParameterTypeHints = true,
               includeInlayVariableTypeHints = true,
-              -- other tsserver-specific inlay hints options if needed
             },
           },
           javascript = {
@@ -183,7 +196,6 @@ return {
               includeInlayParameterNameHintsWhenArgumentMatchesName = false,
               includeInlayFunctionParameterTypeHints = true,
               includeInlayVariableTypeHints = true,
-              -- other tsserver-specific inlay hints options if needed
             },
           },
         },
