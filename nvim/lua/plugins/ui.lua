@@ -50,6 +50,7 @@ return {
           "pdf",
         },
       },
+      statuscolumn = {},
       styles = {
         snacks_image = {
           relative = "editor",
