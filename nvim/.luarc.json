@@ -1,39 +1,58 @@
 {
-  "runtime": {
-    "version": "LuaJIT",
-    "path": ["?.lua", "?/init.lua", "lua/?.lua", "lua/?/init.lua"]
-  },
-  "workspace": {
-    "checkThirdParty": false,
-    "library": [
-      "${3rd}/luv/library",
-      "${workspaceFolder}/lua",
-      "${workspaceFolder}/.config/nvim/lua"
-    ],
-    "ignoreDir": [
-      ".git",
-      "node_modules",
-      "dist",
-      "build",
-      "venv",
-      "__pycache__",
-      "target",
-      ".next",
-      "AppData",
-      "Downloads",
-      "Documents",
-      "OneDrive"
-    ],
-    "maxPreload": 1000,
-    "preloadFileSize": 100
-  },
-  "diagnostics": {
-    "globals": ["vim"]
-  },
-  "format": {
-    "enable": false
-  },
-  "telemetry": {
-    "enable": false
-  }
+  "$schema": "https://raw.githubusercontent.com/sumneko/vscode-lua/master/setting/schema.json",
+  "Lua.runtime.version": "LuaJIT",
+  "Lua.diagnostics.globals": [
+    "vim",
+    "require",
+    "use",
+    "packer_plugins",
+    "LazyVim",
+    "MiniHipatterns",
+    "cmp",
+    "snacks"
+  ],
+  "Lua.workspace.library": [
+    "${3rd}/luv/library",
+    "${3rd}/busted/library",
+    "${3rd}/luassert/library",
+    "${3rd}/luafilesystem/library",
+    "${workspaceFolder}",
+    "${3rd}/neovim/runtime"
+  ],
+  "Lua.workspace.checkThirdParty": false,
+  "Lua.workspace.maxPreload": 1000,
+  "Lua.workspace.preloadFileSize": 100,
+  "Lua.workspace.ignoreDir": [
+    ".git",
+    "node_modules",
+    "dist",
+    "build",
+    "venv",
+    "__pycache__",
+    "target",
+    ".next"
+  ],
+  "Lua.workspace.exclude": [
+    "**/AppData",
+    "**/Downloads",
+    "**/Documents",
+    "**/OneDrive",
+    "**/Desktop",
+    "**/Pictures",
+    "**/Videos",
+    "**/Music",
+    "${env:USERPROFILE}"
+  ],
+  "Lua.workspace.maxWorkspaceFiles": 5000,
+  "Lua.workspace.semanticTokens.enable": true,
+  "Lua.format.enable": false,
+  "Lua.telemetry.enable": false,
+  "Lua.hint.enable": true,
+  "Lua.hint.arrayIndex": "Enable",
+  "Lua.hint.paramNameFile": "Inline",
+  "Lua.hint.paramNameGroup": "LspHint",
+  "Lua.hint.paramNameLuadoc": "Inline",
+  "Lua.hint.paramNameOnly": "Inline",
+  "Lua.hint.paramNameTable": "Inline",
+  "Lua.hint.semicolon": "Disable"
 }

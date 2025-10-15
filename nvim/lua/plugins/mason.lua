@@ -150,16 +150,15 @@ return {
         root_dir = util.root_pattern(".git", ".nvim-root", "init.lua", "lua"),
         settings = {
           Lua = {
-            hint = {
-              enable = true,
-              array_index = "Enable",
-              param_name_file = "Inline",
-              param_name_group = "LspHint",
-              param_name_luadoc = "Inline",
-              param_name_only = "Inline",
-              param_name_table = "Inline",
-              semicolon = "Disable",
+            runtime = { version = "LuaJIT" },
+            diagnostics = { globals = { "vim" } }, -- keep essentials only
+            workspace = {
+              checkThirdParty = false,
+              library = vim.api.nvim_get_runtime_file("", true),
             },
+            format = { enable = false },
+            telemetry = { enable = false },
+            hint = { enable = true },
           },
         },
       })
