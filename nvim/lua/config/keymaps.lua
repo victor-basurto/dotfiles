@@ -654,6 +654,8 @@ keymap.set("n", "<leader>todo", ":ObsidianTemplate todo<CR> :lua vim.cmd([[1,/^\
 keymap.set("n", "<leader>of", ":s/\\(# \\)[^_]*_/\\1/ | s/-/ /g<cr>")
 -- strip date, ignore `# Todo` e.g `# Todo: My New Note`
 keymap.set("n", "<leader>otf", ":s/\\(# TODO: \\)[^_]*_\\(.*\\)/\\1\\2/ | s/-/ /g<cr>")
+-- apply template `work-tracker` to work related new notes using: `<leader>owt`
+keymap.set("n", "<leader>owt", ":ObsidianTemplate work-tracker<CR> :lua vim.cmd([[1,/^\\S/s/^\\n\\{1,}//]])<CR>")
 
 -------------------------------------------------------------------------------
 --                         MacOS section

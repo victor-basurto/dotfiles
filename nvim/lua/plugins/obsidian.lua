@@ -73,7 +73,7 @@ return {
           buffer = note.bufnr,
           desc = "Go to next link",
         })
-        vim.keympa.set("n", "<S-Tab>", function()
+        vim.keymp.set("n", "<S-Tab>", function()
           require("obsidian.api").nav_link("prev")
         end, {
           buffer = note.bufnr,

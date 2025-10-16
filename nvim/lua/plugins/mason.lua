@@ -61,6 +61,7 @@ return {
       -- but for this fix, we'll assume it's correctly available or defined here.
       -- For simplicity, let's just define it inline for the purpose of the fix:
       local capabilities = require("blink.cmp").get_lsp_capabilities({})
+      local util = require("lspconfig.util")
 
       -- ⚠️ CRITICAL FIX: Use mason_lspconfig.setup({...}) and pass the handlers.
       mason_lspconfig.setup({
@@ -79,6 +80,32 @@ return {
               --       on_attach = lsp_utils.on_attach,
               --    })
               -- end,
+            })
+          end,
+          ["marksman"] = function()
+            -- Safely retrieve the configured vault path
+            local obsidian = require("obsidian")
+            local vault_path = obsidian.get_config().workspaces[1].path
+
+            lspconfig.marksman.setup({
+              capabilities = capabilities,
+              on_attach = function(client, bufnr)
+                lsp_utils.on_attach(client, bufnr)
+                require("obsidian.lsp").on_attach(client, bufnr)
+              end,
+
+              -- 👇 NEW: Force the workspace folder to be the VAULT ROOT
+              settings = {
+                marksman = {
+                  root = vault_path,
+                },
+              },
+
+              -- Keep the custom root_dir to help Lspconfig/Marksman initialization,
+              -- but the 'settings' above should be the definitive fix.
+              root_dir = util.root_pattern("marksman.json") or function()
+                return vault_path
+              end,
             })
           end,
         },
