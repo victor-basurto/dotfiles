@@ -55,7 +55,7 @@ return {
     -- auto completion
     completion = {
       blink = true,
-      min_chars = 2,
+      min_chars = 5,
     },
 
     callbacks = {
@@ -73,7 +73,7 @@ return {
           buffer = note.bufnr,
           desc = "Go to next link",
         })
-        vim.keymp.set("n", "<S-Tab>", function()
+        vim.keymap.set("n", "<S-Tab>", function()
           require("obsidian.api").nav_link("prev")
         end, {
           buffer = note.bufnr,
