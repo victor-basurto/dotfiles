@@ -158,6 +158,5 @@ return {
   },
   -- TODO:
   -- plugins to consider (install community plugins in obsidian):
-  -- edit-in-neovim
   -- quick-explorer
 }
