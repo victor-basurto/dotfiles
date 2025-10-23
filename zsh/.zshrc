@@ -138,17 +138,24 @@ alias gst="git stash"
 source $HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
 # custom directories listing
 source $HOME/.config/zsh/functions/custom-dirs.zsh
+
 # handy functions
 source $HOME/.config/zsh/functions/utils.zsh
+
 # Obsidian Organize and Review
 source $HOME/.config/zsh/functions/og.zsh
 
+# nvm
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+# cargo
 export PATH="$HOME/.cargo/bin:$PATH"
+
 # yazi configuration
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
@@ -166,3 +173,11 @@ for env_file in \
     source "$env_file"
   fi
 done
+
+# pnpm
+export PNPM_HOME="~/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
