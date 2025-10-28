@@ -1,74 +1,50 @@
+-- noice.lua
 return {
   {
     "folke/noice.nvim",
     event = "VeryLazy",
-    opts = function(_, opts)
-      table.insert(opts.routes, {
-        filter = {
-          event = "notify",
-          find = "no information available",
+    opts = {
+      cmdline = {
+        view = "cmdline",
+        format = {
+          lua = { icon = "🌙" },
         },
-        opts = { skip = true },
-      })
-      -- skip copilot quota/upgrade nag messages
-      table.insert(opts.routes, {
-        filter = {
-          any = {
-            {
-              event = "notify",
-              find = "Copilot",
-            },
-            {
-              event = "msg_show",
-              find = "Copilot",
-            },
+      },
+      lsp = {
+        progress = {
+          enabled = false,
+        },
+        override = {
+          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+          ["vim.lsp.util.stylize_markdown"] = true,
+          ["cmp.entry.get_documentation"] = true,
+          ["vim.lsp.util.open_floating_preview"] = true,
+        },
+      },
+      presets = {
+        bottom_search = false,
+        command_palette = false,
+        long_message_to_split = false,
+        inc_rename = false,
+        lsp_doc_border = true, -- <--- Keeps the border (moved from the first opts function)
+      },
+      routes = {
+        {
+          filter = {
+            event = "notify",
+            -- Match the common LSP "no information" message (case-insensitive)
+            pattern = "No information available",
           },
+          opts = { skip = true },
         },
-        opts = { skip = true },
-      })
-      opts.presets.lsp_doc_border = true
-    end,
+      },
+    },
     dependencies = {
       "MunifTanjim/nui.nvim",
-    },
-  },
-  {
-    "rcarriga/nvim-notify",
-    opts = {
-      timeout = 10000,
+      -- Remove the second plugin block for nvim-notify, as noice handles it.
     },
     config = function()
-      local noice = require("noice")
-      noice.setup({
-        -- add missing require files for noice config
-        cmdline = {
-          view = "cmdline",
-          format = {
-            -- cmdline = { icon = "" },
-            -- search_down = { icon = "🔍" },
-            -- search_up = { icon = "🔍" },
-            -- filter = { icon = "🔍" },
-            lua = { icon = "🌙" },
-          },
-        },
-        lsp = {
-          progress = {
-            enabled = false,
-          },
-          override = {
-            ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-            ["vim.lsp.util.stylize_markdown"] = true,
-            ["cmp.entry.get_documentation"] = true,
-          },
-        },
-        presets = {
-          bottom_search = false, -- use a classic bottom cmdline for search
-          command_palette = false, -- position the cmdline and popupmenu together
-          long_message_to_split = false, -- long messages will be sent to a split
-          inc_rename = false, -- enables an input dialog for inc-rename.nvim
-          lsp_doc_border = false, -- add a border to hover docs and signature help
-        },
-      })
+      require("noice").setup(require("noice").opts)
     end,
   },
 }

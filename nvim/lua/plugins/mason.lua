@@ -1,3 +1,4 @@
+--- mason.lua
 ---@diagnostic disable: missing-fields
 return {
   {
@@ -46,74 +47,22 @@ return {
         "powershell_es",
         "prismals",
         "sqlls",
-        "ts_ls",
         "vimls",
+        "ts_ls",
         "lemminx",
         "yamlls",
         "omnisharp",
       },
     },
-    config = function()
-      local mason_lspconfig = require("mason-lspconfig")
-      local lspconfig = require("lspconfig")
-      local lsp_utils = require("utilities.lsp_utils")
-      -- NOTE: You'll need to fetch `capabilities` from somewhere accessible,
-      -- but for this fix, we'll assume it's correctly available or defined here.
-      -- For simplicity, let's just define it inline for the purpose of the fix:
-      local capabilities = require("blink.cmp").get_lsp_capabilities({})
-      local util = require("lspconfig.util")
-
-      -- ⚠️ CRITICAL FIX: Use mason_lspconfig.setup({...}) and pass the handlers.
-      mason_lspconfig.setup({
-        handlers = { -- 👈 Handlers is a table *inside* the setup call
-          -- This is the default handler for most servers
-          function(server_name)
-            lspconfig[server_name].setup({
-              capabilities = capabilities,
-              on_attach = lsp_utils.on_attach,
-              -- Add custom settings for emmet_ls here if needed:
-              -- (It's better to put filetypes here instead of in the global handler)
-              -- ["emmet_ls"] = function()
-              --    lspconfig.emmet_ls.setup({
-              --       filetypes = { "html", "typescriptreact", "javascriptreact", "css" },
-              --       capabilities = capabilities,
-              --       on_attach = lsp_utils.on_attach,
-              --    })
-              -- end,
-            })
-          end,
-          ["marksman"] = function()
-            -- Safely retrieve the configured vault path
-            local obsidian = require("obsidian")
-            local vault_path = obsidian.get_config().workspaces[1].path
-
-            lspconfig.marksman.setup({
-              capabilities = capabilities,
-              on_attach = function(client, bufnr)
-                lsp_utils.on_attach(client, bufnr)
-                require("obsidian.lsp").on_attach(client, bufnr)
-              end,
-
-              -- 👇 NEW: Force the workspace folder to be the VAULT ROOT
-              settings = {
-                marksman = {
-                  root = vault_path,
-                },
-              },
-
-              -- Keep the custom root_dir to help Lspconfig/Marksman initialization,
-              -- but the 'settings' above should be the definitive fix.
-              root_dir = util.root_pattern("marksman.json") or function()
-                return vault_path
-              end,
-            })
-          end,
-        },
-      })
-    end,
   },
   {
     "neovim/nvim-lspconfig",
+
+    opts = {
+      inlay_hints = {
+        enabled = true,
+      },
+    },
     config = function()
       local lsp_utils = require("utilities.lsp_utils")
       local global_utils = require("utilities.utils")
@@ -132,6 +81,10 @@ return {
                   "detail",
                   "additionalTextEdits",
                 },
+              },
+              triggerCharacters = {
+                ".",
+                ":",
               },
             },
           },
@@ -171,7 +124,40 @@ return {
         },
       })
 
-      -- In the 'neovim/nvim-lspconfig' plugin block
+      lspconfig.marksman.setup({
+
+        capabilities = capabilities,
+        on_attach = function(client, bufnr)
+          lsp_utils.on_attach(client, bufnr)
+          local obsidian_lsp_status, obsidian_lsp = pcall(require, "obsidian.lsp")
+          if obsidian_lsp_status and obsidian_lsp and obsidian_lsp.on_attach then
+            obsidian_lsp.on_attach(client, bufnr)
+          end
+        end,
+
+        settings = {
+          marksman = {
+            root = (function()
+              local obsidian = require("obsidian")
+              -- Use pcall/or short-circuiting in case get_config() is still nil
+              local vault_path = pcall(obsidian.get_config) and obsidian.get_config().workspaces[1].path
+                or vim.fn.getcwd()
+              print(vault_path)
+              return vault_path
+            end)(),
+          },
+        },
+
+        -- Keep the custom root_dir to help Lspconfig/Marksman initialization,
+        -- but the 'settings' above should be the definitive fix.
+        root_dir = util.root_pattern("marksman.json")
+          or function()
+            local obsidian = require("obsidian")
+            local vault_path = pcall(obsidian.get_config) and obsidian.get_config().workspaces[1].path
+              or vim.fn.getcwd()
+            return vault_path
+          end,
+      })
       lspconfig.lua_ls.setup({
         capabilities = capabilities,
         on_attach = lsp_utils.on_attach,
@@ -205,7 +191,16 @@ return {
       })
       lspconfig.tsserver.setup({
         capabilities = capabilities,
-        on_attach = lsp_utils.on_attach,
+        on_attach = function(client, bufnr)
+          lsp_utils.on_attach(client, bufnr)
+
+          vim.defer_fn(function()
+            if client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint and vim.lsp.inlay_hint.enable then
+              -- This enables the visual component for the buffer
+              vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+            end
+          end, 100)
+        end,
         settings = {
           typescript = {
             inlayHints = {
@@ -252,7 +247,6 @@ return {
         },
       })
       lspconfig.yamlls.setup({})
-      lspconfig.marksman.setup({})
       -- vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
       -- vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
       -- vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
