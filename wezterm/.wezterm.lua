@@ -74,14 +74,14 @@ config.color_scheme = "Catppuccin Frappe"
 -- UbuntuSansMono Nerd Font Mono
 -- Monaco
 config.font = wezterm.font_with_fallback({
-	{ family = "Monaco", weight = "Medium", stretch = "UltraCondensed", style = "Normal" },
+	{ family = "FiraCode Nerd Font", weight = "Medium", stretch = "UltraCondensed", style = "Normal" },
 	"Noto Color Emoji", -- Supports many symbols and emojis
 	"Nerd Font Symbols", -- Covers powerline and other special glyphs
 })
 
 config.bold_brightens_ansi_colors = "BrightAndBold"
-config.font_size = 11
-config.window_background_opacity = 0.92
+config.font_size = 12
+config.window_background_opacity = 0.85
 
 -- Return the configuration
 return config
