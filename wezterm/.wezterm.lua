@@ -69,12 +69,31 @@ config.default_prog = { "pwsh" }
 -- rose-pine-moon
 config.color_scheme = "Catppuccin Frappe"
 -- font
--- RecMonoDuotone Nerd Font Mono
 -- FiraCode Nerd Font
--- UbuntuSansMono Nerd Font Mono
--- Monaco
+-- { family = "VictorMono Nerd Font Propo", weight = "Bold", stretch = "Normal", style = "Oblique" },
+-- { family = "UbuntuMono Nerd Font", weight = "Regular", stretch = "Normal", style = "Normal" },
+-- { family = "SpaceMono Nerd Font Propo", weight = "Regular", stretch = "Normal", style = "Normal" },
+-- { family = "RobotoMono Nerd Font Propo", weight = "Regular", stretch = "Normal", style = "Normal" },
+-- { family = "RecMonoCasual Nerd Font Mono", weight = "Regular", stretch = "Normal", style = "Normal" },
+-- { family = "Mononoki Nerd Font Propo", weight = "Regular", stretch = "Normal", style = "Normal" },
+-- { family = "Monoid Nerd Font Propo", weight = "Regular", stretch = "Normal", style = "Normal" },
+-- { family = "Monofur Nerd Font Propo", weight = "Regular", stretch = "Normal", style = "Normal" },
+-- { family = "Monaco NF", weight = "Regular", stretch = "Normal", style = "Normal" },
+-- { family = "Monaco", weight = "Regular", stretch = "Normal", style = "Normal" },
+-- { family = "ZedMono Nerd Font Mono", weight = "Medium", stretch = "Normal", style = "Normal" },
+-- { family = "MartianMono Nerd Font Propo", weight = "Medium", stretch = "Normal", style = "Normal" },
+-- { family = "Lilex Nerd Font Propo", weight = "Medium", stretch = "Normal", style = "Normal" },
+-- { family = "Ligalex Mono for Powerline", weight = "Medium", stretch = "Normal", style = "Normal" }, -> font ligatures
+-- { family = "JetBrainsMonoNL Nerd Font Propo", weight = "Medium", stretch = "Normal", style = "Normal" },
+-- { family = "JetBrainsMono Nerd Font", weight = "Regular", stretch = "Normal", style = "Normal" }, -> Font Ligatures
+-- { family = "IntoneMono Nerd Font Mono", weight = "Regular", stretch = "Normal", style = "Normal" },
+-- { family = "Hack Nerd Font Propo", weight = "Regular", stretch = "Normal", style = "Normal" },
+-- { family = "FantasqueSansM Nerd Font Propo", weight = "Regular", stretch = "Normal", style = "Normal" },
+-- { family = "CommitMono Nerd Font Propo", weight = "Regular", stretch = "Normal", style = "Normal" },
+-- { family = "CaskaydiaCove Nerd Font Propo", weight = "Regular", stretch = "Normal", style = "Normal" },
+-- { family = "Agave Nerd Font Propo", weight = "Regular", stretch = "Normal", style = "Normal" },
 config.font = wezterm.font_with_fallback({
-	{ family = "FiraCode Nerd Font", weight = "Medium", stretch = "UltraCondensed", style = "Normal" },
+	{ family = "ZedMono Nerd Font Mono", weight = "Medium", stretch = "Normal", style = "Normal" },
 	"Noto Color Emoji", -- Supports many symbols and emojis
 	"Nerd Font Symbols", -- Covers powerline and other special glyphs
 })
