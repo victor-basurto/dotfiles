@@ -132,6 +132,14 @@ keymap.set("n", "<leader>mpf", function()
   end
 end, { desc = "[Dir] Copy current file name" })
 -------------------------------------------------------
+--            Print Current Date
+-------------------------------------------------------
+keymap.set("n", "<leader>mpD", function()
+  local date = os.date("%m-%d-%Y")
+  vim.fn.setreg("+", date)
+  print("Copied date: " .. date)
+end, { desc = "[Date] Print current date" })
+-------------------------------------------------------
 --                  NeoGen
 -------------------------------------------------------
 vim.api.nvim_set_keymap("n", "<leader>ng", ":lua require('neogen').generate()<CR>", opts)
