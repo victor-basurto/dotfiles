@@ -1,3 +1,7 @@
+-- remove catppuccin temporary
+if true then
+  return {}
+end
 return {
   {
     "catppuccin/nvim",
