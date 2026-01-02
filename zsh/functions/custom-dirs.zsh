@@ -13,6 +13,7 @@ CUSTOM_DIRS_PATH=(
   oo            "$HOME/Google Drive/My Drive/obsidian-work"
   ppdir         "$HOME/projects/personal-projects"
   reactdir      "$HOME/projects/react-projects"
+  nextdir       "$HOME/projects/nextjs-projects"
   saferdir      "$HOME/projects/safer-projects"
   strapidir     "$HOME/projects/react-projects/strapi-projects"
   umbdir        "$HOME/projects/umbraco"
@@ -32,6 +33,7 @@ CUSTOM_DIRS_DESC=(
   oo            "Obsidian Work Directory"
   ppdir         "Personal Projects Directory"
   reactdir      "React Projects Directory"
+  nextdir       "Nextjs Projects Directory"
   saferdir      "Safer Projects Directory"
   strapidir     "Strapi Projects Directory"
   umbdir        "Umbraco Projects Directory"
@@ -110,6 +112,10 @@ function ppdir {
 # reactdir "React Projects Directory"
 function reactdir {
   cd "$CUSTOM_DIRS_PATH[reactdir]" || echo "Error: reactdir not found at ${CUSTOM_DIRS_PATH[reactdir]}"
+}
+# nextdir "Nextjs Projects Directory"
+function nextdir {
+  cd "$CUSTOM_DIRS_PATH[nextdir]" || echo "Error: nextdir not found at ${CUSTOM_DIRS_PATH[nextdir]}"
 }
 # saferdir "Safer Projects Directory"
 function saferdir {
