@@ -26,10 +26,13 @@ return {
         configure = true,
         enabled = true,
       },
+      statuscolumn = {
+        enabled = true,
+      },
       image = {
         enabled = true,
         doc = {
-          inline = false,
+          inline = true,
           float = true,
         },
         formats = {
@@ -55,7 +58,6 @@ return {
           end
         end,
       },
-      statuscolumn = {},
       styles = {
         snacks_image = {
           relative = "editor",
