@@ -1,7 +1,7 @@
 {
   "LazyVim": { "branch": "main", "commit": "28db03f958d58dfff3c647ce28fdc1cb88ac158d" },
   "LuaSnip": { "branch": "master", "commit": "dae4f5aaa3574bd0c2b9dd20fb9542a02c10471c" },
-  "SchemaStore.nvim": { "branch": "main", "commit": "cd9e8c22f6ad2012ac395725080cc5737297d840" },
+  "SchemaStore.nvim": { "branch": "main", "commit": "55874e697fd70ce1064eb96ff5c53c9bd6172324" },
   "alpha-nvim": { "branch": "main", "commit": "3979b01cb05734331c7873049001d3f2bb8477f4" },
   "blink-cmp-dictionary": { "branch": "master", "commit": "944b3b215b01303672d4213758db7c5c5a1e3c92" },
   "blink-emoji.nvim": { "branch": "master", "commit": "066013e4c98a9318408ee3f1ca2dbcb6fa3e4c06" },
@@ -46,7 +46,7 @@
   "nvim-dap-ui": { "branch": "master", "commit": "cf91d5e2d07c72903d052f5207511bf7ecdb7122" },
   "nvim-dap-vscode-js": { "branch": "main", "commit": "03bd29672d7fab5e515fc8469b7d07cc5994bbf6" },
   "nvim-lint": { "branch": "master", "commit": "ca6ea12daf0a4d92dc24c5c9ae22a1f0418ade37" },
-  "nvim-lspconfig": { "branch": "master", "commit": "f7e7504bf1792bcfcdf72b52eceacdb3fcce1e32" },
+  "nvim-lspconfig": { "branch": "master", "commit": "4044b8544a6cea57179d5a29c203b6b65d2b6ac4" },
   "nvim-navic": { "branch": "master", "commit": "f5eba192f39b453675d115351808bd51276d9de5" },
   "nvim-nio": { "branch": "master", "commit": "21f5324bfac14e22ba26553caf69ec76ae8a7662" },
   "nvim-treesitter": { "branch": "master", "commit": "42fc28ba918343ebfd5565147a42a26580579482" },
