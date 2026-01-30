@@ -197,7 +197,7 @@ return {
     ---@field block_ids obsidian.config.UIStyleSpec
     ---@field hl_groups table<string, table>
     ui = {
-      enable = true,
+      enable = false,
       ignore_conceal_warn = false,
       update_debounce = 200,
       max_file_length = 5000,
