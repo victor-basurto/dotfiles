@@ -1,10 +1,12 @@
 -- remove catppuccin temporary
 return {
+  -- THEME: Catppuccin
   {
     "catppuccin/nvim",
     name = "catppuccin",
     event = "VeryLazy",
     priority = 1000,
+    enabled = false,
     config = function()
       local catppuccin = require("catppuccin")
       catppuccin.setup({
@@ -39,11 +41,18 @@ return {
     "akinsho/bufferline.nvim",
     after = "catppuccin",
     lazy = false,
+    enabled = false,
     config = function()
       local bflineCatppuccin = require("catppuccin.special.bufferline")
       require("bufferline").setup({
         highlights = bflineCatppuccin.get_theme(),
       })
+    end,
+  },
+  {
+    "EdenEast/nightfox.nvim",
+    config = function()
+      vim.cmd("colorscheme nightfox")
     end,
   },
 }
