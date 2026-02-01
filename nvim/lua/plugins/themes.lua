@@ -49,6 +49,7 @@ return {
       })
     end,
   },
+  -- THEME: NightFox
   {
     "EdenEast/nightfox.nvim",
     config = function()
