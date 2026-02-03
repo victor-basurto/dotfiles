@@ -26,7 +26,7 @@ function M.on_attach(client, bufnr)
   buf_set_keymap(bufnr, "n", "gca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
 
   -- enable inlay hints
-  M.enable_hints(client, bufnr)
+  -- M.enable_hints(client, bufnr)
 end
 function M.safe_hover()
   -- Store the original vim.notify function

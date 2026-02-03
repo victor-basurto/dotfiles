@@ -1,5 +1,10 @@
 --- mason.lua
 ---@diagnostic disable: missing-fields
+-- Disable lsp-inlayhints if that is nightly version, will remove when 0.10.0 is stable
+-- local enabled_inlay_hints = true
+-- if vim.fn.has("nvim-0.10.0") == 1 then
+--   enabled_inlay_hints = true
+-- end
 return {
   {
     "mason-org/mason.nvim",
@@ -57,12 +62,18 @@ return {
   },
   {
     "neovim/nvim-lspconfig",
-
     opts = {
       inlay_hints = {
         enabled = true,
       },
+      setup = {
+        tsserver = function(_, opts)
+          require("typescript").setup({ server = opts })
+          return true
+        end,
+      },
     },
+    dependencies = { "jose-elias-alvarez/typescript.nvim" },
     config = function()
       local lsp_utils = require("utilities.lsp_utils")
       local global_utils = require("utilities.utils")
@@ -193,7 +204,6 @@ return {
         capabilities = capabilities,
         on_attach = function(client, bufnr)
           lsp_utils.on_attach(client, bufnr)
-
           vim.defer_fn(function()
             if client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint and vim.lsp.inlay_hint.enable then
               -- This enables the visual component for the buffer
@@ -204,20 +214,27 @@ return {
         settings = {
           typescript = {
             inlayHints = {
-              enabled = true,
-              includeInlayParameterNameHints = "all",
-              includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+              includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all'
+              includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+              -- includeInlayVariableTypeHints = true,
               includeInlayFunctionParameterTypeHints = true,
-              includeInlayVariableTypeHints = true,
+              includeInlayVariableTypeHintsWhenTypeMatchesName = true,
+              includeInlayPropertyDeclarationTypeHints = true,
+              includeInlayFunctionLikeReturnTypeHints = true,
+              includeInlayEnumMemberValueHints = true,
             },
           },
           javascript = {
             inlayHints = {
-              enabled = true,
-              includeInlayParameterNameHints = "all",
-              includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+              includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all'
+              includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+              -- includeInlayVariableTypeHints = true,
+
               includeInlayFunctionParameterTypeHints = true,
-              includeInlayVariableTypeHints = true,
+              includeInlayVariableTypeHintsWhenTypeMatchesName = true,
+              includeInlayPropertyDeclarationTypeHints = true,
+              includeInlayFunctionLikeReturnTypeHints = true,
+              includeInlayEnumMemberValueHints = true,
             },
           },
         },

@@ -1,6 +1,8 @@
 -- remove catppuccin temporary
 return {
+  -----------------------------------
   -- THEME: Catppuccin
+  -----------------------------------
   {
     "catppuccin/nvim",
     name = "catppuccin",
@@ -49,11 +51,201 @@ return {
       })
     end,
   },
+  -----------------------------------
   -- THEME: NightFox
+  -----------------------------------
   {
     "EdenEast/nightfox.nvim",
     config = function()
       vim.cmd("colorscheme nightfox")
     end,
   },
+  -------------------------------
+  -- THEME: Kanagawa
+  -------------------------------
+  -- {
+  --   "rebelot/kanagawa.nvim",
+  --   config = function()
+  --     require("kanagawa").setup({
+  --       -- themes: wave, dragon, lotus
+  --       -- in order to make it work, apply the vim.cmd("colorscheme kanagawa-wave")
+  --       theme = "wave",
+  --     })
+  --     vim.cmd("colorscheme kanagawa-wave")
+  --   end,
+  -- },
+  -------------------------------
+  -- Theme: CyberDream
+  -------------------------------
+  -- {
+  --   "scottmckendry/cyberdream.nvim",
+  --   lazy = false,
+  --   priority = 1000,
+  --   config = function()
+  --     -- Missing Lualine Implementation
+  --     vim.cmd("colorscheme cyberdream")
+  --   end,
+  -- },
+  -------------------------------
+  -- Theme: MoonFly
+  -------------------------------
+  -- {
+  --   "bluz71/vim-moonfly-colors",
+  --   name = "moonfly",
+  --   lazy = false,
+  --   priority = 1000,
+  --   dependencies = {
+  --     "bluz71/nvim-linefly",
+  --   },
+  --   config = function()
+  --     vim.cmd("colorscheme moonfly")
+  --   end,
+  -- },
+  -------------------------------
+  -- Theme: Vague
+  -------------------------------
+  -- {
+  --   "vague-theme/vague.nvim",
+  --   lazy = false,
+  --   priority = 1000,
+  --   dependencies = {
+  --     "nvim-lualine/lualine.nvim",
+  --     requires = {
+  --       "nvim-tree/nvim-web-devicons",
+  --       opt = true,
+  --     },
+  --   },
+  --   config = function()
+  --     -- NOTE: you do not need to call setup if you don't want to.
+  --     require("vague").setup({
+  --       -- optional configuration here
+  --       transparent = true,
+  --       italic = true,
+  --       plugins = {
+  --         dashboard = {
+  --           footer = "italic",
+  --         },
+  --       },
+  --       telescope = {
+  --         match = "bold",
+  --       },
+  --     })
+  --     vim.cmd("colorscheme vague")
+  --   end,
+  -- },
+  -------------------------------
+  -- Theme: NightFly
+  -------------------------------
+  -- {
+  --   "bluz71/vim-nightfly-colors",
+  --   name = "nightfly",
+  --   lazy = false,
+  --   priority = 1000,
+  --   config = function()
+  --     vim.g.nightflyItalics = true
+  --     vim.cmd("colorscheme nightfly")
+  --   end,
+  -- },
+  -------------------------------
+  -- Theme: OneNord
+  -------------------------------
+  -- {
+  --   "rmehri01/onenord.nvim",
+  --   name = "onenord",
+  --   lazy = false,
+  --   config = function()
+  --     require("onenord").setup({
+  --       theme = "dark",
+  --       borders = true,
+  --       fade_nc = false,
+  --     })
+  --     require("lualine").setup({
+  --       options = {
+  --         theme = "onenord",
+  --       },
+  --     })
+  --     vim.cmd("colorscheme onenord")
+  --   end,
+  -- },
+  -------------------------------
+  -- Theme: EverViolet
+  -------------------------------
+  -- {
+  --   "everviolet/nvim",
+  --   name = "evergarden",
+  --   priority = 1000,
+  --   dependencies = {
+  --     "nvim-lualine/lualine.nvim",
+  --     requires = {
+  --       "nvim-tree/nvim-web-devicons",
+  --     },
+  --   },
+  --   config = function()
+  --     require("evergarden").setup({
+  --       theme = {
+  --         variant = "winter", -- 'winter'|'fall'|'spring'|'summer'
+  --         accent = "green",
+  --       },
+  --       editor = {
+  --         transparent_background = true,
+  --         sign = { color = "none" },
+  --         float = {
+  --           color = "mantle",
+  --           solid_border = false,
+  --         },
+  --         completion = {
+  --           color = "surface0",
+  --         },
+  --       },
+  --     })
+  --     vim.cmd("colorscheme evergarden")
+  --   end,
+  -- },
+  -------------------------------
+  -- Theme: Ayu
+  -------------------------------
+  -- {
+  --   "Shatur/neovim-ayu",
+  --   lazy = false,
+  --   config = function()
+  --     local ayu = require("ayu")
+  --     local lualine = require("lualine")
+  --     ayu.setup({
+  --       mirage = true,
+  --       terminal = true,
+  --       overrides = {},
+  --     })
+  --     lualine.setup({
+  --       options = {
+  --         theme = "ayu",
+  --       },
+  --     })
+  --
+  --     vim.cmd("colorscheme ayu")
+  --   end,
+  -- },
+  -------------------------------
+  -- Theme: Bamboo
+  -------------------------------
+  -- {
+  --   "ribru17/bamboo.nvim",
+  --   lazy = false,
+  --   priority = 1000,
+  --   config = function()
+  --     local bamboo = require("bamboo")
+  --     -- local lualine = require("lualine")
+  --     bamboo.setup({
+  --       mirage = true,
+  --       terminal = true,
+  --       overrides = {},
+  --     })
+  --     -- lualine.setup({
+  --     --   options = {
+  --     --     theme = "bamboo",
+  --     --   },
+  --     -- })
+  --     -- bamboo.load()
+  --     vim.cmd("colorscheme bamboo")
+  --   end,
+  -- },
 }
