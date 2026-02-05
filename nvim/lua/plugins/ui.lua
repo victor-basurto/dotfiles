@@ -98,6 +98,10 @@ return {
         mode = "buffers",
         -- Change to true so you can actually see it working immediately
         always_show_bufferline = true,
+        numbers = "none",
+        separator_style = "slant",
+        show_buffer_close_icons = false,
+        show_close_icon = false,
         close_command = function(n)
           Snacks.bufdelete(n)
         end,

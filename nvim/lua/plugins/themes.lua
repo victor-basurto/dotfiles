@@ -227,25 +227,26 @@ return {
   -------------------------------
   -- Theme: Bamboo
   -------------------------------
-  -- {
-  --   "ribru17/bamboo.nvim",
-  --   lazy = false,
-  --   priority = 1000,
-  --   config = function()
-  --     local bamboo = require("bamboo")
-  --     -- local lualine = require("lualine")
-  --     bamboo.setup({
-  --       mirage = true,
-  --       terminal = true,
-  --       overrides = {},
-  --     })
-  --     -- lualine.setup({
-  --     --   options = {
-  --     --     theme = "bamboo",
-  --     --   },
-  --     -- })
-  --     -- bamboo.load()
-  --     vim.cmd("colorscheme bamboo")
-  --   end,
-  -- },
+  {
+    "ribru17/bamboo.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      local bamboo = require("bamboo")
+
+      -- local lualine = require("lualine")
+      bamboo.setup({
+        style = "vulgaris",
+        terminal = true,
+        overrides = {},
+      })
+      -- lualine.setup({
+      --   options = {
+      --     theme = "bamboo",
+      --   },
+      -- })
+      -- bamboo.load()
+      vim.cmd("colorscheme bamboo")
+    end,
+  },
 }

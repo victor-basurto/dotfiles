@@ -172,34 +172,65 @@ return {
       lspconfig.lua_ls.setup({
         capabilities = capabilities,
         on_attach = lsp_utils.on_attach,
-        root_dir = util.root_pattern(".git", ".nvim-root", "init.lua", "lua"),
         settings = {
           Lua = {
             runtime = {
-              version = "LuaJIT", -- Re-added
+              version = "LuaJIT",
             },
             diagnostics = {
-              globals = { "vim", "LazyVim", "MiniHipatterns", "cmp", "snacks" }, -- Re-added
+              globals = { "vim", "LazyVim" },
             },
             workspace = {
-              library = vim.api.nvim_get_runtime_file("", true),
+              checkThirdParty = false,
+              library = {
+                vim.fn.expand("$VIMRUNTIME/lua"),
+                vim.fn.stdpath("config") .. "/lua",
+              },
             },
-            semanticTokens = { enable = true }, -- Re-added
-            format = { enable = false }, -- Re-added
-            telemetry = { enable = false }, -- Re-added
             hint = {
+              enable = true,
+            },
+            telemetry = {
               enable = false,
-              array_index = "Disable",
-              param_name_file = "Disable",
-              param_name_group = "LspHint",
-              param_name_luadoc = "Disable",
-              param_name_only = "Disable",
-              param_name_table = "Disable",
-              semicolon = "Disable",
             },
           },
         },
       })
+      -- lspconfig.lua_ls.setup({
+      --   capabilities = capabilities,
+      --   on_attach = lsp_utils.on_attach,
+      --   root_dir = util.root_pattern(".git", ".nvim-root", "init.lua", "lua"),
+      --   settings = {
+      --     Lua = {
+      --       runtime = {
+      --         version = "LuaJIT", -- Re-added
+      --       },
+      --       diagnostics = {
+      --         globals = { "vim", "LazyVim", "MiniHipatterns", "cmp", "snacks" }, -- Re-added
+      --       },
+      --       workspace = {
+      --         -- library = vim.api.nvim_get_runtime_file("", true),
+      --         library = vim.tbl_deep_extend("force", vim.api.nvim_get_runtime_file("", true), {
+      --           vim.fn.stdpath("data") .. "lazy",
+      --         }),
+      --         checkThirdParty = false,
+      --       },
+      --       semanticTokens = { enable = true }, -- Re-added
+      --       format = { enable = false }, -- Re-added
+      --       telemetry = { enable = false }, -- Re-added
+      --       hint = {
+      --         enable = true,
+      --         array_index = "Disable",
+      --         param_name_file = "Disable",
+      --         param_name_group = "LspHint",
+      --         param_name_luadoc = "Disable",
+      --         param_name_only = "Disable",
+      --         param_name_table = "Disable",
+      --         semicolon = "Disable",
+      --       },
+      --     },
+      --   },
+      -- })
       lspconfig.tsserver.setup({
         capabilities = capabilities,
         on_attach = function(client, bufnr)
@@ -214,6 +245,7 @@ return {
         settings = {
           typescript = {
             inlayHints = {
+
               includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all'
               includeInlayParameterNameHintsWhenArgumentMatchesName = true,
               -- includeInlayVariableTypeHints = true,
@@ -291,5 +323,16 @@ return {
         end,
       })
     end,
+  },
+  {
+    "folke/lazydev.nvim",
+    ft = "lua", -- only load on lua files
+    opts = {
+      library = {
+        -- See the configuration section for more details
+        -- Load luvit types when the `vim.uv` word is found
+        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+      },
+    },
   },
 }

@@ -48,6 +48,7 @@ return {
             inactive = { c = { fg = colors.fg, bg = colors.bg } },
           },
         },
+        tabline = nil,
         sections = {
           -- these are to remove the defaults
           lualine_a = {

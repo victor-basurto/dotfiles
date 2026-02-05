@@ -1,3 +1,4 @@
 /nvim/tmux-*.log
 /nvim/.neoconf.json
 .gitconfig.local
+nvim
