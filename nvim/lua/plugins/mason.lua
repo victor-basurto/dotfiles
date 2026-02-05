@@ -178,7 +178,7 @@ return {
               version = "LuaJIT",
             },
             diagnostics = {
-              globals = { "vim", "LazyVim" },
+              globals = { "vim", "LazyVim", "MiniHipatterns", "cmp", "snacks" }, -- Re-added
             },
             workspace = {
               checkThirdParty = false,
@@ -189,44 +189,31 @@ return {
             },
             hint = {
               enable = true,
+              array_index = "Disable",
+              param_name_file = "Disable",
+              param_name_group = "LspHint",
+              param_name_luadoc = "Disable",
+              param_name_only = "Disable",
+              param_name_table = "Disable",
+              semicolon = "Disable",
             },
             telemetry = {
               enable = false,
             },
+            semanticTokens = { enable = true }, -- Re-added
+            format = { enable = false }, -- Re-added
           },
         },
       })
       -- lspconfig.lua_ls.setup({
-      --   capabilities = capabilities,
-      --   on_attach = lsp_utils.on_attach,
       --   root_dir = util.root_pattern(".git", ".nvim-root", "init.lua", "lua"),
       --   settings = {
       --     Lua = {
-      --       runtime = {
-      --         version = "LuaJIT", -- Re-added
-      --       },
-      --       diagnostics = {
-      --         globals = { "vim", "LazyVim", "MiniHipatterns", "cmp", "snacks" }, -- Re-added
-      --       },
       --       workspace = {
       --         -- library = vim.api.nvim_get_runtime_file("", true),
       --         library = vim.tbl_deep_extend("force", vim.api.nvim_get_runtime_file("", true), {
       --           vim.fn.stdpath("data") .. "lazy",
       --         }),
-      --         checkThirdParty = false,
-      --       },
-      --       semanticTokens = { enable = true }, -- Re-added
-      --       format = { enable = false }, -- Re-added
-      --       telemetry = { enable = false }, -- Re-added
-      --       hint = {
-      --         enable = true,
-      --         array_index = "Disable",
-      --         param_name_file = "Disable",
-      --         param_name_group = "LspHint",
-      --         param_name_luadoc = "Disable",
-      --         param_name_only = "Disable",
-      --         param_name_table = "Disable",
-      --         semicolon = "Disable",
       --       },
       --     },
       --   },

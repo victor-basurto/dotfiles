@@ -54,12 +54,12 @@ return {
   -----------------------------------
   -- THEME: NightFox
   -----------------------------------
-  {
-    "EdenEast/nightfox.nvim",
-    config = function()
-      vim.cmd("colorscheme nightfox")
-    end,
-  },
+  -- {
+  --   "EdenEast/nightfox.nvim",
+  --   config = function()
+  --     vim.cmd("colorscheme nightfox")
+  --   end,
+  -- },
   -------------------------------
   -- THEME: Kanagawa
   -------------------------------
