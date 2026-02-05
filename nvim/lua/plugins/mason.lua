@@ -91,7 +91,6 @@ return {
         },
 
         -- Keep the custom root_dir to help Lspconfig/Marksman initialization,
-        -- but the 'settings' above should be the definitive fix.
         root_dir = util.root_pattern("marksman.json")
           or function()
             local obsidian = require("obsidian")
@@ -140,7 +139,7 @@ return {
           },
         },
       })
-      -- 5. JSON/Sitecore Setup
+      -- JSON/Sitecore Setup
       lspconfig.jsonls.setup({
         capabilities = capabilities,
         settings = {
@@ -165,7 +164,18 @@ return {
           on_attach = lsp_utils.on_attach,
         })
       end
-
+      -- Omnisharp (.NET) Setup
+      -- vim.env.DOTNET_ROOT = "/usr/local/share/dotnet"
+      -- lspconfig.omnisharp.setup({
+      --   capabilities = capabilities,
+      --   cmd = { "omnisharp", "--languageserver" },
+      --   settings = {
+      --     RoslynExtensionsOptions = {
+      --       EnableImportCompletion = true,
+      --       EnableAnalyzersSupport = true,
+      --     },
+      --   },
+      -- })
       vim.diagnostic.config({
         virtual_text = true,
         signs = true,
