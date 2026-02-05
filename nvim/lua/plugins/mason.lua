@@ -1,11 +1,19 @@
 --- mason.lua
 ---@diagnostic disable: missing-fields
--- Disable lsp-inlayhints if that is nightly version, will remove when 0.10.0 is stable
--- local enabled_inlay_hints = true
--- if vim.fn.has("nvim-0.10.0") == 1 then
---   enabled_inlay_hints = true
--- end
 return {
+  {
+    "folke/lazydev.nvim",
+    ft = "lua", -- only load on lua files
+    opts = {
+      library = {
+        -- Load luvit types when the `vim.uv` word is found
+        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+        -- Ensure Neovim dev types are included
+        "lazy.nvim",
+        "nvim-lspconfig",
+      },
+    },
+  },
   {
     "mason-org/mason.nvim",
     version = "2.2.1",
@@ -21,7 +29,7 @@ return {
         "eslint_d",
         "markdownlint-cli2",
         "markdown-toc",
-        "emmet-language-server",
+        "emmet-ls",
       },
       ui = {
         icons = {
@@ -33,110 +41,33 @@ return {
     },
   },
   {
-    "mason-org/mason-lspconfig.nvim",
-    dependencies = {
-      { "mason-org/mason.nvim", opts = {} },
-      "neovim/nvim-lspconfig",
-    },
-    opts = {
-      ensure_installed = {
-        "astro",
-        "bashls",
-        "cssls",
-        "eslint",
-        "emmet_ls",
-        "graphql",
-        "html",
-        "jsonls",
-        "lua_ls",
-        "powershell_es",
-        "prismals",
-        "sqlls",
-        "vimls",
-        "ts_ls",
-        "lemminx",
-        "yamlls",
-        "omnisharp",
-      },
-    },
-  },
-  {
     "neovim/nvim-lspconfig",
-    opts = {
-      inlay_hints = {
-        enabled = true,
-      },
-      setup = {
-        tsserver = function(_, opts)
-          require("typescript").setup({ server = opts })
-          return true
-        end,
-      },
+    dependencies = {
+      "jose-elias-alvarez/typescript.nvim",
+      "folke/lazydev.nvim",
     },
-    dependencies = { "jose-elias-alvarez/typescript.nvim" },
     config = function()
-      local lsp_utils = require("utilities.lsp_utils")
-      local global_utils = require("utilities.utils")
       local lspconfig = require("lspconfig")
-      -- local capabilities = require("cmp_nvim_lsp").default_capabilities()
       local util = require("lspconfig.util")
+      local lsp_utils = require("utilities.lsp_utils")
 
-      local capabilities = {
-        textDocument = {
-          completion = {
-            completionItem = {
-              snippetSupport = true,
-              resolveSupport = {
-                properties = {
-                  "documentation",
-                  "detail",
-                  "additionalTextEdits",
-                },
-              },
-              triggerCharacters = {
-                ".",
-                ":",
-              },
-            },
-          },
-        },
-      }
-      capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
+      -- 1. Setup Capabilities (Blink Integration)
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      local ok_blink, blink = pcall(require, "blink.cmp")
+      if ok_blink then
+        capabilities = blink.get_lsp_capabilities(capabilities)
+      end
 
       -- default path for .NET SDK in macOS/Linux
-      vim.env.DOTNET_ROOT = "/usr/local/share/dotnet"
+      -- vim.env.DOTNET_ROOT = "/usr/local/share/dotnet"
 
       -- If running on Windows, set the path to the .NET SDK accordingly
-      if global_utils.is_windows() then
-        vim.env.DOTNET_ROOT = "C:\\Program Files\\dotnet"
-      end
+      -- if global_utils.is_windows() then
+      --   vim.env.DOTNET_ROOT = "C:\\Program Files\\dotnet"
+      -- end
       -- vim.lsp.enable("omnisharp")
-      lspconfig.omnisharp.setup({
-        capabilities = capabilities,
-        on_attach = lsp_utils.on_attach,
-        cmd = { "omnisharp", "--languageserver" },
-        enable_import_completion = true,
-        organize_imports_on_format = true,
-        enable_roslyn_analyzers = true,
-        settings = {
-          RoslynExtensionsOptions = {
-            EnableAnalyzersSupport = true,
-            EnableDecompilationSupport = true,
-            EnableEditorConfigSupport = true,
-            EnableImportCompletion = true,
-            EnableUpdateDiagnosticNetAnalyzers = true,
-          },
-          -- Also explicitly tell Omnisharp's settings where to find .NET CLI tools
-          DotNetCliPaths = {
-            vim.env.DOTNET_ROOT,
-          },
-          -- Consider adding this if you still see older .NET version issues
-          -- UseModernNet = true, -- This is sometimes a setting for Omnisharp
-        },
-      })
 
       lspconfig.marksman.setup({
-
         capabilities = capabilities,
         on_attach = function(client, bufnr)
           lsp_utils.on_attach(client, bufnr)
@@ -169,98 +100,49 @@ return {
             return vault_path
           end,
       })
+      -- Lua
       lspconfig.lua_ls.setup({
         capabilities = capabilities,
-        on_attach = lsp_utils.on_attach,
         settings = {
           Lua = {
-            runtime = {
-              version = "LuaJIT",
-            },
-            diagnostics = {
-              globals = { "vim", "LazyVim", "MiniHipatterns", "cmp", "snacks" }, -- Re-added
-            },
+            runtime = { version = "LuaJIT", path = vim.split(package.path, ";") },
+            diagnostics = { globals = { "vim" } },
             workspace = {
               checkThirdParty = false,
               library = {
-                vim.fn.expand("$VIMRUNTIME/lua"),
-                vim.fn.stdpath("config") .. "/lua",
+                vim.env.VIMRUNTIME,
+                -- "${3rd}/luv/library"
               },
             },
-            hint = {
-              enable = true,
-              array_index = "Disable",
-              param_name_file = "Disable",
-              param_name_group = "LspHint",
-              param_name_luadoc = "Disable",
-              param_name_only = "Disable",
-              param_name_table = "Disable",
-              semicolon = "Disable",
-            },
-            telemetry = {
-              enable = false,
-            },
-            semanticTokens = { enable = true }, -- Re-added
-            format = { enable = false }, -- Re-added
+            hint = { enable = true },
+            telemetry = { enable = false },
           },
         },
       })
-      -- lspconfig.lua_ls.setup({
-      --   root_dir = util.root_pattern(".git", ".nvim-root", "init.lua", "lua"),
-      --   settings = {
-      --     Lua = {
-      --       workspace = {
-      --         -- library = vim.api.nvim_get_runtime_file("", true),
-      --         library = vim.tbl_deep_extend("force", vim.api.nvim_get_runtime_file("", true), {
-      --           vim.fn.stdpath("data") .. "lazy",
-      --         }),
-      --       },
-      --     },
-      --   },
-      -- })
-      lspconfig.tsserver.setup({
-        capabilities = capabilities,
-        on_attach = function(client, bufnr)
-          lsp_utils.on_attach(client, bufnr)
-          vim.defer_fn(function()
-            if client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint and vim.lsp.inlay_hint.enable then
-              -- This enables the visual component for the buffer
-              vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+      -- Typescript
+      require("typescript").setup({
+        server = {
+          capabilities = capabilities,
+          on_attach = function(client, bufnr)
+            -- Use your custom attach logic if it exists
+            if lsp_utils.on_attach then
+              lsp_utils.on_attach(client, bufnr)
             end
-          end, 100)
-        end,
-        settings = {
-          typescript = {
-            inlayHints = {
-
-              includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all'
-              includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-              -- includeInlayVariableTypeHints = true,
-              includeInlayFunctionParameterTypeHints = true,
-              includeInlayVariableTypeHintsWhenTypeMatchesName = true,
-              includeInlayPropertyDeclarationTypeHints = true,
-              includeInlayFunctionLikeReturnTypeHints = true,
-              includeInlayEnumMemberValueHints = true,
-            },
-          },
-          javascript = {
-            inlayHints = {
-              includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all'
-              includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-              -- includeInlayVariableTypeHints = true,
-
-              includeInlayFunctionParameterTypeHints = true,
-              includeInlayVariableTypeHintsWhenTypeMatchesName = true,
-              includeInlayPropertyDeclarationTypeHints = true,
-              includeInlayFunctionLikeReturnTypeHints = true,
-              includeInlayEnumMemberValueHints = true,
+            vim.diagnostic.enable(true, { bufnr = bufnr })
+          end,
+          settings = {
+            typescript = {
+              inlayHints = {
+                includeInlayParameterNameHints = "all",
+                includeInlayVariableTypeHints = true,
+              },
             },
           },
         },
       })
-      lspconfig.cssls.setup({})
-      lspconfig.html.setup({})
+      -- 5. JSON/Sitecore Setup
       lspconfig.jsonls.setup({
+        capabilities = capabilities,
         settings = {
           json = {
             schemas = {
@@ -269,23 +151,20 @@ return {
                 url = vim.fn.stdpath("config") .. "/.sitecore/schemas/RootConfigurationFile.schema.json",
               },
               {
-                fileMatch = { "/.sitecore/user.json" },
-                url = vim.fn.stdpath("config") .. "/.sitecore/schemas/UserConfiguration.schema.json",
-                -- Or: url = vim.fn.getcwd() .. "/.sitecore/schemas/UserConfiguration.schema.json",
-              },
-              {
                 fileMatch = { "*.module.json" },
                 url = vim.fn.stdpath("config") .. "/.sitecore/schemas/ModuleFile.schema.json",
-                -- Or: url = vim.fn.getcwd() .. "/.sitecore/schemas/ModuleFile.schema.json",
               },
             },
           },
         },
       })
-      lspconfig.yamlls.setup({})
-      -- vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
-      -- vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
-      -- vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
+      local servers = { "cssls", "html", "yamlls", "emmet_ls", "bashls", "astro", "prismals", "omnisharp" }
+      for _, lsp in ipairs(servers) do
+        lspconfig[lsp].setup({
+          capabilities = capabilities,
+          on_attach = lsp_utils.on_attach,
+        })
+      end
 
       vim.diagnostic.config({
         virtual_text = true,
@@ -300,25 +179,29 @@ return {
           focusable = false,
         },
       })
-      vim.api.nvim_create_autocmd("LspAttach", {
-        group = vim.api.nvim_create_augroup("lsp_attach_group", { clear = true }),
-        callback = function(ev)
-          local client = vim.lsp.get_client_by_id(ev.data.client_id)
-          if client and client.name == "tsserver" then
-            vim.diagnostic.enable()
-          end
-        end,
-      })
     end,
   },
   {
-    "folke/lazydev.nvim",
-    ft = "lua", -- only load on lua files
+    "mason-org/mason-lspconfig.nvim",
     opts = {
-      library = {
-        -- See the configuration section for more details
-        -- Load luvit types when the `vim.uv` word is found
-        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+      ensure_installed = {
+        "astro",
+        "bashls",
+        "cssls",
+        "eslint",
+        "emmet_ls",
+        "graphql",
+        "html",
+        "jsonls",
+        "lua_ls",
+        "powershell_es",
+        "prismals",
+        "sqlls",
+        "vimls",
+        "tsserver",
+        "lemminx",
+        "yamlls",
+        "omnisharp",
       },
     },
   },
