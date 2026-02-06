@@ -1,14 +1,16 @@
 -- utilities/lsp_utils.lua
 local M = {}
 
+-- Helper function to check filetype
+local function is_filetype(bufnr, filetype)
+  return vim.bo[bufnr].filetype == filetype
+end
+
 -- Simplified function to enable hints once
 function M.enable_hints(client, bufnr)
-  if client and client.server_capabilities and client.server_capabilities.inlayHintProvider then
-    -- use pcall to avoid errors for older servers
-    pcall(vim.lsp.inlay_hint, bufnr, true)
-  else
-    -- defensive fallback: still attempt to enable inlay hints (some servers don't advertise capability)
-    pcall(vim.lsp.inlay_hint, bufnr, true)
+  -- Check if the client supports inlay hints (and if the Neovim version supports it)
+  if client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
+    vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
   end
 end
 
@@ -19,6 +21,13 @@ function M.on_attach(client, bufnr)
 
   buf_set_keymap(bufnr, "n", "K", "<cmd>lua require('utilities.lsp_utils').safe_hover()<CR>", opts)
   buf_set_keymap(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
+
+  -- Conditional logic for Lua and TypeScript LSPs
+  if is_filetype(bufnr, "lua") and client.name == "lua_ls" then
+    print("Lua LSP attached to buffer " .. bufnr)
+  elseif is_filetype(bufnr, "typescript") and client.name == "tsserver" then
+    print("TypeScript LSP attached to buffer " .. bufnr)
+  end
   buf_set_keymap(bufnr, "n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
   buf_set_keymap(bufnr, "n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
   buf_set_keymap(bufnr, "n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
@@ -26,23 +35,11 @@ function M.on_attach(client, bufnr)
   buf_set_keymap(bufnr, "n", "gca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
 
   -- enable inlay hints
-  -- M.enable_hints(client, bufnr)
+  M.enable_hints(client, bufnr)
 end
+
 function M.safe_hover()
-  -- Store the original vim.notify function
-  local original_notify = vim.notify
-
-  -- Temporarily replace vim.notify with a function that swallows all messages
-  vim.notify = function() end
-
-  -- Execute the hover command (which is asynchronous)
   vim.lsp.buf.hover()
-
-  -- Restore original vim.notify after the LSP client has a chance to send
-  -- its asynchronous "no information" message (usually 50ms is plenty).
-  vim.defer_fn(function()
-    vim.notify = original_notify
-  end, 50)
 end
 
 return M

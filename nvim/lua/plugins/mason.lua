@@ -15,7 +15,7 @@ return {
   },
   {
     "mason-org/mason.nvim",
-    version = "2.0.0",
+    version = "2.2.1",
     opts = {
       ensure_installed = {
         "gitui",
@@ -133,10 +133,10 @@ return {
           Lua = {
             workspace = {
               checkThirdParty = false,
-              library = {
-                vim.fn.expand("$VIMRUNTIME/lua"),
-                vim.fn.stdpath("config") .. "/lua",
-              },
+              maxPreload = 2000,
+              preloadFileSize = 1000,
+              ignoreSubmodules = true,
+              -- library is handled by lazydev.nvim to prevent type issues
               ignoreDir = {
                 ".git",
                 "node_modules",
@@ -175,7 +175,7 @@ return {
               includeInlayParameterNameHints = "all",
               includeInlayParameterNameHintsWhenArgumentMatchesName = false,
               includeInlayFunctionParameterTypeHints = true,
-              includeInlayVariableTypeHints = true,
+              -- includeInlayVariableTypeHints = true,
               -- other tsserver-specific inlay hints options if needed
             },
           },
@@ -238,8 +238,9 @@ return {
         group = vim.api.nvim_create_augroup("lsp_attach_group", { clear = true }),
         callback = function(ev)
           local client = vim.lsp.get_client_by_id(ev.data.client_id)
-          if client and client.name == "tsserver" then
-            vim.diagnostic.enable()
+          if client and (client.name == "tsserver" or client.name == "ts_ls") then
+            -- lsp_utils.enable_hints(client, ev.buf) -- DISABLING due to TS 5.9.3 crash
+            vim.diagnostic.enable(true, { bufnr = ev.buf })
           end
         end,
       })
