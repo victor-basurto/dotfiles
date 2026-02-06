@@ -1,4 +1,3 @@
---- mason.lua
 ---@diagnostic disable: missing-fields
 return {
   {
@@ -16,7 +15,7 @@ return {
   },
   {
     "mason-org/mason.nvim",
-    version = "2.2.1",
+    version = "2.0.0",
     opts = {
       ensure_installed = {
         "gitui",
@@ -29,7 +28,6 @@ return {
         "eslint_d",
         "markdownlint-cli2",
         "markdown-toc",
-        "emmet-ls",
       },
       ui = {
         icons = {
@@ -41,107 +39,161 @@ return {
     },
   },
   {
-    "neovim/nvim-lspconfig",
+    "mason-org/mason-lspconfig.nvim",
     dependencies = {
-      "jose-elias-alvarez/typescript.nvim",
-      "folke/lazydev.nvim",
+      { "mason-org/mason.nvim", opts = {} },
+      "neovim/nvim-lspconfig",
     },
+    opts = {
+      ensure_installed = {
+        "astro",
+        "bashls",
+        "cssls",
+        "eslint",
+        "graphql",
+        "html",
+        "jsonls",
+        "lua_ls",
+        "powershell_es",
+        "prismals",
+        "sqlls",
+        "ts_ls",
+        "vimls",
+        "lemminx",
+        "yamlls",
+        "omnisharp",
+      },
+    },
+  },
+  {
+    "neovim/nvim-lspconfig",
     config = function()
-      local lspconfig = require("lspconfig")
-      local util = require("lspconfig.util")
       local lsp_utils = require("utilities.lsp_utils")
+      local global_utils = require("utilities.utils")
+      local lspconfig = require("lspconfig")
+      -- local capabilities = require("cmp_nvim_lsp").default_capabilities()
+      local util = require("lspconfig.util")
 
-      -- 1. Setup Capabilities (Blink Integration)
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      local ok_blink, blink = pcall(require, "blink.cmp")
-      if ok_blink then
-        capabilities = blink.get_lsp_capabilities(capabilities)
-      end
-
-      -- default path for .NET SDK in macOS/Linux
-      -- vim.env.DOTNET_ROOT = "/usr/local/share/dotnet"
-
-      -- If running on Windows, set the path to the .NET SDK accordingly
-      -- if global_utils.is_windows() then
-      --   vim.env.DOTNET_ROOT = "C:\\Program Files\\dotnet"
-      -- end
-      -- vim.lsp.enable("omnisharp")
-
-      lspconfig.marksman.setup({
-        capabilities = capabilities,
-        on_attach = function(client, bufnr)
-          lsp_utils.on_attach(client, bufnr)
-          local obsidian_lsp_status, obsidian_lsp = pcall(require, "obsidian.lsp")
-          if obsidian_lsp_status and obsidian_lsp and obsidian_lsp.on_attach then
-            obsidian_lsp.on_attach(client, bufnr)
-          end
-        end,
-
-        settings = {
-          marksman = {
-            root = (function()
-              local obsidian = require("obsidian")
-              -- Use pcall/or short-circuiting in case get_config() is still nil
-              local vault_path = pcall(obsidian.get_config) and obsidian.get_config().workspaces[1].path
-                or vim.fn.getcwd()
-              print(vault_path)
-              return vault_path
-            end)(),
+      local capabilities = {
+        textDocument = {
+          completion = {
+            completionItem = {
+              snippetSupport = true,
+              resolveSupport = {
+                properties = {
+                  "documentation",
+                  "detail",
+                  "additionalTextEdits",
+                },
+              },
+            },
           },
         },
+      }
+      capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
 
-        -- Keep the custom root_dir to help Lspconfig/Marksman initialization,
-        root_dir = util.root_pattern("marksman.json")
-          or function()
-            local obsidian = require("obsidian")
-            local vault_path = pcall(obsidian.get_config) and obsidian.get_config().workspaces[1].path
-              or vim.fn.getcwd()
-            return vault_path
-          end,
+      -- default path for .NET SDK in macOS/Linux
+      vim.env.DOTNET_ROOT = "/usr/local/share/dotnet"
+
+      -- If running on Windows, set the path to the .NET SDK accordingly
+      if global_utils.is_windows() then
+        vim.env.DOTNET_ROOT = "C:\\Program Files\\dotnet"
+      end
+
+      -- vim.lsp.enable("omnisharp")
+      lspconfig.omnisharp.setup({
+        capabilities = capabilities,
+        on_attach = lsp_utils.on_attach,
+        cmd = { "omnisharp", "--languageserver" },
+        enable_import_completion = true,
+        organize_imports_on_format = true,
+        enable_roslyn_analyzers = true,
+        settings = {
+          RoslynExtensionsOptions = {
+            EnableAnalyzersSupport = true,
+            EnableDecompilationSupport = true,
+            EnableEditorConfigSupport = true,
+            EnableImportCompletion = true,
+            EnableUpdateDiagnosticNetAnalyzers = true,
+          },
+          -- Also explicitly tell Omnisharp's settings where to find .NET CLI tools
+          DotNetCliPaths = {
+            vim.env.DOTNET_ROOT,
+          },
+          -- Consider adding this if you still see older .NET version issues
+          -- UseModernNet = true, -- This is sometimes a setting for Omnisharp
+        },
       })
-      -- Lua
+
       lspconfig.lua_ls.setup({
         capabilities = capabilities,
+        on_attach = lsp_utils.on_attach,
+        root_dir = util.root_pattern(".git", ".nvim-root", "init.lua", "lua"),
         settings = {
           Lua = {
-            runtime = { version = "LuaJIT", path = vim.split(package.path, ";") },
-            diagnostics = { globals = { "vim" } },
             workspace = {
               checkThirdParty = false,
               library = {
-                vim.env.VIMRUNTIME,
-                -- "${3rd}/luv/library"
+                vim.fn.expand("$VIMRUNTIME/lua"),
+                vim.fn.stdpath("config") .. "/lua",
+              },
+              ignoreDir = {
+                ".git",
+                "node_modules",
+                "venv",
+                "dist",
+                "build",
+                "__pycache__",
+                "target",
+                ".next",
+                "AppData",
+                "Downloads",
+                "Documents",
+                "OneDrive",
               },
             },
-            hint = { enable = true },
-            telemetry = { enable = false },
+            hint = {
+              enable = true,
+              array_index = "Enable",
+              param_name_file = "Inline",
+              param_name_group = "LspHint",
+              param_name_luadoc = "Inline",
+              param_name_only = "Inline",
+              param_name_table = "Inline",
+              semicolon = "Disable",
+            },
           },
         },
       })
-      -- Typescript
-      require("typescript").setup({
-        server = {
-          capabilities = capabilities,
-          on_attach = function(client, bufnr)
-            -- Use your custom attach logic if it exists
-            if lsp_utils.on_attach then
-              lsp_utils.on_attach(client, bufnr)
-            end
-            vim.diagnostic.enable(true, { bufnr = bufnr })
-          end,
-          settings = {
-            typescript = {
-              inlayHints = {
-                includeInlayParameterNameHints = "all",
-                includeInlayVariableTypeHints = true,
-              },
-            },
-          },
-        },
-      })
-      -- JSON/Sitecore Setup
-      lspconfig.jsonls.setup({
+      lspconfig.tsserver.setup({
         capabilities = capabilities,
+        on_attach = lsp_utils.on_attach,
+        settings = {
+          typescript = {
+            inlayHints = {
+              enabled = true,
+              includeInlayParameterNameHints = "all",
+              includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+              includeInlayFunctionParameterTypeHints = true,
+              includeInlayVariableTypeHints = true,
+              -- other tsserver-specific inlay hints options if needed
+            },
+          },
+          javascript = {
+            inlayHints = {
+              enabled = true,
+              includeInlayParameterNameHints = "all",
+              includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+              includeInlayFunctionParameterTypeHints = true,
+              includeInlayVariableTypeHints = true,
+              -- other tsserver-specific inlay hints options if needed
+            },
+          },
+        },
+      })
+      lspconfig.cssls.setup({})
+      lspconfig.html.setup({})
+      lspconfig.jsonls.setup({
         settings = {
           json = {
             schemas = {
@@ -150,32 +202,25 @@ return {
                 url = vim.fn.stdpath("config") .. "/.sitecore/schemas/RootConfigurationFile.schema.json",
               },
               {
+                fileMatch = { "/.sitecore/user.json" },
+                url = vim.fn.stdpath("config") .. "/.sitecore/schemas/UserConfiguration.schema.json",
+                -- Or: url = vim.fn.getcwd() .. "/.sitecore/schemas/UserConfiguration.schema.json",
+              },
+              {
                 fileMatch = { "*.module.json" },
                 url = vim.fn.stdpath("config") .. "/.sitecore/schemas/ModuleFile.schema.json",
+                -- Or: url = vim.fn.getcwd() .. "/.sitecore/schemas/ModuleFile.schema.json",
               },
             },
           },
         },
       })
-      local servers = { "cssls", "html", "yamlls", "emmet_ls", "bashls", "astro", "prismals", "omnisharp" }
-      for _, lsp in ipairs(servers) do
-        lspconfig[lsp].setup({
-          capabilities = capabilities,
-          on_attach = lsp_utils.on_attach,
-        })
-      end
-      -- Omnisharp (.NET) Setup
-      -- vim.env.DOTNET_ROOT = "/usr/local/share/dotnet"
-      -- lspconfig.omnisharp.setup({
-      --   capabilities = capabilities,
-      --   cmd = { "omnisharp", "--languageserver" },
-      --   settings = {
-      --     RoslynExtensionsOptions = {
-      --       EnableImportCompletion = true,
-      --       EnableAnalyzersSupport = true,
-      --     },
-      --   },
-      -- })
+      lspconfig.yamlls.setup({})
+      lspconfig.marksman.setup({})
+      -- vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
+      -- vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
+      -- vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
+
       vim.diagnostic.config({
         virtual_text = true,
         signs = true,
@@ -189,30 +234,15 @@ return {
           focusable = false,
         },
       })
+      vim.api.nvim_create_autocmd("LspAttach", {
+        group = vim.api.nvim_create_augroup("lsp_attach_group", { clear = true }),
+        callback = function(ev)
+          local client = vim.lsp.get_client_by_id(ev.data.client_id)
+          if client and client.name == "tsserver" then
+            vim.diagnostic.enable()
+          end
+        end,
+      })
     end,
-  },
-  {
-    "mason-org/mason-lspconfig.nvim",
-    opts = {
-      ensure_installed = {
-        "astro",
-        "bashls",
-        "cssls",
-        "eslint",
-        "emmet_ls",
-        "graphql",
-        "html",
-        "jsonls",
-        "lua_ls",
-        "powershell_es",
-        "prismals",
-        "sqlls",
-        "vimls",
-        "tsserver",
-        "lemminx",
-        "yamlls",
-        "omnisharp",
-      },
-    },
   },
 }
