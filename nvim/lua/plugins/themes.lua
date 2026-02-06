@@ -232,10 +232,7 @@ return {
     lazy = false,
     priority = 1000,
     config = function()
-      local bamboo = require("bamboo")
-
-      -- local lualine = require("lualine")
-      bamboo.setup({
+      require("bamboo").setup({
         style = "vulgaris",
         terminal = true,
         overrides = {},
@@ -245,8 +242,8 @@ return {
       --     theme = "bamboo",
       --   },
       -- })
-      -- bamboo.load()
-      vim.cmd("colorscheme bamboo")
+      require("bamboo").load()
+      -- vim.cmd("colorscheme bamboo")
     end,
   },
 }
