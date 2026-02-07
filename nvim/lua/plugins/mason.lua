@@ -131,6 +131,9 @@ return {
         root_dir = util.root_pattern(".git", ".nvim-root", "init.lua", "lua"),
         settings = {
           Lua = {
+            diagnostics = {
+              globals = { "vim" },
+            },
             workspace = {
               checkThirdParty = false,
               maxPreload = 2000,
