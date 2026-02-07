@@ -181,3 +181,23 @@ function list-dirs {
   Write-Host "----------------------------------"
   Write-Host "To use, simply type the 'Keyword' (e.g., 'oo') and press Enter."
 }
+function New-WorkPrompt {
+  param(
+    [string]$FileName = "task.md"
+  )
+  $TemplatePath = "$HOME\.config\.dotfiles\prompt-generator\templates\work-prompt.md"
+
+  if (Test-Path $TemplatePath) {
+    # Construct content: Date + Newline + Template Content
+    $DateHeader = "# Date: $(Get-Date -Format 'yyyy-MM-dd')`n" 
+    $TemplateContent = Get-Content $TemplatePath -Raw
+
+    # Write to file (UTF8 ensures characters like ✅ render correctly)
+    Set-Content -Path $FileName -Value ($DateHeader + $TemplateContent) -Encoding UTF8
+
+    Write-Host "✅ Created $FileName from template." -ForegroundColor Green
+    nvim $FileName 
+  } else {
+    Write-Host "❌ Error: Template not found at $TemplatePath" -ForegroundColor Red
+  }
+}

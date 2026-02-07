@@ -62,3 +62,19 @@ bko() {
   # Source the backup logic
   source "$HOME/.config/zsh/functions/bko.zsh"
 }
+# Create a new AI prompt file from template
+gprompt() {
+  local TEMPLATE_PATH="$HOME/.config/.dotfiles/prompt-generator/templates/work-prompt.md"
+  local TARGET_FILE="${1:-task.md}"
+
+  if [ -f "$TEMPLATE_PATH" ]; then
+    # Create file with date, then append template content
+    echo "# Date: $(date +%Y-%m-%d)\n" > "$TARGET_FILE"
+    cat "$TEMPLATE_PATH" >> "$TARGET_FILE"
+
+    echo "✅ Created $TARGET_FILE from template."
+    nvim "$TARGET_FILE"
+  else
+    echo "❌ Error: Template not found at $TEMPLATE_PATH"
+  fi
+}

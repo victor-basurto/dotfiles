@@ -24,3 +24,6 @@ Set-PSReadLineOption -PredictionViewStyle ListView
 # fzf
 Import-Module PSFzf
 Set-PSFzfOption -PSReadlineChordProvider 'Ctrl+f' -PSReadlineChordReverseHistory 'Ctrl+r'
+
+# Prompt Generator
+Set-Alias gprompt New-WorkPrompt
