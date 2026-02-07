@@ -219,11 +219,29 @@ return {
         },
       })
       lspconfig.yamlls.setup({})
-      lspconfig.marksman.setup({
-        capabilities = vim.tbl_deep_extend("force", capabilities, {
-          offsetEncoding = { "utf-8" },
-        }),
-      })
+      -- Detect Obsidian Vault (same logic as in plugins/obsidian.lua)
+      local obsidian_path
+      if vim.fn.has("mac") == 1 then
+        obsidian_path = vim.fn.expand("~/Google Drive/My Drive/obsidian-work")
+      elseif vim.fn.has("win32") == 1 then
+        obsidian_path = "G:/My Drive/obsidian-work"
+      else
+        obsidian_path = vim.fn.expand("~/.config/obsidian-vault")
+      end
+
+      local function is_obsidian_vault()
+        local cwd = vim.fn.getcwd()
+        if vim.fn.has("win32") == 1 then
+          cwd = cwd:gsub("\\", "/")
+          return string.find(cwd:lower(), obsidian_path:lower(), 1, true) == 1
+        else
+          return string.find(cwd, obsidian_path, 1, true) == 1
+        end
+      end
+
+      if not is_obsidian_vault() then
+        lspconfig.marksman.setup({})
+      end
       -- vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
       -- vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
       -- vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})

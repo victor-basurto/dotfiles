@@ -60,8 +60,35 @@ return {
     -- :lua print(vim.bo[0].filetype)
     -- So I'm disabling blink.cmp for Telescope
     opts.enabled = function()
-      -- Get the current buffer's filetype
-      local filetype = vim.bo[0].filetype
+      -- Detect Obsidian Vault (same logic as in plugins/obsidian.lua)
+      local obsidian_path
+      if vim.fn.has("mac") == 1 then
+        obsidian_path = vim.fn.expand("~/Google Drive/My Drive/obsidian-work")
+      elseif vim.fn.has("win32") == 1 then
+        obsidian_path = "G:/My Drive/obsidian-work"
+      else
+        obsidian_path = vim.fn.expand("~/.config/obsidian-vault")
+      end
+
+      -- If filetype is markdown and inside obsidian vault, disable
+      if filetype == "markdown" then
+        local cwd = vim.fn.getcwd()
+        local is_obsidian = false
+        if vim.fn.has("win32") == 1 then
+          cwd = cwd:gsub("\\", "/")
+          if string.find(cwd:lower(), obsidian_path:lower(), 1, true) == 1 then
+            is_obsidian = true
+          end
+        else
+          if string.find(cwd, obsidian_path, 1, true) == 1 then
+            is_obsidian = true
+          end
+        end
+        if is_obsidian then
+          return false
+        end
+      end
+
       -- Disable for Telescope buffers
       if filetype == "TelescopePrompt" or filetype == "minifiles" or filetype == "snacks_picker_input" then
         return false
@@ -180,7 +207,7 @@ return {
         emoji = {
           module = "blink-emoji",
           name = "Emoji",
-          score_offset = 93, -- the higher the number, the higher the priority
+          score_offset = 93,        -- the higher the number, the higher the priority
           min_keyword_length = 2,
           opts = { insert = true }, -- Insert emoji (default) or complete its name
         },
@@ -290,7 +317,7 @@ return {
     opts.keymap = {
       preset = "default",
 
-      ["<Tab>"] = { "select_next", "fallback" }, -- or "snippet_forward", or whichever you want
+      ["<Tab>"] = { "select_next", "fallback" },   -- or "snippet_forward", or whichever you want
       ["<S-Tab>"] = { "select_prev", "fallback" }, -- or "snippet_backward"
       ["<Up>"] = { "select_prev", "fallback" },
       ["<Down>"] = { "select_next", "fallback" },

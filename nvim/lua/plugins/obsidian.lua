@@ -46,9 +46,9 @@ return {
       enabled = true,
       sort = { "id", "aliases", "tags" },
     },
-    notes_subdir = "inbox",              -- store notes in the `inbox` directory
+    notes_subdir = "inbox", -- store notes in the `inbox` directory
     new_notes_location = "notes_subdir", -- new notes should be store in the `notes_subdir` -> `inbox`
-    preferred_link_style = "wiki",       -- Either 'wiki' or 'markdown'.
+    preferred_link_style = "wiki", -- Either 'wiki' or 'markdown'.
     ---@class obsidian.config.BacklinkOpts
     ---
     ---@field parse_headers boolean
@@ -103,7 +103,7 @@ return {
       return {
         nvim_cmp = has_nvim_cmp and not has_blink,
         blink = has_blink,
-        min_chars = 2,
+        min_chars = 3,
         match_case = true,
         create_new = true,
       }
@@ -285,12 +285,12 @@ return {
   ---@field format? string
   ---@field hl_group? string
   ---@field separator? string|false Set false to disable separator; set an empty string to insert a blank line separator.
-  footer = {
-    enabled = true,
-    format = "{{backlinks}} backlinks  {{properties}} properties  {{words}} words  {{chars}} chars",
-    hl_group = "Comment",
-    separator = string.rep("-", 80),
-  },
+  -- footer = {
+  --   enabled = false,
+  --   format = "{{backlinks}} backlinks  {{properties}} properties  {{words}} words  {{chars}} chars",
+  --   hl_group = "Comment",
+  --   separator = string.rep("-", 80),
+  -- },
   ---@class obsidian.config.OpenOpts
   ---
   ---Opens the file with current line number
@@ -308,9 +308,9 @@ return {
   },
   ---@class obsidian.config.CommentOpts
   ---@field enabled boolean
-  comment = {
-    enabled = false,
-  },
+  -- comment = {
+  --   enabled = false,
+  -- },
   -- TODO:
   -- plugins to consider (install community plugins in obsidian):
   -- quick-explorer
