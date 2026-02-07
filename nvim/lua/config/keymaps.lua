@@ -724,3 +724,32 @@ end, { desc = "Delete current buffer from system" })
 -- ############################################################################
 --                          END Obsidian
 -- ############################################################################
+-- ############################################################################
+--                          GPrompt Template
+-- ############################################################################
+local home = os.getenv("HOME") or os.getenv("USERPROFILE")
+local template_file = home .. "/.config/.dotfiles/prompt-generator/templates/work-prompt.md"
+
+local function insert_work_prompt()
+  print("attempting to insert template...")
+  if vim.fn.filereadable(template_file) == 1 then
+    local date = os.date("%Y-%m-%d")
+    local row, _ = unpack(vim.api.nvim_win_get_cursor(0))
+
+    -- 1. Insert the Date Header
+    vim.api.nvim_buf_set_lines(0, row, row, false, { "# Date: " .. date, "" })
+
+    -- 2. Read the template file into the buffer
+    -- We use 'execute' to ensure the path is handled correctly across OSs
+    vim.cmd(string.format("silent %dread %s", row + 1, vim.fn.fnameescape(template_file)))
+
+    print("✅ Template inserted successfully!")
+  else
+    print("❌ Error: Cannot find template at: " .. template_file)
+  end
+end
+-- create keymap specific to markdown
+vim.keymap.set("n", "<leader>mpt", insert_work_prompt, { desc = "Insert AI Work Prompt" })
+-- ############################################################################
+--                          END GPrompt Template
+-- ############################################################################
