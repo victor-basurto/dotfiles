@@ -7,9 +7,11 @@ elseif vim.fn.has("win32") == 1 then
   -- Windows path
   obsidian_path = "G:/My Drive/obsidian-work"
 else
-  -- Default for Linux or other systems (adjust as needed)
   obsidian_path = vim.fn.expand("~/.config/obsidian-vault") -- Example Linux path
 end
+-- resolve symlinks (especially for Google Drive on macOS)
+local uv = vim.uv or vim.loop
+obsidian_path = uv.fs_realpath(obsidian_path) or obsidian_path
 return {
   "obsidian-nvim/obsidian.nvim",
   version = "*",
@@ -46,9 +48,9 @@ return {
       enabled = true,
       sort = { "id", "aliases", "tags" },
     },
-    notes_subdir = "inbox", -- store notes in the `inbox` directory
+    notes_subdir = "inbox",              -- store notes in the `inbox` directory
     new_notes_location = "notes_subdir", -- new notes should be store in the `notes_subdir` -> `inbox`
-    preferred_link_style = "wiki", -- Either 'wiki' or 'markdown'.
+    preferred_link_style = "wiki",       -- Either 'wiki' or 'markdown'.
     ---@class obsidian.config.BacklinkOpts
     ---
     ---@field parse_headers boolean

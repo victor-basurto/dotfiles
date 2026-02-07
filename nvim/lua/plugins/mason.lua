@@ -228,6 +228,9 @@ return {
       else
         obsidian_path = vim.fn.expand("~/.config/obsidian-vault")
       end
+      -- resolve symlinks (especially for Google Drive on macOS)
+      local uv = vim.uv or vim.loop
+      obsidian_path = uv.fs_realpath(obsidian_path) or obsidian_path
 
       local function is_obsidian_vault()
         local cwd = vim.fn.getcwd()
