@@ -216,6 +216,13 @@ end, { desc = "[Text strikethrough] toggle strikethrough line" })
 --         END Strikethrough Command
 -------------------------------------------------------
 -------------------------------------------------------
+--         Open Markdown in Browser
+-------------------------------------------------------
+vim.keymap.set("n", "<leader>mdt", "<cmd>MarkdownPreviewToggle<CR>", { desc = "Toggle Markdown render" })
+-------------------------------------------------------
+--         END Open Markdown in Browser
+-------------------------------------------------------
+-------------------------------------------------------
 --               IncRename
 -------------------------------------------------------
 keymap.set("n", "<leader>rn", ":IncRename ")

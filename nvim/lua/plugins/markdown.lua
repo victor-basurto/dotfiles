@@ -12,6 +12,8 @@ return {
         heading = {
           -- additional icons and marks on headings
           render_modes = true,
+          sign = true,
+          icons = { "󰲡 ", "󰲣 ", "󰲥 ", "󰲧 ", "󰲩 ", "󰲫 " },
 
           -- Determines if a border is added above and below headings.
           -- Can also be a list of booleans evaluated by `clamp(value, context.level)`.
@@ -19,9 +21,22 @@ return {
           -- Always use virtual lines for heading borders instead of attempting to use empty lines.
           border_virtual = false,
         },
+        -- Controls the conceal level when rendered vs raw
+        --   anti_conceal = { enabled = true } is usually best
+        anti_conceal = {
+          enabled = true,
+          -- Ignore these conceal levels in these modes (rarely needed)
+          ignore = {},
+          -- Highlight group to use for anti-conceal (default links to Normal)
+          highlight = "RenderMarkdownAntiConceal",
+        },
         code = {
           border = "thick",
+          style = "full",
         },
+        html = { enabled = true },
+        -- Winbar / statusline integration (shows current heading)
+        winbar = { enabled = false },
       })
       vim.api.nvim_set_hl(0, "RenderMarkdownH1Bg", { bg = "#ad1457", fg = "white" })
       vim.api.nvim_set_hl(0, "RenderMarkdownH2Bg", { bg = "#7b1fa2", fg = "white" })
