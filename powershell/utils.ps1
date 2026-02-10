@@ -1,7 +1,9 @@
 # Utility functions
 # Requirements: eza, fzf, bat
 
+#####################################################
 # eza functions (already there)
+#####################################################
 function l {
   eza -l --tree --group-directories-first --icons=always --color=always --all --git-ignore --no-permissions --no-time --no-user --no-filesize --git $args
 }
@@ -9,11 +11,19 @@ function l-all {
   eza -l --tree --group-directories-first --icons=always --color=always --all --git-ignore --git $args
 }
 
+# eza theme configuration
+$env:EZA_CONFIG_DIR = "$env:USERPROFILE\.config\.dotfiles\eza"
+
+#####################################################
 # fzf function (already there)
+#####################################################
 function fz {
   fzf --style full --preview 'bat -n --color=always {}'
 }
 
+#####################################################
+# Global Aliases
+#####################################################
 # Aliases
 Set-Alias -Name "vim" -Value "nvim"
 Set-Alias -Name "ll" -Value "ls"
@@ -22,9 +32,9 @@ Set-Alias -Name "grep" -Value "findstr"
 Set-Alias -Name "tig" -Value "C:\Program Files\Git\usr\bin\tig.exe"
 Set-Alias -Name "less" -Value "C:\Program Files\Git\usr\bin\less.exe"
 
-# eza theme configuration
-$env:EZA_CONFIG_DIR = "$env:USERPROFILE\.config\.dotfiles\eza"
-
+#####################################################
+# Definitions
+#####################################################
 # Working directory definitions
 $ObsidianDir = "G:\My Drive\obsidian-work"
 $ConfigDir = Join-Path $env:USERPROFILE ".config"
@@ -40,7 +50,10 @@ $ReactDir = Join-Path $env:USERPROFILE "projects\react-projects"
 $StrapiDir = Join-Path $env:USERPROFILE "projects\nextjs-projects\strapi-cms"
 
 
+#####################################################
 # Custom directory navigation functions
+#####################################################
+# obsidian
 function oo {
   if (Test-Path $ObsidianDir -PathType Container) {
     Set-Location -Path $ObsidianDir
@@ -49,7 +62,7 @@ function oo {
     Write-Host "Error: $ObsidianDir not found" -ForegroundColor Red
   }
 }
-
+# .config
 function configdir {
   if (Test-Path $ConfigDir -PathType Container) {
     Set-Location -Path $ConfigDir
@@ -58,7 +71,7 @@ function configdir {
     Write-Host "Error: $ConfigDir not found" -ForegroundColor Red
   }
 }
-
+# .dotfiles
 function dotfiles {
   if (Test-Path $DotfilesDir -PathType Container) {
     Set-Location -Path $DotfilesDir
@@ -67,7 +80,7 @@ function dotfiles {
     Write-Host "Error: $DotfilesDir not found" -ForegroundColor Red
   }
 }
-
+# nvimdir
 function vimdir {
   if (Test-Path $NvimDir -PathType Container) {
     Set-Location -Path $NvimDir
@@ -76,7 +89,7 @@ function vimdir {
     Write-Host "Error: $NvimDir not found" -ForegroundColor Red
   }
 }
-
+# powershell
 function psdir {
   if (Test-Path $PowerShellDir -PathType Container) {
     Set-Location -Path $PowerShellDir
@@ -85,7 +98,7 @@ function psdir {
     Write-Host "Error: $PowerShellDir not found" -ForegroundColor Red
   }
 }
-
+# umbraco webdir
 function webdir {
   if (Test-Path $WebsitesDir -PathType Container) {
     Set-Location -Path $WebsitesDir
@@ -94,7 +107,7 @@ function webdir {
     Write-Host "Error: $WebsitesDir not found" -ForegroundColor Red
   }
 }
-
+# sitecore
 function sitecoredir {
   if (Test-Path $SitecoreDir -PathType Container) {
     Set-Location -Path $SitecoreDir
@@ -103,7 +116,7 @@ function sitecoredir {
     Write-Host "Error: $SitecoreDir not found" -ForegroundColor Red
   }
 }
-
+# xmcloud
 function xmdir {
   if (Test-Path $XMDir -PathType Container) {
     Set-Location -Path $XMDir
@@ -112,7 +125,7 @@ function xmdir {
     Write-Host "Error: $XMDir not found" -ForegroundColor Red
   }
 }
-
+# xmcloud work
 function xmwork {
   if (Test-Path $XMWork -PathType Container) {
     Set-Location -Path $XMWork
@@ -121,7 +134,7 @@ function xmwork {
     Write-Host "Error: $XMWork not found" -ForegroundColor Red
   }
 }
-
+# nextjs
 function nextdir {
   if (Test-Path $NextJSDir -PathType Container) {
     Set-Location -Path $NextJSDir
@@ -130,7 +143,7 @@ function nextdir {
     Write-Host "Error: $NextJSDir not found" -ForegroundColor Red
   }
 }
-
+# strapi
 function strapidir {
   if (Test-Path $StrapiDir -PathType Container) {
     Set-Location -Path $StrapiDir
@@ -139,6 +152,7 @@ function strapidir {
     Write-Host "Error: $StrapiDir not found" -ForegroundColor Red
   }
 }
+# react
 function reactdir {
   if (Test-Path $ReactDir -PathType Container) {
     Set-Location -Path $ReactDir
@@ -181,6 +195,9 @@ function list-dirs {
   Write-Host "----------------------------------"
   Write-Host "To use, simply type the 'Keyword' (e.g., 'oo') and press Enter."
 }
+#####################################################
+# Prompt Generator Template
+#####################################################
 function New-WorkPrompt {
   param(
     [string]$FileName = "task.md"
@@ -200,4 +217,72 @@ function New-WorkPrompt {
   } else {
     Write-Host "❌ Error: Template not found at $TemplatePath" -ForegroundColor Red
   }
+}
+#####################################################
+# Git Alias
+#####################################################
+function gst { git status }
+function gco { param($b) git switch $b }
+function gbr { git branch }
+function gnb { param($b) git switch -c $b }
+function glast { git log -1 --oneline }
+
+# commit w/message
+function gitc {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$Message
+  )
+  git commit -m $Message
+}
+# usage:
+# gitc "feat: message here"
+
+# sync feature branch with main
+function gsync {
+  git fetch origin
+  git rebase origin/main
+}
+# usage:
+# gsync
+
+# safe force push (rebase)
+function gpushf {
+  git push --force-with-lease
+}
+# usage:
+# gpushf
+
+# start a feature branch from clean main
+function gbfrommain {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$BranchName
+  )
+
+  git switch main
+  git pull origin main
+  git switch -c $BranchName
+}
+function gbfromdev {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$BranchName
+  )
+
+  git switch develop
+  git pull origin develop
+  git switch -c $BranchName
+}
+# usage -> create from main:
+# go and sync main and create a new branch from main
+# gbfrommain feature/heaer-component
+#
+# usage -> create from develop:
+# go and sync develop and create a new branch from develop
+# gbfromdev feature/heaer-component
+
+# finish reminder
+function gfinish {
+  Write-Host "✅ Open a PR. Do NOT merge locally."
 }
