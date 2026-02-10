@@ -228,6 +228,7 @@ function gnb { param($b) git switch -c $b }
 function glast { git log -1 --oneline }
 
 # commit w/message
+# usage: gitc "feat: message here"
 function gitc {
   param(
     [Parameter(Mandatory = $true)]
@@ -235,25 +236,33 @@ function gitc {
   )
   git commit -m $Message
 }
-# usage:
-# gitc "feat: message here"
 
 # sync feature branch with main
+# usage: gsync
 function gsync {
   git fetch origin
   git rebase origin/main
 }
-# usage:
-# gsync
+
+# first push
+# usage: gpushu feature/new-working-branch
+function gpushu {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$BranchName
+  )
+
+  git push -u origin $BranchName
+}
 
 # safe force push (rebase)
+# usage: gpushf
 function gpushf {
   git push --force-with-lease
 }
-# usage:
-# gpushf
 
 # start a feature branch from clean main
+# usage: gbfrommain feature/heaer-component
 function gbfrommain {
   param(
     [Parameter(Mandatory = $true)]
@@ -264,6 +273,9 @@ function gbfrommain {
   git pull origin main
   git switch -c $BranchName
 }
+
+# start a feature branch from clean develop
+# usage: gbfromdev feature/heaer-component
 function gbfromdev {
   param(
     [Parameter(Mandatory = $true)]
@@ -274,13 +286,6 @@ function gbfromdev {
   git pull origin develop
   git switch -c $BranchName
 }
-# usage -> create from main:
-# go and sync main and create a new branch from main
-# gbfrommain feature/heaer-component
-#
-# usage -> create from develop:
-# go and sync develop and create a new branch from develop
-# gbfromdev feature/heaer-component
 
 # finish reminder
 function gfinish {
