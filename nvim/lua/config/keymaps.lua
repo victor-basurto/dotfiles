@@ -140,6 +140,15 @@ keymap.set("n", "<leader>mpD", function()
   print("Copied date: " .. date)
 end, { desc = "[Date] Print current date" })
 -------------------------------------------------------
+--     Clipboard Regex for Select all Checkboxes
+--             in Markdown Files
+-------------------------------------------------------
+keymap.set("n", "<leader>mcr", function()
+  local chkbx_cmd = [[%s/\v^\s*-\s\[\s\]\s/]]
+  vim.fn.setreg("+", chkbx_cmd) -- system clipboard
+  print("Copied regex: " .. chkbx_cmd)
+end, { desc = "Regex to select all checkboxes" })
+-------------------------------------------------------
 --                  NeoGen
 -------------------------------------------------------
 vim.api.nvim_set_keymap("n", "<leader>ng", ":lua require('neogen').generate()<CR>", opts)
