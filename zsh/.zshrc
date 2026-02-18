@@ -131,7 +131,7 @@ alias gpl="git pull"
 alias gto="git switch"
 alias gtob="git switch -c"
 alias gfetch="git fetch"
-alias gst="git stash"
+alias gsth="git stash"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
