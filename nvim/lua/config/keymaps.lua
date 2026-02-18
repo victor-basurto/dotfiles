@@ -105,7 +105,7 @@ keymap.set("n", "<leader>mpd", function()
     -- Replace home directory with ~
     local home = vim.fn.expand("~")
     local display_path = filepath:gsub("^" .. home:gsub("([%(%)%.%+%-%*%?%[%]%^%$%%])", "%%%1"), "~")
-    vim.fn.setreg("+", display_path)
+    vim.fn.setreg("+", "// " .. display_path)
     print("Copied to clipboard: " .. display_path)
   end
 end, { desc = "[Dir] Copy current file fullpath (pwd)" })
@@ -116,7 +116,7 @@ keymap.set("n", "<leader>mpr", function()
   if filepath == "" then
     print("no file currently open")
   else
-    vim.fn.setreg("+", filepath)
+    vim.fn.setreg("+", "// " .. filepath)
     print("Copied to clipboard", filepath)
   end
 end, { desc = "[Dir] Copy current file relative path" })
@@ -127,7 +127,7 @@ keymap.set("n", "<leader>mpf", function()
   if filepath == "" then
     print("no file currently open")
   else
-    vim.fn.setreg("+", filepath)
+    vim.fn.setreg("+", "// " .. filepath)
     print("Copied to clipboard", filepath)
   end
 end, { desc = "[Dir] Copy current file name" })
