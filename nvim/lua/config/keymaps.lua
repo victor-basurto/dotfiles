@@ -140,7 +140,7 @@ keymap.set("n", "<leader>mpD", function()
   print("Copied date: " .. date)
 end, { desc = "[Date] Print current date" })
 -------------------------------------------------------
---     Clipboard Regex for Select all Checkboxes
+--     Clipboard Regex to Select all Checkboxes
 --             in Markdown Files
 -------------------------------------------------------
 keymap.set("n", "<leader>mcr", function()

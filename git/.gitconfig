@@ -1,0 +1,251 @@
+# ===============================
+# User identity
+# ===============================
+[user]
+  name = "User Name"
+  email = "user@email.com"
+
+# ===============================
+# Core behavior
+# ===============================
+[core]
+  # Sets your preferred text editor for Git operations (e.g., writing commit messages).
+  # Replace 'vim' with your editor of choice (e.g., 'code --wait' for VS Code, 'nano', 'subl -w', etc.)
+  editor = nvim
+  # When committing → Git converts CRLF → LF
+  # When checking out → leaves LF untouched
+  autocrlf = input
+  # Leave trailing spaces
+  # Put spaces before tabs
+  whitespace = trailing-space,space-before-tab
+  # Controls how Git displays long output.
+  #
+  # Flag Effect:
+  # -F Quit if output fits on one screen
+  # -R Preserve colors
+  # -S No line wrapping (huge win)
+  # -X Don’t clear screen on exit
+
+  # - Logs readable
+  # - No weird wrapping
+  # - No screen flicker
+  pager = less -FRSX
+
+# ===============================
+# Color UI
+# ===============================
+[color]
+  # Enables colorful output for better readability in the terminal.
+  ui = true
+
+[color "branch"]
+  current = yellow reverse
+  local = yellow
+  remote = green
+
+[color "diff"]
+  meta = yellow bold
+  frag = magenta bold
+  old = red bold
+  new = green bold
+
+[color "status"]
+  added = green
+  changed = yellow
+  untracked = red
+
+# ===============================
+# Default branch name
+# ===============================
+[init]
+  # Sets the default branch name for newly initialized repositories (e.g., `git init`)
+  # Common choices are 'main' or 'master'
+  defaultBranch = main
+
+# ===============================
+# Pull / rebase behavior
+# ===============================
+[pull]
+  # Set the default behavior for 'git pull' to rebase your local changes on top
+  # of fetched changes, creating a cleaner, linear history.
+  # Alternatives: 'false' for merge (default), 'ffonly' for fast-forward only.
+  rebase = true
+
+[rebase]
+  # - Git auto-stashes changes
+  # - Runs rebase
+  # - Restores stash
+  autoStash = true
+
+# ===============================
+# Push behavior
+# ===============================
+[push]
+  # Sets the default behavior for `git push` to push only the current branch
+  # to its upstream branch.
+  default = simple
+  # First push auto-creates upstream
+  autoSetupRemote = true
+
+# ===============================
+# Branch behavior
+# ===============================
+[branch]
+  # When you create a branch from a remote branch:
+  # Git auto-links tracking branch
+  # e.g. `git switch -c feature origin/feature`
+  # Git remembers relationship automatically.
+  autoSetupMerge = true
+  # When you pull on a branch → Git rebases instead of merges.
+  # Without this → accidental merge commits.
+  #
+  # - Cleaner history
+  # - No “Merge branch main into feature” spam
+  autoSetupRebase = always
+
+# ===============================
+# Fetch behavior
+# ===============================
+[fetch]
+  # Without this: Deleted remote branches pile up locally forever.
+  # With this: Git cleans stale remote refs automatically
+  #
+  # Example:
+  # Dev deletes branch → your repo stays clean.
+  #
+  # Prevents repo clutter.
+  prune = true
+
+# ===============================
+# Merge defaults
+# ===============================
+[merge]
+  # Opens Vim diff UI
+  tool = vimdiff
+  # With zdiff3 conflict styles:
+  # 
+  # Shows:
+  # - Your changes
+  # - Their changes
+  # - Common ancestor
+  conflictstyle = zdiff3
+
+# ===============================
+# Diff improvements
+# ===============================
+[diff]
+  # Controls how Git detects changes.
+  # 
+  # Histogram:
+  # Better at understanding moved blocks
+  # Better for refactors
+  # Cleaner diffs
+  # 
+  # Especially good for:
+  # - Big files
+  # - Rearranged code
+  # - Styling changes
+  algorithm = histogram
+  # Refactors easier to review
+  # Cleaner PRs
+  colorMoved = default
+
+# ===============================
+# Reuse recorded conflict resolutions
+# ===============================
+[rerere]
+  # Git remembers how you solved conflicts.
+  # Next time same conflict appears:
+  # Git auto-resolves it
+  enabled = true
+
+# ===============================
+# Status output
+# ===============================
+[status]
+  # All new/untracked files
+  # Not just directories
+  showUntrackedFiles = all
+
+# ===============================
+# Aliases (safe, portable)
+# ===============================
+[alias]
+  # usage: git s feature/login
+  s = switch
+  # usage: git br
+  br = branch
+  # usage: git cmsg "feat: add new icon"
+  cmsg = commit -m
+  # usage: git st
+  st = status
+  # usage: git new feature/login
+  new = switch -c
+  # Safe Push
+  # usage: git pushf
+  pushf = push --force-with-lease
+  # Feature-branch sync alias
+  # usage: git syncm
+  syncm = git fetch origin && git rebase origin/main
+  # Feature-branch sync alias work
+  # usage: git syncd
+  syncd = git fetch origin && git rebase origin/develop
+  # Start feature
+  # usage: git startm feature/new-feature
+  startm = git switch main && git pull origin main && git switch -c
+  # Start feature Work
+  # usage: git startd feature/new-feature
+  startd = git switch develop && git pull origin develop && git switch -c
+  # usage: git amend
+  amend = commit --amend --no-edit
+  # usage: git unstage .
+  unstage = restore --staged
+  # usage: git wipe
+  wipe = restore .
+
+  # ui
+  # usage: git dw
+  dw = diff
+  # usage: git ds
+  ds = diff --stage
+  # Smart status
+  # short + branch info
+  # usage: git ss
+  ss = status -sb
+  # usage: git ll
+  ll = log --oneline --decorate -n 10
+  # usage: git last
+  last = log -1 --oneline
+  # usage: git hist
+  hist = log --graph --decorate --date=short \
+  --pretty=format:'%C(auto)%h %C(blue)%ad %C(reset)| %C(white)%s %C(green)%d %C(dim white)[%an]'
+  # Shows the object type stored in Git.
+  # usage: git type HEAD
+  # usage: git type <hash>
+  type = cat-file -t
+  # Pretty-prints raw Git object content.
+  # usage: git dump HEAD
+  # usage: git dump <hash>
+  dump = cat-file -p
+  # usage: git lg
+  lg = log --graph --decorate --oneline --all
+
+# ===============================
+# Credential handling
+# ===============================
+[credential]
+  helper = manager
+  ; helper = /usr/local/share/gcm-core/git-credential-manager
+
+[credential "https://dev.azure.com"]
+  useHttpPath = true
+
+# ===============================
+# Help & misc
+# ===============================
+[help]
+    autocorrect = 20
+# Override git credentials for current project
+# e.g.
+[includeIf "gitdir:~/projects/current-project/"]
+  path = ~/.config/gitconfigs/.gitconfig.currentproject
