@@ -181,7 +181,13 @@
   # usage: git cmsg "feat: add new icon"
   cmsg = commit -m
   # usage: git amend
+  # use when:
+  # - Forgot file
+  # - Tiny code fix
+  # - Formatting tweak
   amend = commit --amend --no-edit
+  # usage: git amendm
+  amendm = commit --amend -m
 
   # usage: git st
   st = status
