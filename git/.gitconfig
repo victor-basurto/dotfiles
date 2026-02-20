@@ -212,6 +212,12 @@
   unstage = restore --staged
   # usage: git wipe
   wipe = restore .
+  # Preview what would be deleted (SAFE)
+  # usage: git clean-preview
+  clean-preview = clean -fdn
+  # Delete untracked files & folders (DESTRUCTIVE)
+  # usage: git clean-force
+  clean-force = clean -fd
 
   # ui
   # usage: git dw
