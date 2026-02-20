@@ -175,29 +175,39 @@
   s = switch
   # usage: git br
   br = branch
-  # usage: git cmsg "feat: add new icon"
-  cmsg = commit -m
-  # usage: git st
-  st = status
   # usage: git new feature/login
   new = switch -c
+
+  # usage: git cmsg "feat: add new icon"
+  cmsg = commit -m
+  # usage: git amend
+  amend = commit --amend --no-edit
+
+  # usage: git st
+  st = status
+  # Smart status
+  # short + branch info
+  # usage: git ss
+  ss = status -sb
+
   # Safe Push
   # usage: git pushf
   pushf = push --force-with-lease
+
   # Feature-branch sync alias
   # usage: git syncm
-  syncm = git fetch origin && git rebase origin/main
+  syncm = !git fetch origin && git rebase origin/main
   # Feature-branch sync alias work
   # usage: git syncd
-  syncd = git fetch origin && git rebase origin/develop
+  syncd = !git fetch origin && git rebase origin/develop
+
   # Start feature
   # usage: git startm feature/new-feature
-  startm = git switch main && git pull origin main && git switch -c
+  startm = !git switch main && git pull --rebase origin main && git switch -c
   # Start feature Work
   # usage: git startd feature/new-feature
-  startd = git switch develop && git pull origin develop && git switch -c
-  # usage: git amend
-  amend = commit --amend --no-edit
+  startd = !git switch develop && git pull --rebase origin develop && git switch -c
+
   # usage: git unstage .
   unstage = restore --staged
   # usage: git wipe
@@ -207,18 +217,19 @@
   # usage: git dw
   dw = diff
   # usage: git ds
-  ds = diff --stage
-  # Smart status
-  # short + branch info
-  # usage: git ss
-  ss = status -sb
+  ds = diff --staged
+
   # usage: git ll
   ll = log --oneline --decorate -n 10
   # usage: git last
   last = log -1 --oneline
+
   # usage: git hist
   hist = log --graph --decorate --date=short \
   --pretty=format:'%C(auto)%h %C(blue)%ad %C(reset)| %C(white)%s %C(green)%d %C(dim white)[%an]'
+  # usage: git lg
+  lg = log --graph --decorate --oneline --all
+
   # Shows the object type stored in Git.
   # usage: git type HEAD
   # usage: git type <hash>
@@ -227,8 +238,6 @@
   # usage: git dump HEAD
   # usage: git dump <hash>
   dump = cat-file -p
-  # usage: git lg
-  lg = log --graph --decorate --oneline --all
 
 # ===============================
 # Credential handling
