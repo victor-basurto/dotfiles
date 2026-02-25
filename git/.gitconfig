@@ -198,7 +198,7 @@
 
   # Safe Push
   # usage: git pushf
-  pushf = push --force-with-lease
+  pushf = push --force-with-lease --force-if-includes
 
   # Feature-branch sync alias
   # usage: git syncm

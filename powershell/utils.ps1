@@ -221,6 +221,7 @@ function New-WorkPrompt {
 #####################################################
 # Git Alias
 #####################################################
+function g { & git $args }
 function gst { git status }
 function gco { param($b) git switch $b }
 function gbr { git branch }
