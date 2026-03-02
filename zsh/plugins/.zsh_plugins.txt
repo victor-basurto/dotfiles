@@ -1,0 +1,6 @@
+Aloxaf/fzf-tab
+zsh-users/zsh-completions
+ohmyzsh/ohmyzsh path:plugins/git
+ohmyzsh/ohmyzsh path:plugins/web-search
+zsh-users/zsh-autosuggestions
+zsh-users/zsh-syntax-highlighting

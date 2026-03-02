@@ -1,0 +1,55 @@
+# ~/.config/starship.toml
+
+format = """
+$os\
+$directory\
+$custom\
+$git_branch\
+$git_status\
+$nodejs\
+$lua\
+$line_break\
+$character"""
+
+[os]
+disabled = false
+format = "[$symbol ](bold white)"
+
+[os.symbols]
+Macos = ""
+
+[directory]
+style = "bold cyan"
+truncation_length = 4
+truncation_symbol = "…/"
+
+[git_branch]
+symbol = " "
+style = "bold yellow"
+format = "on [$symbol$branch]($style) "
+
+[git_status]
+style = "bold red"
+format = "([$all_status$ahead_behind]($style) )"
+
+[nodejs]
+symbol = " "
+style = "bold green"
+format = "via [$symbol($version )]($style)"
+
+[lua]
+symbol = " "
+format = "via [$symbol$version](bold blue) "
+
+[character]
+success_symbol = "[➜](bold green) "
+error_symbol = "[➜](bold red) "
+
+[custom.sitecore]
+detect_files = ["sitecore.json"]
+symbol = "󰭻 "
+style = "bold red"
+format = " [$symbol XMCloud]($style) "
+
+[package]
+disabled = true
