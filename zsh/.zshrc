@@ -129,7 +129,7 @@ function y() {
 }
 
 # Source external files
-source "$HOME/.config/zsh/functions/custom-dirs.zsh"
+source "$HOME/.config/zsh/functions/dir-utils.zsh"
 source "$HOME/.config/zsh/functions/utils.zsh"
 source "$HOME/.config/zsh/functions/og.zsh"
 source "$HOME/.config/zsh/functions/eza-utils.zsh"
