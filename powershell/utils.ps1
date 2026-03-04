@@ -36,165 +36,153 @@ Set-Alias -Name "less" -Value "C:\Program Files\Git\usr\bin\less.exe"
 # Definitions
 #####################################################
 # Working directory definitions
-$ObsidianDir = "G:\My Drive\obsidian-work"
-$ConfigDir = Join-Path $env:USERPROFILE ".config"
-$DotfilesDir = Join-Path $env:USERPROFILE ".config\.dotfiles"
-$NvimDir = Join-Path $env:USERPROFILE ".config\.dotfiles\nvim"
-$PowerShellDir = Join-Path $env:USERPROFILE ".config\.dotfiles\powershell"
-$WebsitesDir = Join-Path $env:USERPROFILE "projects\brookfield\websites"
-$SitecoreDir = Join-Path $env:USERPROFILE "projects\brookfield\sitecore"
-$XMDir = Join-Path $env:USERPROFILE "projects\brookfield\xmcloud\work"
-$XMWork = Join-Path $env:USERPROFILE "projects\brookfield\xmcloud\work\brookfield-monorepo"
-$NextJSDir = Join-Path $env:USERPROFILE "projects\nextjs-projects"
-$ReactDir = Join-Path $env:USERPROFILE "projects\react-projects"
-$StrapiDir = Join-Path $env:USERPROFILE "projects\nextjs-projects\strapi-cms"
+$ObsidianDir    = "G:\My Drive\obsidian-work"
+$ConfigDir      = Join-Path $env:USERPROFILE ".config"
+$DotfilesDir    = Join-Path $env:USERPROFILE ".config\.dotfiles"
+$NvimDir        = Join-Path $env:USERPROFILE ".config\.dotfiles\nvim"
+$PowerShellDir  = Join-Path $env:USERPROFILE ".config\.dotfiles\powershell"
+$WebsitesDir    = Join-Path $env:USERPROFILE "projects\brookfield\websites"
+$SitecoreDir    = Join-Path $env:USERPROFILE "projects\brookfield\sitecore"
+$XMDir          = Join-Path $env:USERPROFILE "projects\brookfield\xmcloud\work"
+$MonoDir        = Join-Path $env:USERPROFILE "projects\brookfield\xmcloud\work\brookfield-monorepo"
+$BrookDir       = Join-Path $env:USERPROFILE "projects\brookfield"
+$NextJSDir      = Join-Path $env:USERPROFILE "projects\nextjs-projects"
+$ReactDir       = Join-Path $env:USERPROFILE "projects\react-projects"
+$StrapiDir      = Join-Path $env:USERPROFILE "projects\nextjs-projects\strapi-cms"
+$PersonalDir    = Join-Path $env:USERPROFILE "projects\personal-projects"
+$JSDir          = Join-Path $env:USERPROFILE "projects\js-projects"
+$SaferDir       = Join-Path $env:USERPROFILE "projects\safer-projects"
+$UmbracoDir     = Join-Path $env:USERPROFILE "projects\umbraco"
+$ZshFuncDir     = Join-Path $env:USERPROFILE ".config\.dotfiles\zsh\functions"
 
+#####################################################
+# Helper: navigate to a directory
+#####################################################
+function _GoTo {
+  param(
+    [string]$Path,
+    [string]$Label
+  )
+  if (Test-Path $Path -PathType Container) {
+    Set-Location -Path $Path
+    Write-Host "switched to: $Path"
+  } else {
+    Write-Host "Error: $Label not found at '$Path'" -ForegroundColor Red
+  }
+}
 
 #####################################################
 # Custom directory navigation functions
 #####################################################
-# obsidian
-function oo {
-  if (Test-Path $ObsidianDir -PathType Container) {
-    Set-Location -Path $ObsidianDir
-    Write-Host "switched to: $ObsidianDir"
-  } else {
-    Write-Host "Error: $ObsidianDir not found" -ForegroundColor Red
-  }
-}
-# .config
-function configdir {
-  if (Test-Path $ConfigDir -PathType Container) {
-    Set-Location -Path $ConfigDir
-    Write-Host "switched to: $ConfigDir"
-  } else {
-    Write-Host "Error: $ConfigDir not found" -ForegroundColor Red
-  }
-}
-# .dotfiles
-function dotfiles {
-  if (Test-Path $DotfilesDir -PathType Container) {
-    Set-Location -Path $DotfilesDir
-    Write-Host "switched to: $DotfilesDir"
-  } else {
-    Write-Host "Error: $DotfilesDir not found" -ForegroundColor Red
-  }
-}
-# nvimdir
-function vimdir {
-  if (Test-Path $NvimDir -PathType Container) {
-    Set-Location -Path $NvimDir
-    Write-Host "switched to: $NvimDir"
-  } else {
-    Write-Host "Error: $NvimDir not found" -ForegroundColor Red
-  }
-}
-# powershell
-function psdir {
-  if (Test-Path $PowerShellDir -PathType Container) {
-    Set-Location -Path $PowerShellDir
-    Write-Host "switched to: $PowerShellDir"
-  } else {
-    Write-Host "Error: $PowerShellDir not found" -ForegroundColor Red
-  }
-}
-# umbraco webdir
-function webdir {
-  if (Test-Path $WebsitesDir -PathType Container) {
-    Set-Location -Path $WebsitesDir
-    Write-Host "switched to: $WebsitesDir"
-  } else {
-    Write-Host "Error: $WebsitesDir not found" -ForegroundColor Red
-  }
-}
-# sitecore
-function sitecoredir {
-  if (Test-Path $SitecoreDir -PathType Container) {
-    Set-Location -Path $SitecoreDir
-    Write-Host "switched to: $SitecoreDir"
-  } else {
-    Write-Host "Error: $SitecoreDir not found" -ForegroundColor Red
-  }
-}
-# xmcloud
-function xmdir {
-  if (Test-Path $XMDir -PathType Container) {
-    Set-Location -Path $XMDir
-    Write-Host "switched to: $XMDir"
-  } else {
-    Write-Host "Error: $XMDir not found" -ForegroundColor Red
-  }
-}
-# xmcloud work
-function xmwork {
-  if (Test-Path $XMWork -PathType Container) {
-    Set-Location -Path $XMWork
-    Write-Host "switched to: $XMWork"
-  } else {
-    Write-Host "Error: $XMWork not found" -ForegroundColor Red
-  }
-}
-# nextjs
-function nextdir {
-  if (Test-Path $NextJSDir -PathType Container) {
-    Set-Location -Path $NextJSDir
-    Write-Host "switched to: $NextJSDir"
-  } else {
-    Write-Host "Error: $NextJSDir not found" -ForegroundColor Red
-  }
-}
-# strapi
-function strapidir {
-  if (Test-Path $StrapiDir -PathType Container) {
-    Set-Location -Path $StrapiDir
-    Write-Host "switched to: $StrapiDir"
-  } else {
-    Write-Host "Error: $StrapiDir not found" -ForegroundColor Red
-  }
-}
-# react
-function reactdir {
-  if (Test-Path $ReactDir -PathType Container) {
-    Set-Location -Path $ReactDir
-    Write-Host "switched to: $ReactDir"
-  } else {
-    Write-Host "Error: $ReactDir not found" -ForegroundColor Red
-  }
-}
-# Custom 'which' command
-function which ($command) {
-  Get-Command -Name $command -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Path -ErrorAction SilentlyContinue
-}
+function oo        { _GoTo $ObsidianDir   "Obsidian Work Directory" }
+function conf      { _GoTo $ConfigDir     "Configuration Files Directory" }
+function dot       { _GoTo $DotfilesDir   "Dotfiles Directory" }
+function vimd      { _GoTo $NvimDir       "Neovim Configuration Directory" }
+function ps1       { _GoTo $PowerShellDir "PowerShell Configuration Directory" }
+function webd      { _GoTo $WebsitesDir   "Websites Directory" }
+function sitecore  { _GoTo $SitecoreDir "Sitecore Project Directory" }
+function xmd       { _GoTo $XMDir        "XM Cloud Projects Directory" }
+function brook     { _GoTo $BrookDir     "Brookfield Projects Directory" }
+function nex       { _GoTo $NextJSDir    "Next.js Projects Directory" }
+function reactd    { _GoTo $ReactDir     "React Projects Directory" }
+function strap     { _GoTo $StrapiDir    "Strapi Projects Directory" }
+function pers      { _GoTo $PersonalDir  "Personal Projects Directory" }
+function jsd       { _GoTo $JSDir        "JavaScript Projects Directory" }
+function safer     { _GoTo $SaferDir     "Safer Projects Directory" }
+function umbd      { _GoTo $UmbracoDir   "Umbraco Projects Directory" }
+function zshd      { _GoTo $ZshFuncDir   "ZSH Custom Functions Directory" }
 
-# Function to list custom directory shortcuts.
+#####################################################
+# mono — navigate to monorepo root or a specific site
+#####################################################
+function mono {
+  param(
+    [string]$Site = ""
+  )
+
+  # Strip any trailing backslash from the base path
+  $BasePath = $MonoDir.TrimEnd('\')
+
+  if ([string]::IsNullOrEmpty($Site)) {
+    _GoTo $BasePath "Monorepo Root"
+    return
+  }
+
+  $SitePath = Join-Path $BasePath "src\rendering\sites\$Site"
+
+  if (Test-Path $SitePath -PathType Container) {
+    Set-Location -Path $SitePath
+    Write-Host "switched to: $SitePath"
+  } else {
+    # Fallback to monorepo root
+    if (Test-Path $BasePath -PathType Container) {
+      Set-Location -Path $BasePath
+      Write-Host "switched to: $BasePath"
+    } else {
+      Write-Host "Error: Monorepo root not found at '$BasePath'" -ForegroundColor Red
+      return
+    }
+    Write-Host "Warning: Site '$Site' not found. Moved to monorepo root." -ForegroundColor Yellow
+    Write-Host "Checked path: $SitePath"
+  }
+}
+# Enable Tab-Completion for mono sites
+Register-ArgumentCompleter -CommandName mono -ParameterName Site -ScriptBlock {
+  param($commandName, $parameterName, $wordToComplete)
+  
+  $SitesPath = Join-Path $MonoDir "src\rendering\sites"
+  
+  if (Test-Path $SitesPath -PathType Container) {
+    Get-ChildItem -Path $SitesPath -Directory |
+      Where-Object { $_.Name -like "$wordToComplete*" } |
+      ForEach-Object { $_.Name }
+  }
+}
+#####################################################
+# list-dirs — display all shortcuts
+#####################################################
 function list-dirs {
   Write-Host "--- Custom Directory Shortcuts ---"
   Write-Host "----------------------------------"
 
-  # Define an array of objects for custom directory functions.
   $customDirs = @(
-    @{ Keyword = "oo";        Description = "Obsidian-work vault"; Path = $ObsidianDir },
-    @{ Keyword = "vimdir";    Description = "nvim configuration directory"; Path = $NvimDir },
-    @{ Keyword = "configdir"; Description = "Configuration directory"; Path = $ConfigDir },
-    @{ Keyword = "dotfiles";  Description = "Dotfiles directory"; Path = $DotfilesDir },
-    @{ Keyword = "psdir";     Description = "PowerShell configuration directory"; Path = $PowerShellDir },
-    @{ Keyword = "webdir";    Description = "Brookfield websites project directory"; Path = $WebsitesDir },
-    @{ Keyword = "sitecoredir";Description = "Sitecore project directory"; Path = $SitecoreDir },
-    @{ Keyword = "xmdir";     Description = "XMCloud project directory"; Path = $XMDir },
-    @{ Keyword = "xmwork";    Description = "XMCloud Work project directory"; Path = $XMWork },
-    @{ Keyword = "nextdir"; Description = "NextJS project directory"; Path = $NextJSDir },
-    @{ Keyword = "strapidir"; Description = "Strapi project directory"; Path = $StrapiDir },
-    @{ Keyword = "reactdir"; Description = "React project directory"; Path = $ReactDir }
+    @{ Keyword = "oo";          Description = "Obsidian Work Directory";              Path = $ObsidianDir },
+    @{ Keyword = "conf";        Description = "Configuration Files Directory";        Path = $ConfigDir },
+    @{ Keyword = "dot";         Description = "Dotfiles Directory";                   Path = $DotfilesDir },
+    @{ Keyword = "vimd";        Description = "Neovim Configuration Directory";       Path = $NvimDir },
+    @{ Keyword = "ps1";         Description = "PowerShell Configuration Directory";   Path = $PowerShellDir },
+    @{ Keyword = "webd";        Description = "Websites Directory";                   Path = $WebsitesDir },
+    @{ Keyword = "sitecore";    Description = "Sitecore Project Directory";           Path = $SitecoreDir },
+    @{ Keyword = "xmd";         Description = "XM Cloud Projects Directory";          Path = $XMDir },
+    @{ Keyword = "brook";       Description = "Brookfield Projects Directory";        Path = $BrookDir },
+    @{ Keyword = "nex";         Description = "Next.js Projects Directory";           Path = $NextJSDir },
+    @{ Keyword = "reactd";      Description = "React Projects Directory";             Path = $ReactDir },
+    @{ Keyword = "strap";       Description = "Strapi Projects Directory";            Path = $StrapiDir },
+    @{ Keyword = "pers";        Description = "Personal Projects Directory";          Path = $PersonalDir },
+    @{ Keyword = "jsd";         Description = "JavaScript Projects Directory";        Path = $JSDir },
+    @{ Keyword = "safer";       Description = "Safer Projects Directory";             Path = $SaferDir },
+    @{ Keyword = "umbd";        Description = "Umbraco Projects Directory";           Path = $UmbracoDir },
+    @{ Keyword = "zshd";        Description = "ZSH Custom Functions Directory";       Path = $ZshFuncDir },
+    @{ Keyword = "mono [site]"; Description = "XM Cloud Monorepo (Supports site args)"; Path = $MonoDir }
   )
 
-  # Iterate through the array and display each function's details.
   foreach ($dir in $customDirs) {
-    Write-Host ("{0,-10} : {1,-40} ({2})" -f $dir.Keyword, $dir.Description, $dir.Path)
+    Write-Host ("{0,-14} : {1,-45} ({2})" -f $dir.Keyword, $dir.Description, $dir.Path)
   }
 
   Write-Host "----------------------------------"
-  Write-Host "To use, simply type the 'Keyword' (e.g., 'oo') and press Enter."
+  Write-Host "Usage:"
+  Write-Host "  - Type the Keyword (e.g., 'xmd') to jump to a directory."
+  Write-Host "  - For 'mono', you can add a site name: 'mono sitea'"
 }
+#####################################################
+# Other:
+# Custom 'which' command
+#####################################################
+function which ($command) {
+  Get-Command -Name $command -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Path -ErrorAction SilentlyContinue
+}
+
 #####################################################
 # Prompt Generator Template
 #####################################################
