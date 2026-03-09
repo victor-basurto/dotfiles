@@ -119,6 +119,11 @@ alias gtob="git switch -c"
 alias gfetch="git fetch"
 alias gsth="git stash"
 
+# aerospace
+function ff() {
+  aerospace list-windows --all | fzf --bind 'enter:execute(bash -c "aerospace focus --windows-id {1}")+abort'
+}
+
 # yazi function
 function y() {
   local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
