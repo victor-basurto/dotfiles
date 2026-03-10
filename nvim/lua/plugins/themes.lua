@@ -3,54 +3,55 @@ return {
   -----------------------------------
   -- THEME: Catppuccin
   -----------------------------------
-  -- {
-  --   "catppuccin/nvim",
-  --   name = "catppuccin",
-  --   event = "VeryLazy",
-  --   priority = 1000,
-  --   enabled = false,
-  --   config = function()
-  --     local catppuccin = require("catppuccin")
-  --     catppuccin.setup({
-  --       transparent_background = true,
-  --       float = {
-  --         transparent = false,
-  --         solid = false,
-  --       },
-  --       flavour = "frappe",
-  --       integrations = {
-  --         bufferline = {
-  --           enabled = true,
-  --           highlights = true, -- get highlights for bufferline
-  --           style = "default", -- "default" | "minimal" (optional)
-  --         },
-  --       },
-  --     })
-  --
-  --     vim.cmd("colorscheme catppuccin")
-  --   end,
-  --   dependencies = {
-  --     "akinsho/bufferline.nvim",
-  --     optional = true,
-  --     opts = function(_, opts)
-  --       if (vim.g.colors_name or ""):find("catppuccin") then
-  --         opts.highlights = require("catppuccin.groups.integrations.bufferline").get_theme()
-  --       end
-  --     end,
-  --   },
-  -- },
-  -- {
-  --   "akinsho/bufferline.nvim",
-  --   after = "catppuccin",
-  --   lazy = false,
-  --   enabled = false,
-  --   config = function()
-  --     local bflineCatppuccin = require("catppuccin.special.bufferline")
-  --     require("bufferline").setup({
-  --       highlights = bflineCatppuccin.get_theme(),
-  --     })
-  --   end,
-  -- },
+  {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    event = "VeryLazy",
+    lazy = false,
+    priority = 1000,
+    enabled = true,
+    config = function()
+      local catppuccin = require("catppuccin")
+      catppuccin.setup({
+        transparent_background = true,
+        float = {
+          transparent = false,
+          solid = false,
+        },
+        flavour = "frappe",
+        integrations = {
+          bufferline = {
+            enabled = true,
+            highlights = true, -- get highlights for bufferline
+            style = "default", -- "default" | "minimal" (optional)
+          },
+        },
+      })
+
+      vim.cmd("colorscheme catppuccin")
+    end,
+    dependencies = {
+      "akinsho/bufferline.nvim",
+      optional = true,
+      opts = function(_, opts)
+        if (vim.g.colors_name or ""):find("catppuccin") then
+          opts.highlights = require("catppuccin.groups.integrations.bufferline").get_theme()
+        end
+      end,
+    },
+  },
+  {
+    "akinsho/bufferline.nvim",
+    lazy = false,
+    enabled = true,
+    dependencies = { "catppuccin/nvim" },
+    config = function()
+      local bflineCatppuccin = require("catppuccin.special.bufferline")
+      require("bufferline").setup({
+        highlights = bflineCatppuccin.get_theme(),
+      })
+    end,
+  },
   -----------------------------------
   -- THEME: NightFox
   -----------------------------------
@@ -202,48 +203,25 @@ return {
   --   end,
   -- },
   -------------------------------
-  -- Theme: Ayu
-  -------------------------------
-  -- {
-  --   "Shatur/neovim-ayu",
-  --   lazy = false,
-  --   config = function()
-  --     local ayu = require("ayu")
-  --     local lualine = require("lualine")
-  --     ayu.setup({
-  --       mirage = true,
-  --       terminal = true,
-  --       overrides = {},
-  --     })
-  --     lualine.setup({
-  --       options = {
-  --         theme = "ayu",
-  --       },
-  --     })
-  --
-  --     vim.cmd("colorscheme ayu")
-  --   end,
-  -- },
-  -------------------------------
   -- Theme: Bamboo
   -------------------------------
-  {
-    "ribru17/bamboo.nvim",
-    lazy = false,
-    priority = 1000,
-    config = function()
-      require("bamboo").setup({
-        style = "vulgaris",
-        terminal = true,
-        overrides = {},
-      })
-      -- lualine.setup({
-      --   options = {
-      --     theme = "bamboo",
-      --   },
-      -- })
-      require("bamboo").load()
-      -- vim.cmd("colorscheme bamboo")
-    end,
-  },
+  --   {
+  --     "ribru17/bamboo.nvim",
+  --     lazy = false,
+  --     priority = 1000,
+  --     config = function()
+  --       require("bamboo").setup({
+  --         style = "vulgaris",
+  --         terminal = true,
+  --         overrides = {},
+  --       })
+  --       -- lualine.setup({
+  --       --   options = {
+  --       --     theme = "bamboo",
+  --       --   },
+  --       -- })
+  --       require("bamboo").load()
+  --       -- vim.cmd("colorscheme bamboo")
+  --     end,
+  --   },
 }
