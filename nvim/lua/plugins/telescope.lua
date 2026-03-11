@@ -6,6 +6,8 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-telescope/telescope-file-browser.nvim",
+      "nvim-telescope/telescope-frecency.nvim",
+      "nvim-telescope/telescope-ui-select.nvim",
     },
     config = function(_, opts)
       local telescope = require("telescope")
@@ -17,6 +19,7 @@ return {
         layout_strategy = "horizontal",
         layout_config = { prompt_position = "top" },
         sorting_strategy = "ascending",
+        path_display = { "truncate" },
         winblend = 0,
         mappings = {
           n = {},
@@ -32,7 +35,12 @@ return {
         },
       }
       opts.extensions = {
-        file_browser = {
+        ["ui-select"] = {
+          require("telescope.themes").get_dropdown({
+            --custom options
+          }),
+        },
+        ["file_browser"] = {
           theme = "dropdown",
           -- fix error for telescope mini-icons
           entry_marker = require("telescope.make_entry").gen_from_file({
@@ -64,33 +72,16 @@ return {
             },
           },
         },
+        ["frecency"] = {
+          path_display = { "truncate" },
+        },
       }
       telescope.setup(opts)
       -- require("telescope").load_extension("fzf")
-      require("telescope").load_extension("file_browser")
-    end,
-  },
-  {
-    "nvim-telescope/telescope-ui-select.nvim",
-    config = function()
-      require("telescope").setup({
-        extensions = {
-          ["ui-select"] = {
-            require("telescope.themes").get_dropdown({
-              --custom options
-            }),
-          },
-        },
-      })
       require("telescope").load_extension("ui-select")
-    end,
-  },
-  { "nvim-telescope/telescope-fzf-native.nvim", enabled = false },
-  {
-    "nvim-telescope/telescope-frecency.nvim",
-    version = "*",
-    config = function()
+      require("telescope").load_extension("file_browser")
       require("telescope").load_extension("frecency")
     end,
   },
+  { "nvim-telescope/telescope-fzf-native.nvim", enabled = false },
 }
