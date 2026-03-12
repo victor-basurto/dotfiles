@@ -37,57 +37,66 @@ DEST_DIR="notes"
 og() {
   echo "Organizing Zettelkasten notes in: $VAULT_DIR/$SOURCE_DIR"
 
-  # check if zettelkasten directory exists
   if [ ! -d "$VAULT_DIR/$SOURCE_DIR" ]; then
     echo "Zettelkasten directory does not exist: $VAULT_DIR/$SOURCE_DIR"
     return 1
   fi
 
-  # ensure notes directory exists
   mkdir -p "$VAULT_DIR/$DEST_DIR"
-  echo "Ensured notes directory exists: $VAULT_DIR/$DEST_DIR"
 
-  # iterate through all markdown files in the source directory
   find "$VAULT_DIR/$SOURCE_DIR" -type f -name "*.md" | while read -r file; do
-  echo "-----"
-  echo "Processing $(basename $file)"
+    echo "-----"
+    filename=$(basename "$file")
+    echo "Processing $filename"
 
-    # read the file content
+    # Extract function: Strips leading dashes, brackets, and spaces
+    extract_val() {
+        local key=$1
+        local content=$2
+        # 1. Find the key line and the line after it
+        # 2. Remove the key name (e.g., 'tags:')
+        # 3. Strip brackets []
+        # 4. Remove the leading dash '-' and any space following it
+        # 5. Trim leading/trailing whitespace
+        echo "$content" | ggrep -A 1 "^${key}:" | \
+        sed "/^${key}:/d" | \
+        tr -d '[]' | \
+        sed 's/^[[:space:]]*-//' | \
+        sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | \
+        head -n 1
+    }
+
     content=$(cat "$file")
+    
+    tag=$(extract_val "tags" "$content")
+    parentTag=$(extract_val "parent" "$content")
 
-    # extract the first tag from 'tags: []'
-    tag=$(echo "$content" | ggrep -oP 'tags:\s*\[\s*\K[^\]\s,]+' | head -n 1)
+    # Final Safety Check for weird characters
+    [[ "$tag" == "[" || "$tag" == "]" || -z "$tag" ]] && tag=""
+    [[ "$parentTag" == "[" || "$parentTag" == "]" || -z "$parentTag" ]] && parentTag=""
 
-    # extract the first parent tag from 'parent: []'
-    parentTag=$(echo "$content" | ggrep -oP 'parent:\s*\[\s*\K[^\]\s,]+' | head -n 1)
+    echo "Found tag: '$tag'"
+    echo "Found parent tag: '$parentTag'"
 
-    echo "Found tag: $tag"
-    echo "Found parent tag: $parentTag"
-
-    if [ ! -z "$tag" ]; then
+    if [ -n "$tag" ]; then
       targetBaseDir="$VAULT_DIR/$DEST_DIR"
-      local targetTagDir
-
-      # construct the target directory based on the parent tag
-      if [ ! -z "$parentTag" ]; then
+      
+      if [ -n "$parentTag" ]; then
         targetTagDir="$targetBaseDir/$parentTag/$tag"
-        echo "Destination directory with parent tag: $targetTagDir"
       else
         targetTagDir="$targetBaseDir/$tag"
-        echo "Destination directory without parent tag: $targetTagDir"
       fi
 
-      # create the target directory if it doesn't exist
+      # The -p flag ensures it creates the parent and the tag folder correctly
       mkdir -p "$targetTagDir"
-
-      # move the file to the target directory
+      
       if mv "$file" "$targetTagDir/"; then
-        echo "Moved $(basename $file) to $targetTagDir/"
+        echo "Successfully moved to $targetTagDir/"
       else
-        echo "Failed to move $(basename $file) to $targetTagDir/"
+        echo "Failed to move $filename"
       fi
     else
-      echo "No tag found for $(basename $file), skipping."
+      echo "No valid tag found for $filename, skipping."
     fi
   done
   echo "-----"
