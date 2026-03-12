@@ -235,7 +235,7 @@ return {
       local function is_obsidian_vault()
         local cwd = vim.fn.getcwd()
         if vim.fn.has("win32") == 1 then
-          cwd = cwd:gsub("\\", "/")
+          -- cwd = cwd:gsub("\\", "/")
           return string.find(cwd:lower(), obsidian_path:lower(), 1, true) == 1
         else
           return string.find(cwd, obsidian_path, 1, true) == 1

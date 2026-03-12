@@ -12,6 +12,11 @@ end
 -- resolve symlinks (especially for Google Drive on macOS)
 local uv = vim.uv or vim.loop
 obsidian_path = uv.fs_realpath(obsidian_path) or obsidian_path
+obsidian_path = obsidian_path:gsub("\\", "/"):gsub("/$", "")
+-- Removed debug print statement for normalized obsidian_path
+obsidian_path = obsidian_path:gsub("G:/My Drive", "G:/My Drive") -- Ensure consistent path normalization
+-- Normalize the path: convert backslashes to forward slashes and remove trailing slashes
+obsidian_path = obsidian_path:gsub("\\\\", "/"):gsub("/$", "")
 return {
   "obsidian-nvim/obsidian.nvim",
   version = "*",
@@ -25,11 +30,12 @@ return {
     local cwd = vim.fn.getcwd()
     -- Normalize for Windows
     if vim.fn.has("win32") == 1 then
-      cwd = cwd:gsub("\\", "/")
+      cwd = cwd:gsub("\\", "/"):gsub("/$", "")
     end
     -- Case insensitive check for Windows
     if vim.fn.has("win32") == 1 then
-      return string.find(cwd:lower(), obsidian_path:lower(), 1, true) == 1
+      local is_vault = string.find(cwd:lower(), obsidian_path:lower(), 1, true) == 1
+      return is_vault
     else
       return string.find(cwd, obsidian_path, 1, true) == 1
     end
@@ -48,9 +54,9 @@ return {
       enabled = true,
       sort = { "id", "aliases", "tags" },
     },
-    notes_subdir = "inbox",              -- store notes in the `inbox` directory
+    notes_subdir = "inbox", -- store notes in the `inbox` directory
     new_notes_location = "notes_subdir", -- new notes should be store in the `notes_subdir` -> `inbox`
-    preferred_link_style = "wiki",       -- Either 'wiki' or 'markdown'.
+    preferred_link_style = "wiki", -- Either 'wiki' or 'markdown'.
     ---@class obsidian.config.BacklinkOpts
     ---
     ---@field parse_headers boolean
