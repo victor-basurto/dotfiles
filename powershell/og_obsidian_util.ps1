@@ -13,88 +13,74 @@ function og {
   # check if zettelkasten directory exists
   if (-not (Test-Path $ZETTELKASTEN_DIR)) {
     Write-Host "Error: Zettelkasten directory not found at $ZETTELKASTEN_DIR" -ForegroundColor Red
-    exit
+    return
   }
-  # ensure the notes directory exists
+
   if (-not (Test-Path $NOTES_DIR)) {
     New-Item -ItemType Directory -Path $NOTES_DIR | Out-Null
     Write-Host "Created Notes directory at $NOTES_DIR"
   }
+
   Write-Host "Organizing Zettelkasten notes in: $ZETTELKASTEN_DIR"
 
   # Iterate through all markdown files in the zettelkasten directory
   Get-ChildItem -Path $ZETTELKASTEN_DIR -Filter "*.md" | ForEach-Object {
     $filePath = $_.FullName
     $fileName = $_.Name
+    Write-Host "---"
     Write-Host "Processing file: $fileName"
     # Read the file content
     $content = Get-Content -Path $filePath -Raw
-    # Regular expression to extract primary tags from the 'tags: []' front matter
-    # It looks for 'tags: [' followed by anything not ']' (non-greedy), then ']'
-    $tagMatch = [regex]::Match($content, 'tags:\s*\[([^\]]*)\]')
-    # Regular expression to extract parent tags from the 'parent: []' frontmatter
-    # It looks for 'parent: [' followed by anything not ']' (non-greedy), them ']'
-    $parentMatch = [regex]::Match($content, 'parent:\s*\[([^\]]*)\]')
+    # Helper function to extract tags from both formats
+    # Helper function to extract tags from both formats
+    function Get-ObsidianTag($key, $text) {
+      # Using ${key} to prevent PowerShell from misinterpreting the colon as a scope modifier
+      $pattern = "(?m)^${key}:\s*(?:\[([^\]]*)\]|(?:\r?\n)\s*-\s*([^\s\r\n]+))"
+      $match = [regex]::Match($text, $pattern)
 
-    $firstTag = $null
-    $parentTag = $null
+      if ($match.Success) {
+        # Group 1 is the inline [value], Group 2 is the list - value
+        $val = if ($match.Groups[1].Success) { $match.Groups[1].Value } else { $match.Groups[2].Value }
 
-    # extract primary tag
-    if ($tagMatch.Success) {
-      $tagsString = $tagMatch.Groups[1].Value.Trim()
-      if (-not [string]::IsNullOrEmpty($tagsString)) {
-        # ensure the result is always an array of string, even for a single tag
-        $tempTags = @($tagsString.Split(',') | ForEach-Object { $_.Trim() } | Where-Object { -not [string]::IsNullOrEmpty($_)})
-        if ($tempTags.Count -gt 0) {
-          $firstTag = $tempTags[0]  # Get the first tag
+        if ($val) {
+          # Trim leading/trailing spaces, brackets, and the YAML dash
+          return $val.Split(',')[0].Trim(" []-")
         }
       }
+      return $null
     }
+    $firstTag = Get-ObsidianTag "tags" $content
+    $parentTag = Get-ObsidianTag "parent" $content
 
-    # extract parent tag
-    if ($parentMatch.Success) {
-      $parentString = $parentMatch.Groups[1].Value.Trim()
-      if (-not [string]::IsNullOrEmpty($parentString)) {
-        # ensure the result is always an array of string, even for a single tag
-        $tempParentTags = @($parentString.Split(',') | ForEach-Object { $_.Trim() } | Where-Object { -not [string]::IsNullOrEmpty($_)})
-        if ($tempParentTags.Count -gt 0) {
-          $parentTag = $tempParentTags[0]  # Get the first tag
-        }
-      }
-    }
+    # Final sanitization: ensure we don't have empty strings or just brackets
+    if ($firstTag -eq "[" -or $firstTag -eq "]") { $firstTag = $null }
+    if ($parentTag -eq "[" -or $parentTag -eq "]") { $parentTag = $null }
 
-    Write-Host "First Tag: $firstTag"
-    Write-Host "Parent Tag: $parentTag"
+    Write-Host "First Tag: '$firstTag'"
+    Write-Host "Parent Tag: '$parentTag'"
 
     if (-not [string]::IsNullOrEmpty($firstTag)) {
-      $targetBaseDir = $NOTES_DIR
-      # construct the target directory path based on parent tag
-      if (-not [string]::IsNullOrEmpty($parentTag)) {
-        $targetTagDir = Join-Path (Join-Path $targetBaseDir $parentTag) $firstTag
-        Write-Host " Destination path with parent: '$targetTagDir'"
+      $targetTagDir = if (-not [string]::IsNullOrEmpty($parentTag)) {
+        Join-Path (Join-Path $NOTES_DIR $parentTag) $firstTag
       } else {
-        $targetTagDir = Join-Path $targetBaseDir $firstTag
-        Write-Host " Destination path without parent: '$targetTagDir'"
+        Join-Path $NOTES_DIR $firstTag
       }
 
-      # check if the target directory exists, if not, create it
-      # -Force parameter ensures parent directories are created if they don't exist
       if (-not (Test-Path $targetTagDir)) {
         New-Item -ItemType Directory -Path $targetTagDir -Force | Out-Null
-        Write-Host "Created new directory: $targetTagDir"
+        Write-Host "Created directory: $targetTagDir"
       }
 
-      # Move the file to the target directory
       try {
         Move-Item -Path $filePath -Destination $targetTagDir -Force
-        Write-Host "Successfully moved '$fileName' to '$targetTagDir'"
+        Write-Host "Successfully moved '$fileName'"
       } catch {
-        Write-Error "Failed to move '$fileName' to '$targetTagDir'. Error: $($_.Exception.Message)"
+        Write-Host "Failed to move '$fileName'. Error: $($_.Exception.Message)" -ForegroundColor Red
       }
     } else {
-      Write-Host "No valid primary tag found for file: $fileName. Ignoring."
+      Write-Host "No valid tag found. Skipping." -ForegroundColor Yellow
     }
-    Write-Host "---"
-    Write-Host "Zettelkasten processing complete."
   }
+  Write-Host "---"
+  Write-Host "Zettelkasten processing complete."
 }
