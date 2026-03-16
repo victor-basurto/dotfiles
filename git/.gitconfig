@@ -202,10 +202,21 @@
 
   # Feature-branch sync alias
   # usage: git syncm
-  syncm = !git fetch origin && git rebase origin/main
+  syncm = !git fetch origin main && git rebase origin/main
   # Feature-branch sync alias work
   # usage: git syncd
-  syncd = !git fetch origin && git rebase origin/develop
+  syncd = !git fetch origin develop && git rebase origin/develop
+  # update:
+  #   - fetch everything
+  #   - clean deleted remove branches
+  #   - rebase your current branch
+  #   - auto-stash changes
+  # usage: git update
+  update = !git fetch --all --prune && git reabse --autostash
+  # wip alias with message
+  #   - `${*} - captures typing message`
+  #   - `:-work in progress` - default message if none is provided
+  wip = "!f() { git add -A && git commit -m \"WIP: ${*:-work in progress}\"; }; f"
 
   # Start feature
   # usage: git startm feature/new-feature
