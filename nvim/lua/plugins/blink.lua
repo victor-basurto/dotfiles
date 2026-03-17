@@ -14,7 +14,6 @@ local trigger_text = ";"
 return {
   "saghen/blink.cmp",
   enabled = true,
-  build = "cargo build --release",
   -- In case there are breaking changes and you want to go back to the last
   -- working release
   -- https://github.com/Saghen/blink.cmp/releases
@@ -55,6 +54,10 @@ return {
     -- { "giuxtaposition/blink-cmp-copilot" },
   },
   opts = function(_, opts)
+    -- set immplemetation to Lua to avoid .dll issues on Windows
+    opts.fuzzy = {
+      implementation = "lua",
+    }
     -- I noticed that telescope was extremeley slow and taking too long to open,
     -- assumed related to blink, so disabled blink and in fact it was related
     -- :lua print(vim.bo[0].filetype)
@@ -210,7 +213,7 @@ return {
         emoji = {
           module = "blink-emoji",
           name = "Emoji",
-          score_offset = 93,        -- the higher the number, the higher the priority
+          score_offset = 93, -- the higher the number, the higher the priority
           min_keyword_length = 2,
           opts = { insert = true }, -- Insert emoji (default) or complete its name
         },
@@ -320,7 +323,7 @@ return {
     opts.keymap = {
       preset = "default",
 
-      ["<Tab>"] = { "select_next", "fallback" },   -- or "snippet_forward", or whichever you want
+      ["<Tab>"] = { "select_next", "fallback" }, -- or "snippet_forward", or whichever you want
       ["<S-Tab>"] = { "select_prev", "fallback" }, -- or "snippet_backward"
       ["<Up>"] = { "select_prev", "fallback" },
       ["<Down>"] = { "select_next", "fallback" },
