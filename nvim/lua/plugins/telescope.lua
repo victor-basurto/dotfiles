@@ -74,6 +74,9 @@ return {
         },
         ["frecency"] = {
           path_display = { "truncate" },
+          db_safe_mode = false, -- Prevents the "clean DB" prompt which can sometimes cause input glitches
+          auto_validate = true,
+          default_text = "", -- Force the prompt to start empty
         },
       }
       telescope.setup(opts)

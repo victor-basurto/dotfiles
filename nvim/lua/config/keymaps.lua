@@ -76,7 +76,11 @@ keymap.set("n", "<leader>fl", function()
 end, { desc = "Telescope files in current directory" })
 telescope.load_extension("frecency")
 keymap.set("n", "<leader>faf", ":Telescope frecency<cr>", { desc = "[Frec] Frecency Files" })
-keymap.set("n", "<leader>ff", ":Telescope frecency workspace=CWD<CR>", { desc = "[Frec] Frecrency" })
+keymap.set("n", "<leader>ff", "<cmd>Telescope frecency workspace=CWD<CR>", {
+  desc = "[Frec] Frecency",
+  silent = true,
+  nowait = true,
+})
 -------------------------------------------------------
 --              END Telescope
 -------------------------------------------------------
