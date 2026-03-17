@@ -56,9 +56,14 @@ return {
           "pdf",
         },
         resolve = function(path, src)
-          if require("obsidian.api").path_is_note(path) then
-            return require("obsidian.api").resolve_image_path(src)
+          local ok, obsidian = pcall(require, "obsidian.api")
+          if ok and obsidian.path_is_note(path) then
+            return obsidian.resolve_img_path(src)
           end
+          return nil
+          -- if require("obsidian.api").path_is_note(path) then
+          --   return require("obsidian.api").resolve_image_path(src)
+          -- end
         end,
       },
       styles = {
