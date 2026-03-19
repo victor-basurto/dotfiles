@@ -217,6 +217,15 @@
   #   - `${*} - captures typing message`
   #   - `:-work in progress` - default message if none is provided
   wip = "!f() { git add -A && git commit -m \"WIP: ${*:-work in progress}\"; }; f"
+  # `--keep-index`: Tells Git to leave your staged files (git add) alone.
+  # `--include-untracked`: Grabs those 50 untracked files you mentioned.
+  # `git stash drop`: Immediately deletes the stash it just created, effectively "cleaning" your branch to exactly what you staged.
+  # Usage: git zap
+  zap = !git stash push --keep-index --include-untracked && git stash drop
+  # fetch-all
+  # use this command when swtiching to an existing brnach and you want to update develop and then rebase and push your chnages
+  # basically it will fetch-all and update
+  fetch-all = !git syncd && git pushf;
 
   # Start feature
   # usage: git startm feature/new-feature
