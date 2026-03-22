@@ -46,43 +46,60 @@ keymap.set("n", "<leader>ttQ", ":Trouble qflist toggle <cr>", { desc = "[TROUBLE
 --              END Trouble
 -------------------------------------------------------
 -------------------------------------------------------
---               Telescope
+--               Telescope (Disabled)
 -------------------------------------------------------
-local telescopeBuiltin = require("telescope.builtin")
-local telescope = require("telescope")
-keymap.set("n", "<leader>fx", telescopeBuiltin.find_files, { desc = "Telescope find files" })
-keymap.set("n", "<leader>fg", telescopeBuiltin.live_grep, { desc = "Telescope live grep" })
-keymap.set("n", "<leader>fb", telescopeBuiltin.buffers, { desc = "Telescope buffers" })
-keymap.set("n", "<leader>fh", telescopeBuiltin.help_tags, { desc = "Telescope help tags" })
-keymap.set("n", "<leader>fi", telescopeBuiltin.resume, { desc = "Telescope resume" })
-keymap.set("n", "<leader>fj", telescopeBuiltin.diagnostics, { desc = "Telescope diagnostics" })
-keymap.set("n", "<leader>fk", telescopeBuiltin.treesitter, { desc = "Telescope treesitter" })
-keymap.set("n", "<leader>fI", telescopeBuiltin.lsp_definitions, { desc = "Telescope Got to LSP Implementation" })
-keymap.set("n", "<leader>fd", telescopeBuiltin.lsp_type_definitions, { desc = "Telescope Got to Type Definition" })
-keymap.set("n", "<leader>fl", function()
-  local function telescope_buffer_dir()
-    return vim.fn.expand("%:p:h")
-  end
-  telescope.extensions.file_browser.file_browser({
-    path = "%:p:h",
-    cwd = telescope_buffer_dir(),
-    respect_gitignore = false,
-    hidden = true,
-    grouped = true,
-    previewer = false,
-    initial_mode = "normal",
-    layout_config = { height = 40 },
-  })
-end, { desc = "Telescope files in current directory" })
-telescope.load_extension("frecency")
-keymap.set("n", "<leader>faf", ":Telescope frecency<cr>", { desc = "[Frec] Frecency Files" })
-keymap.set("n", "<leader>ff", "<cmd>Telescope frecency workspace=CWD<CR>", {
-  desc = "[Frec] Frecency",
-  silent = true,
-  nowait = true,
-})
+-- local telescopeBuiltin = require("telescope.builtin")
+-- local telescope = require("telescope")
+-- keymap.set("n", "<leader>fx", telescopeBuiltin.find_files, { desc = "Telescope find files" })
+-- keymap.set("n", "<leader>fg", telescopeBuiltin.live_grep, { desc = "Telescope live grep" })
+-- keymap.set("n", "<leader>fb", telescopeBuiltin.buffers, { desc = "Telescope buffers" })
+-- keymap.set("n", "<leader>fh", telescopeBuiltin.help_tags, { desc = "Telescope help tags" })
+-- keymap.set("n", "<leader>fi", telescopeBuiltin.resume, { desc = "Telescope resume" })
+-- keymap.set("n", "<leader>fj", telescopeBuiltin.diagnostics, { desc = "Telescope diagnostics" })
+-- keymap.set("n", "<leader>fk", telescopeBuiltin.treesitter, { desc = "Telescope treesitter" })
+-- keymap.set("n", "<leader>fI", telescopeBuiltin.lsp_definitions, { desc = "Telescope Got to LSP Implementation" })
+-- keymap.set("n", "<leader>fd", telescopeBuiltin.lsp_type_definitions, { desc = "Telescope Got to Type Definition" })
+-- keymap.set("n", "<leader>fl", function()
+--   local function telescope_buffer_dir()
+--     return vim.fn.expand("%:p:h")
+--   end
+--   telescope.extensions.file_browser.file_browser({
+--     path = "%:p:h",
+--     cwd = telescope_buffer_dir(),
+--     respect_gitignore = false,
+--     hidden = true,
+--     grouped = true,
+--     previewer = false,
+--     initial_mode = "normal",
+--     layout_config = { height = 40 },
+--   })
+-- end, { desc = "Telescope files in current directory" })
+-- telescope.load_extension("frecency")
+-- keymap.set("n", "<leader>faf", ":Telescope frecency<cr>", { desc = "[Frec] Frecency Files" })
+-- keymap.set("n", "<leader>ff", "<cmd>Telescope frecency workspace=CWD<CR>", {
+--   desc = "[Frec] Frecency",
+--   silent = true,
+--   nowait = true,
+-- })
 -------------------------------------------------------
 --              END Telescope
+-------------------------------------------------------
+-------------------------------------------------------
+--               fzf-lua
+-------------------------------------------------------
+local fzf = require("fzf-lua")
+keymap.set("n", "<leader>fx", fzf.files, { desc = "fzf find files" })
+keymap.set("n", "<leader>fg", fzf.live_grep, { desc = "fzf live grep" })
+keymap.set("n", "<leader>fb", fzf.buffers, { desc = "fzf buffers" })
+keymap.set("n", "<leader>fh", fzf.help_tags, { desc = "fzf help tags" })
+keymap.set("n", "<leader>fi", fzf.resume, { desc = "fzf resume" })
+keymap.set("n", "<leader>fj", fzf.diagnostics_workspace, { desc = "fzf diagnostics" })
+keymap.set("n", "<leader>fk", fzf.treesitter, { desc = "fzf treesitter" })
+keymap.set("n", "<leader>fI", fzf.lsp_definitions, { desc = "fzf Got to LSP Implementation" })
+keymap.set("n", "<leader>fd", fzf.lsp_typedefs, { desc = "fzf Got to Type Definition" })
+-- Note: Replaced file_browser and frecency with fzf-lua equivalents or omitted if not straightforward.
+-------------------------------------------------------
+--              END fzf-lua
 -------------------------------------------------------
 -------------------------------------------------------
 --              Snacks.LazyGit

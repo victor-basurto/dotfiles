@@ -21,7 +21,6 @@ return {
   ft = "markdown",
   dependencies = {
     "nvim-lua/plenary.nvim",
-    "nvim-telescope/telescope.nvim",
   },
   cond = function()
     local cwd = vim.fn.getcwd()
@@ -175,7 +174,7 @@ return {
     },
 
     picker = {
-      name = "telescope.nvim",
+      name = "fzf-lua",
       note_mappings = {
         new = "<C-x>",
         insert_link = "<C-l>",
