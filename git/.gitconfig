@@ -189,6 +189,9 @@
   # usage: git amendm
   amendm = commit --amend -m
 
+  # Initial flow
+  devup = !git switch develop && git fetch origin && git pull
+
   # usage: git st
   st = status
   # Smart status
