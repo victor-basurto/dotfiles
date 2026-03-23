@@ -15,6 +15,7 @@ return {
         -- - git
         -- - filebrowser (if exists)
         -- - frecency (if exists)
+        -- Enable file navigation when fzf is opened
         winopts = {
           preview = {
             layout = "vertical",
