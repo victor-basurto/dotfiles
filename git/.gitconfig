@@ -204,7 +204,7 @@
   #   - clean deleted remove branches
   #   - rebase your current branch
   #   - auto-stash changes
-  devup = !git switch develop && git fetch --all --prune && git rebase --autostash origin/develop
+  devup = !git switch develop && git fetch --all --prune && git pull
 
   #-----------------------
   # STATUS
@@ -232,13 +232,21 @@
   # Feature-branch sync alias work
   # usage: git syncd
   syncd = !git fetch origin develop && git rebase origin/develop
-  # fetch-all
-  # use this command when swtiching to an existing brnach and you want to update develop and then rebase and push your chnages
+  # syncship
+  # use this command when switching to an existing branch and you want to update develop and then rebase and push force your changes
   # basically it will fetch-all and update
-  fetch-all = !git syncd && git pushf;
-
+  syncship = !git syncd && git pushf;
+  syncf = !git fetch origin $(git branch --show-current) && git rebase origin/$(git branch --show-current)
+  # prevent divergence
+  # usage: g up
+  up = !git syncd && git syncf
+  # Replays your commits on top of remote commits
+  # use this command before creating a PR
+  # usage: g rib
+  rib = "!git rebase -i origin/develop"
+  
   #-----------------------
-  # SYNC AND SHIP
+  # BEGIN WORK
   #-----------------------
   # Start feature
   # usage: git startm feature/new-feature
