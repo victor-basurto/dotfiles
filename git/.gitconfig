@@ -171,6 +171,9 @@
 # Aliases (safe, portable)
 # ===============================
 [alias]
+  #-----------------------
+  # BASIC NAVIGATION
+  #-----------------------
   # usage: git s feature/login
   s = switch
   # usage: git br
@@ -178,6 +181,9 @@
   # usage: git new feature/login
   new = switch -c
 
+  #-----------------------
+  # COMMIT HELPERS
+  #-----------------------
   # usage: git cmsg "feat: add new icon"
   cmsg = commit -m
   # usage: git amend
@@ -189,9 +195,20 @@
   # usage: git amendm
   amendm = commit --amend -m
 
+  #-----------------------
+  # DAILY START UPDATE
+  #-----------------------
   # Initial flow
-  devup = !git switch develop && git fetch origin && git pull
+  # devup:
+  #   - fetch everything
+  #   - clean deleted remove branches
+  #   - rebase your current branch
+  #   - auto-stash changes
+  devup = !git switch develop && git fetch --all --prune && git rebase --autostash origin/develop
 
+  #-----------------------
+  # STATUS
+  #-----------------------
   # usage: git st
   st = status
   # Smart status
@@ -199,23 +216,40 @@
   # usage: git ss
   ss = status -sb
 
+  #-----------------------
+  # PUSH
+  #-----------------------
   # Safe Push
   # usage: git pushf
   pushf = push --force-with-lease --force-if-includes
 
+  #-----------------------
+  # SYNC AND SHIP
+  #-----------------------
   # Feature-branch sync alias
   # usage: git syncm
   syncm = !git fetch origin main && git rebase origin/main
   # Feature-branch sync alias work
   # usage: git syncd
   syncd = !git fetch origin develop && git rebase origin/develop
-  # update:
-  #   - fetch everything
-  #   - clean deleted remove branches
-  #   - rebase your current branch
-  #   - auto-stash changes
-  # usage: git update
-  update = !git fetch --all --prune && git reabse --autostash
+  # fetch-all
+  # use this command when swtiching to an existing brnach and you want to update develop and then rebase and push your chnages
+  # basically it will fetch-all and update
+  fetch-all = !git syncd && git pushf;
+
+  #-----------------------
+  # SYNC AND SHIP
+  #-----------------------
+  # Start feature
+  # usage: git startm feature/new-feature
+  startm = !git switch main && git pull --rebase origin main && git switch -c
+  # Start feature Work
+  # usage: git startd feature/new-feature
+  startd = !git switch develop && git pull --rebase origin develop && git switch -c
+
+  #-----------------------
+  # WORK HELPERS
+  #-----------------------
   # wip alias with message
   #   - `${*} - captures typing message`
   #   - `:-work in progress` - default message if none is provided
@@ -225,22 +259,18 @@
   # `git stash drop`: Immediately deletes the stash it just created, effectively "cleaning" your branch to exactly what you staged.
   # Usage: git zap
   zap = !git stash push --keep-index --include-untracked && git stash drop
-  # fetch-all
-  # use this command when swtiching to an existing brnach and you want to update develop and then rebase and push your chnages
-  # basically it will fetch-all and update
-  fetch-all = !git syncd && git pushf;
 
-  # Start feature
-  # usage: git startm feature/new-feature
-  startm = !git switch main && git pull --rebase origin main && git switch -c
-  # Start feature Work
-  # usage: git startd feature/new-feature
-  startd = !git switch develop && git pull --rebase origin develop && git switch -c
-
+  #-----------------------
+  # CLEANUP
+  #-----------------------
   # usage: git unstage .
   unstage = restore --staged
   # usage: git wipe
   wipe = restore .
+
+  #-----------------------
+  # SAFE CLEAN
+  #-----------------------
   # Preview what would be deleted (SAFE)
   # usage: git clean-preview
   clean-preview = clean -fdn
@@ -248,23 +278,27 @@
   # usage: git clean-force
   clean-force = clean -fd
 
+  #-----------------------
+  # DIFF & LOG
+  #-----------------------
   # ui
   # usage: git dw
   dw = diff
   # usage: git ds
   ds = diff --staged
-
   # usage: git ll
   ll = log --oneline --decorate -n 10
   # usage: git last
   last = log -1 --oneline
-
   # usage: git hist
   hist = log --graph --decorate --date=short \
   --pretty=format:'%C(auto)%h %C(blue)%ad %C(reset)| %C(white)%s %C(green)%d %C(dim white)[%an]'
   # usage: git lg
   lg = log --graph --decorate --oneline --all
 
+  #-----------------------
+  # DEBUG HELPERS
+  #-----------------------
   # Shows the object type stored in Git.
   # usage: git type HEAD
   # usage: git type <hash>
