@@ -25,6 +25,7 @@ function fz {
 # Global Aliases
 #####################################################
 # Aliases
+Set-Alias -Name "v" -Value "nvim"
 Set-Alias -Name "vim" -Value "nvim"
 Set-Alias -Name "ll" -Value "ls"
 Set-Alias -Name "g" -Value "git"
