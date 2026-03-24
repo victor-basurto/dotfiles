@@ -96,6 +96,7 @@ eval "$(starship init zsh)"
 # ===============================================================
 # ALIASES & FUNCTIONS
 # ===============================================================
+alias v="nvim"
 alias ls="lsd"
 alias l="ls -l"
 alias ll="ls -la"
