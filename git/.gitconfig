@@ -221,7 +221,12 @@
   #-----------------------
   # Safe Push
   # usage: git pushf
-  pushf = push --force-with-lease --force-if-includes
+  pushf = "!b=$(git branch --show-current); \
+    if git rev-parse --abbrev-ref --symbolic-full-name @{u} >/dev/null 2>&1; then \
+      git push --force-with-lease --force-if-includes; \
+    else \
+      git push -u origin $b; \
+    fi"
 
   #-----------------------
   # SYNC AND SHIP
