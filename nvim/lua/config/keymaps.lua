@@ -98,6 +98,9 @@ keymap.set("n", "<leader>fk", fzf.treesitter, { desc = "fzf treesitter" })
 keymap.set("n", "<leader>fI", fzf.lsp_definitions, { desc = "fzf Got to LSP Implementation" })
 keymap.set("n", "<leader>fd", fzf.lsp_typedefs, { desc = "fzf Got to Type Definition" })
 -- Note: Replaced file_browser and frecency with fzf-lua equivalents or omitted if not straightforward.
+keymap.set("n", "<leader>ff", function()
+  require("fzf-lua").files({ git_dir = true })
+end, { desc = "fzf find files from ROOT" })
 -------------------------------------------------------
 --              END fzf-lua
 -------------------------------------------------------
