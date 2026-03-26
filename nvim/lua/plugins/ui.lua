@@ -6,21 +6,29 @@ return {
     ---@type snacks.Config
     opts = {
       picker = {
-        -- NOTE: documentation for `snacks.explorer`
-        --https://github.com/folke/snacks.nvim/blob/main/docs/picker.md#%EF%B8%8F-layouts
-        dashboard = { enabled = true },
-        input = { enabled = true },
-        explorer = { enabled = true },
+        layout = {
+          preset = "vertical_layout",
+        },
+
+        layouts = {
+          vertical_layout = {
+            layout = {
+              box = "vertical",
+              width = 0.85,
+              height = 0.95,
+              backdrop = 1,
+              border = "rounded",
+              { win = "preview", height = 0.6 },
+              { win = "list", height = 0.3, border = "rounded" },
+              { win = "input", height = 1, border = "rounded" },
+            },
+          },
+        },
+
         sources = {
           explorer = {
             layout = {
               preset = "right",
-              layout = {
-                height = 0,
-                min_width = 50,
-                -- position = "right",
-                border = "none",
-              },
             },
           },
         },
@@ -70,6 +78,12 @@ return {
         snacks_image = {
           relative = "editor",
           col = 1,
+        },
+
+        picker = {
+          border = "rounded",
+          backdrop = 1,
+          winblend = 0,
         },
       },
       keymaps = {
