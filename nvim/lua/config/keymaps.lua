@@ -46,6 +46,43 @@ keymap.set("n", "<leader>ttQ", ":Trouble qflist toggle <cr>", { desc = "[TROUBLE
 --              END Trouble
 -------------------------------------------------------
 -------------------------------------------------------
+--               Snacks Picker
+-------------------------------------------------------
+keymap.set("n", "<leader>ff", function()
+  Snacks.picker.files()
+end, { desc = "Snacks find files" })
+keymap.set("n", "<leader>fg", function()
+  Snacks.picker.grep()
+end, { desc = "Snacks live grep" })
+keymap.set("n", "<leader>fb", function()
+  Snacks.picker.buffers()
+end, { desc = "Snacks buffers" })
+keymap.set("n", "<leader>fh", function()
+  Snacks.picker.help()
+end, { desc = "Snacks help tags" })
+keymap.set("n", "<leader>fi", function()
+  Snacks.picker.resume()
+end, { desc = "Snacks resume" })
+keymap.set("n", "<leader>fj", function()
+  Snacks.picker.diagnostics()
+end, { desc = "Snacks diagnostics" })
+keymap.set("n", "<leader>fk", function()
+  Snacks.picker.treesitter()
+end, { desc = "Snacks treesitter" })
+keymap.set("n", "<leader>fI", function()
+  Snacks.picker.lsp_definitions()
+end, { desc = "Snacks LSP definitions" })
+keymap.set("n", "<leader>fd", function()
+  Snacks.picker.lsp_type_definitions()
+end, { desc = "Snacks LSP type definitions" })
+keymap.set("n", "<leader>fl", function()
+  Snacks.picker.files({
+    cwd = vim.fn.expand("%:p:h"),
+    hidden = true,
+    follow = true,
+  })
+end, { desc = "Snacks files in current directory" })
+-------------------------------------------------------
 --               Telescope (Disabled)
 -------------------------------------------------------
 -- local telescopeBuiltin = require("telescope.builtin")
@@ -87,20 +124,20 @@ keymap.set("n", "<leader>ttQ", ":Trouble qflist toggle <cr>", { desc = "[TROUBLE
 -------------------------------------------------------
 --               fzf-lua
 -------------------------------------------------------
-local fzf = require("fzf-lua")
-keymap.set("n", "<leader>fx", fzf.files, { desc = "fzf find files" })
-keymap.set("n", "<leader>fg", fzf.live_grep, { desc = "fzf live grep" })
-keymap.set("n", "<leader>fb", fzf.buffers, { desc = "fzf buffers" })
-keymap.set("n", "<leader>fh", fzf.help_tags, { desc = "fzf help tags" })
-keymap.set("n", "<leader>fi", fzf.resume, { desc = "fzf resume" })
-keymap.set("n", "<leader>fj", fzf.diagnostics_workspace, { desc = "fzf diagnostics" })
-keymap.set("n", "<leader>fk", fzf.treesitter, { desc = "fzf treesitter" })
-keymap.set("n", "<leader>fI", fzf.lsp_definitions, { desc = "fzf Got to LSP Implementation" })
-keymap.set("n", "<leader>fd", fzf.lsp_typedefs, { desc = "fzf Got to Type Definition" })
--- Note: Replaced file_browser and frecency with fzf-lua equivalents or omitted if not straightforward.
-keymap.set("n", "<leader>ff", function()
-  require("fzf-lua").files({ git_dir = true })
-end, { desc = "fzf find files from ROOT" })
+-- local fzf = require("fzf-lua")
+-- keymap.set("n", "<leader>fx", fzf.files, { desc = "fzf find files" })
+-- keymap.set("n", "<leader>fg", fzf.live_grep, { desc = "fzf live grep" })
+-- keymap.set("n", "<leader>fb", fzf.buffers, { desc = "fzf buffers" })
+-- keymap.set("n", "<leader>fh", fzf.help_tags, { desc = "fzf help tags" })
+-- keymap.set("n", "<leader>fi", fzf.resume, { desc = "fzf resume" })
+-- keymap.set("n", "<leader>fj", fzf.diagnostics_workspace, { desc = "fzf diagnostics" })
+-- keymap.set("n", "<leader>fk", fzf.treesitter, { desc = "fzf treesitter" })
+-- keymap.set("n", "<leader>fI", fzf.lsp_definitions, { desc = "fzf Got to LSP Implementation" })
+-- keymap.set("n", "<leader>fd", fzf.lsp_typedefs, { desc = "fzf Got to Type Definition" })
+-- -- Note: Replaced file_browser and frecency with fzf-lua equivalents or omitted if not straightforward.
+-- keymap.set("n", "<leader>ff", function()
+--   require("fzf-lua").files({ git_dir = true })
+-- end, { desc = "fzf find files from ROOT" })
 -------------------------------------------------------
 --              END fzf-lua
 -------------------------------------------------------

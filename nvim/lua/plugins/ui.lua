@@ -10,7 +10,7 @@ return {
         --https://github.com/folke/snacks.nvim/blob/main/docs/picker.md#%EF%B8%8F-layouts
         dashboard = { enabled = true },
         input = { enabled = true },
-        explorer = { enabled = true },
+        explorer = { enabled = false },
         sources = {
           explorer = {
             layout = {
