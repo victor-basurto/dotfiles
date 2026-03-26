@@ -3,6 +3,7 @@ return {
     "ibhagwan/fzf-lua",
     -- optional for icon support
     dependencies = { "nvim-tree/nvim-web-devicons" },
+    enabled = false,
     config = function()
       local fzf = require("fzf-lua")
       local cat = require("catppuccin.palettes").get_palette("mocha")
