@@ -237,10 +237,10 @@
   # Feature-branch sync alias work
   # usage: git syncd
   syncd = !git fetch origin develop && git rebase origin/develop
-  # syncship
+  # ship
   # use this command when switching to an existing branch and you want to update develop and then rebase and push force your changes
   # basically it will fetch-all and update
-  syncship = !git syncd && git pushf;
+  ship = !git syncd && git pushf;
   syncf = !git fetch origin $(git branch --show-current) && git rebase origin/$(git branch --show-current)
   # prevent divergence
   # usage: g up
