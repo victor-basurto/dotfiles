@@ -825,3 +825,29 @@ vim.keymap.set("n", "<leader>mpt", insert_work_prompt, { desc = "Insert AI Work 
 -- ############################################################################
 --                          END GPrompt Template
 -- ############################################################################
+-------------------------------------------------------------------------------
+--                         UTILS
+-------------------------------------------------------------------------------
+--- CONSOLE.LOG()
+-- Custom log from any variable
+-- put your cursor on a variable and this command will generate this structure
+-- `console.log('myVar: ', myVar)`
+-- useful when debuging js,ts files
+keymap.set("n", "<leader>Ucl", function()
+  local var = vim.fn.expand("<cword>")
+  local log = string.format("console.log('%s: ', %s);", var, var)
+  vim.fn.setreg("+", log)
+  print("copied: " .. log)
+end, { desc = "[LOG] Copy console.log variable under cursor" })
+-- same as above but this time it will copy special characters if they are
+-- part of the variable name e.g. $variableName
+-- `console.log('$variableName: ', $variableName)`
+keymap.set("n", "<leader>UcL", function()
+  local var = vim.fn.expand("<cWORD>")
+  local log = string.format("console.log('%s: ', %s);", var, var)
+  vim.fn.setreg("+", log)
+  print("copied: " .. log)
+end, { desc = "[LOG] Full Token Copy console.log variable under cursor" })
+-------------------------------------------------------------------------------
+--                       END UTILS
+-------------------------------------------------------------------------------
