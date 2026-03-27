@@ -333,6 +333,7 @@
 
 [credential "https://github.com"]
   useHttpPath = true
+
 # ===============================
 # Help & misc
 # ===============================
