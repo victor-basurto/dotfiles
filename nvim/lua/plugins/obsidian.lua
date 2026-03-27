@@ -174,7 +174,7 @@ return {
     },
 
     picker = {
-      name = "fzf-lua",
+      name = "snacks",
       note_mappings = {
         new = "<C-x>",
         insert_link = "<C-l>",
