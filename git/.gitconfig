@@ -331,6 +331,9 @@
 [credential "https://dev.azure.com"]
   useHttpPath = true
 
+[credential "https://github.com"]
+  useHttpPath = true
+
 # ===============================
 # Help & misc
 # ===============================
