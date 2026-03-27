@@ -235,8 +235,8 @@
   # usage: git syncm
   syncm = !git fetch origin main && git rebase origin/main
   # Feature-branch sync alias work
-  # usage: git syncd
-  syncd = !git fetch origin develop && git rebase origin/develop
+  # usage: git sync
+  sync = !git fetch origin develop && git rebase origin/develop
   # ship
   # use this command when switching to an existing branch and you want to update develop and then rebase and push force your changes
   # basically it will fetch-all and update
@@ -257,8 +257,8 @@
   # usage: git startm feature/new-feature
   startm = !git switch main && git pull --rebase origin main && git switch -c
   # Start feature Work
-  # usage: git startd feature/new-feature
-  startd = !git switch develop && git pull --rebase origin develop && git switch -c
+  # usage: git start feature/new-feature
+  start = !git switch develop && git pull --rebase origin develop && git switch -c
 
   #-----------------------
   # WORK HELPERS
