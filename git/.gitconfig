@@ -240,11 +240,11 @@
   # ship
   # use this command when switching to an existing branch and you want to update develop and then rebase and push force your changes
   # basically it will fetch-all and update
-  ship = !git syncd && git pushf;
+  ship = !git sync && git pushf;
   syncf = !git fetch origin $(git branch --show-current) && git rebase origin/$(git branch --show-current)
   # prevent divergence
   # usage: g up
-  up = !git syncd && git syncf
+  up = !git sync && git syncf
   # Replays your commits on top of remote commits
   # use this command before creating a PR
   # usage: g rib
