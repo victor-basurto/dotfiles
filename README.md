@@ -60,6 +60,8 @@ Top-level entries & purpose
   - `.wezterm.lua` — WezTerm config: colorscheme, font fallback, keybinds and leader.
 - `yazi/`
   - `yazi.toml`, theme/keymap — File manager integration config.
+- `opencode/`
+  - `tui.json` — OpenCode TUI configuration (theme: catppuccin).
 - `zsh/`
   - `.zshrc`, `functions/`, `plugins/` — zsh configuration, plugins via Antidote, fzf-tab, zoxide, starship and assorted helper functions.
 

@@ -29,3 +29,13 @@ vim.filetype.add({
     ["%.sicpackage"] = "json",
   },
 })
+
+-- Terminal --
+-- automatically exit terminal/input mode when the cursor leave the window
+api.nvim_create_autocmd("WinLeave", {
+  callback = function()
+    if vim.bo.buftype == "terminal" then
+      api.nvim_feedkeys(api.nvim_replace_termcodes("<C-\\><C-n>", true, false, true), "n", false)
+    end
+  end,
+})
