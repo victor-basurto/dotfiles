@@ -104,43 +104,53 @@ keymap.set("n", "<leader>ttQ", ":Trouble qflist toggle <cr>", { desc = "[TROUBLE
 -------------------------------------------------------
 --              END fzf-lua
 -------------------------------------------------------
-local keymap = vim.keymap
-
--- Snacks Picker (replaces Telescope)
+-------------------------------------------------------
+--       Snacks Picker (replaces Telescope)
+-------------------------------------------------------
 keymap.set("n", "<leader>ff", function()
   Snacks.picker.files()
-end, { desc = "Snacks find files" })
+end, { desc = "[Snacks] find files" })
 keymap.set("n", "<leader>fg", function()
   Snacks.picker.grep()
-end, { desc = "Snacks live grep" })
+end, { desc = "[Snacks] live grep" })
 keymap.set("n", "<leader>fb", function()
   Snacks.picker.buffers()
-end, { desc = "Snacks buffers" })
+end, { desc = "[Snacks] buffers" })
 keymap.set("n", "<leader>fh", function()
   Snacks.picker.help()
-end, { desc = "Snacks help tags" })
+end, { desc = "[Snacks] help tags" })
 keymap.set("n", "<leader>fi", function()
   Snacks.picker.resume()
-end, { desc = "Snacks resume" })
+end, { desc = "[Snacks] resume" })
 keymap.set("n", "<leader>fj", function()
   Snacks.picker.diagnostics()
-end, { desc = "Snacks diagnostics" })
+end, { desc = "[Snacks] diagnostics" })
 keymap.set("n", "<leader>fk", function()
   Snacks.picker.treesitter()
-end, { desc = "Snacks treesitter" })
+end, { desc = "[Snacks] treesitter" })
 keymap.set("n", "<leader>fI", function()
   Snacks.picker.lsp_definitions()
-end, { desc = "Snacks LSP definitions" })
+end, { desc = "[Snacks] LSP definitions" })
 keymap.set("n", "<leader>fd", function()
   Snacks.picker.lsp_type_definitions()
-end, { desc = "Snacks LSP type definitions" })
+end, { desc = "[Snacks] LSP type definitions" })
 keymap.set("n", "<leader>fl", function()
   Snacks.picker.files({
     cwd = vim.fn.expand("%:p:h"),
     hidden = true,
     follow = true,
   })
-end, { desc = "Snacks files in current directory" })
+end, { desc = "[Snacks] files in current directory" })
+keymap.set("n", "<leader>fL", function()
+  Snacks.picker.files({
+    root = true,
+    hidden = true,
+    follow = true,
+  })
+end, { desc = "[Snacks] files in root directory" })
+-------------------------------------------------------
+--       END Snacks Picker (replaces Telescope)
+-------------------------------------------------------
 -------------------------------------------------------
 --              Snacks.LazyGit
 -------------------------------------------------------
@@ -283,7 +293,7 @@ end, { desc = "[Text strikethrough] toggle strikethrough line" })
 -------------------------------------------------------
 --         Open Markdown in Browser
 -------------------------------------------------------
-vim.keymap.set("n", "<leader>mdt", "<cmd>MarkdownPreviewToggle<CR>", { desc = "Toggle Markdown render" })
+keymap.set("n", "<leader>mdt", "<cmd>MarkdownPreviewToggle<CR>", { desc = "Toggle Markdown render" })
 -------------------------------------------------------
 --         END Open Markdown in Browser
 -------------------------------------------------------
@@ -499,7 +509,7 @@ local function get_markdown_headings()
     next_same_heading and next_same_heading.level or nil
 end
 -- Print details of current markdown heading, next heading and next same level heading
-vim.keymap.set("n", "<leader>mT", function()
+keymap.set("n", "<leader>mT", function()
   local cl, clvl, nl, nlvl, nsl, nslvl = get_markdown_headings()
   local message_parts = {}
   if cl then
@@ -583,10 +593,10 @@ vim.api.nvim_create_autocmd("FileType", {
 -- https://youtu.be/EYczZLNEnIY
 --
 -- Keymap for folding markdown headings of level 1 or above
-vim.keymap.set("n", "zj", function()
+keymap.set("n", "zj", function()
   -- "Update" saves only if the buffer has been modified since the last save
   vim.cmd("silent update")
-  -- vim.keymap.set("n", "<leader>mfj", function()
+  -- keymap.set("n", "<leader>mfj", function()
   -- Reloads the file to refresh folds, otheriise you have to re-open neovim
   vim.cmd("edit!")
   -- Unfold everything first or I had issues
@@ -600,10 +610,10 @@ end, { desc = "[P]Fold all headings level 1 or above" })
 --
 -- Keymap for folding markdown headings of level 2 or above
 -- I know, it reads like "madafaka" but "k" for me means "2"
-vim.keymap.set("n", "zk", function()
+keymap.set("n", "zk", function()
   -- "Update" saves only if the buffer has been modified since the last save
   vim.cmd("silent update")
-  -- vim.keymap.set("n", "<leader>mfk", function()
+  -- keymap.set("n", "<leader>mfk", function()
   -- Reloads the file to refresh folds, otherwise you have to re-open neovim
   vim.cmd("edit!")
   -- Unfold everything first or I had issues
@@ -616,10 +626,10 @@ end, { desc = "[P]Fold all headings level 2 or above" })
 -- https://youtu.be/EYczZLNEnIY
 --
 -- Keymap for folding markdown headings of level 3 or above
-vim.keymap.set("n", "zl", function()
+keymap.set("n", "zl", function()
   -- "Update" saves only if the buffer has been modified since the last save
   vim.cmd("silent update")
-  -- vim.keymap.set("n", "<leader>mfl", function()
+  -- keymap.set("n", "<leader>mfl", function()
   -- Reloads the file to refresh folds, otherwise you have to re-open neovim
   vim.cmd("edit!")
   -- Unfold everything first or I had issues
@@ -632,10 +642,10 @@ end, { desc = "[P]Fold all headings level 3 or above" })
 -- https://youtu.be/EYczZLNEnIY
 --
 -- Keymap for folding markdown headings of level 4 or above
-vim.keymap.set("n", "z;", function()
+keymap.set("n", "z;", function()
   -- "Update" saves only if the buffer has been modified since the last save
   vim.cmd("silent update")
-  -- vim.keymap.set("n", "<leader>mf;", function()
+  -- keymap.set("n", "<leader>mf;", function()
   -- Reloads the file to refresh folds, otherwise you have to re-open neovim
   vim.cmd("edit!")
   -- Unfold everything first or I had issues
@@ -649,7 +659,7 @@ end, { desc = "[P]Fold all headings level 4 or above" })
 --
 -- Use <CR> to fold when in normal mode
 -- To see help about folds use `:help fold`
-vim.keymap.set("n", "<CR>", function()
+keymap.set("n", "<CR>", function()
   -- Get the current line number
   local line = vim.fn.line(".")
   -- Get the fold level of the current line
@@ -668,10 +678,10 @@ end, { desc = "[P]Toggle fold" })
 -- Keymap for unfolding markdown headings of level 2 or above
 -- Changed all the markdown folding and unfolding keymaps from <leader>mfj to
 -- zj, zk, zl, z; and zu respectively lamw25wmal
-vim.keymap.set("n", "zu", function()
+keymap.set("n", "zu", function()
   -- "Update" saves only if the buffer has been modified since the last save
   vim.cmd("silent update")
-  -- vim.keymap.set("n", "<leader>mfu", function()
+  -- keymap.set("n", "<leader>mfu", function()
   -- Reloads the file to reflect the changes
   vim.cmd("edit!")
   vim.cmd("normal! zR") -- Unfold all headings
@@ -683,7 +693,7 @@ end, { desc = "[P]Unfold all headings level 2 or above" })
 --
 -- gk jummps to the markdown heading above and then folds it
 -- zi by default toggles folding, but I don't need it lamw25wmal
-vim.keymap.set("n", "zi", function()
+keymap.set("n", "zi", function()
   -- "Update" saves only if the buffer has been modified since the last save
   vim.cmd("silent update")
   -- Difference between normal and normal!
@@ -699,7 +709,7 @@ end, { desc = "[P]Fold the heading cursor currently on" })
 --                         End Folding section
 -------------------------------------------------------------------------------
 -- paset a github link and add it in this format
-vim.keymap.set({ "n", "v", "i" }, "<M-:>", function()
+keymap.set({ "n", "v", "i" }, "<M-:>", function()
   -- Insert the text in the desired format
   vim.cmd('normal! a[](){:target="_blank"} ')
   vim.cmd("normal! F(pv2F/lyF[p")
@@ -821,14 +831,14 @@ local function insert_work_prompt()
   end
 end
 -- create keymap specific to markdown
-vim.keymap.set("n", "<leader>mpt", insert_work_prompt, { desc = "Insert AI Work Prompt" })
+keymap.set("n", "<leader>mpt", insert_work_prompt, { desc = "Insert AI Work Prompt" })
 -- ############################################################################
 --                          END GPrompt Template
 -- ############################################################################
 -------------------------------------------------------------------------------
 --                         UTILS
 -------------------------------------------------------------------------------
---- CONSOLE.LOG()
+--- CONSOLE.LOG() --
 -- Custom log from any variable
 -- put your cursor on a variable and this command will generate this structure
 -- `console.log('myVar: ', myVar)`
@@ -848,6 +858,15 @@ keymap.set("n", "<leader>UcL", function()
   vim.fn.setreg("+", log)
   print("copied: " .. log)
 end, { desc = "[LOG] Full Token Copy console.log variable under cursor" })
+
+-- Terminal --
+-- map <Esc> to behave like normal mode in terminal/input buffers
+-- map these in 't' (terminal) mode so they work inside OpenCode
+keymap.set("t", "<Esc>", [[<C-\><C-n>]], { desc = "Exit Terminal Input Mode" })
+keymap.set("t", "<C-h>", [[<C-\><C-n><C-w>h]], { desc = "Move to left pane" })
+keymap.set("t", "<C-j>", [[<C-\><C-n><C-w>j]], { desc = "Move to bottom pane" })
+keymap.set("t", "<C-k>", [[<C-\><C-n><C-w>k]], { desc = "Move to top pane" })
+keymap.set("t", "<C-l>", [[<C-\><C-n><C-w>l]], { desc = "Move to right pane" })
 -------------------------------------------------------------------------------
 --                       END UTILS
 -------------------------------------------------------------------------------
