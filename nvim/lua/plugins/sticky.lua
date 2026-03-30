@@ -4,6 +4,7 @@ return {
     version = "*",
     event = "VimEnter",
     opts = {
+      -- file location where the annotations are going to be saved
       save_file = vim.fn.expand("$HOME") .. "/.config/fusen/notes/notes.json",
       -- Disable all default keymaps (so "me", "mc", etc. won't conflict)
       keymaps = {
@@ -28,7 +29,8 @@ return {
       vim.keymap.set("n", "mn", "<Nop>", { silent = true })
       vim.keymap.set("n", "mp", "<Nop>", { silent = true })
       vim.keymap.set("n", "ml", "<Nop>", { silent = true })
-      -- Now create your preferred <leader> mappings
+
+      -- keymap mappings
       local fusen = require("fusen")
 
       vim.keymap.set("n", "<leader>Ne", fusen.add_mark, { desc = "[Notes]: Add/Edit note" })
