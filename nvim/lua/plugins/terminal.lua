@@ -1,3 +1,4 @@
+-- NOTE: terminal is handled separately, this plugin is not needed for now. Do not remove!
 if true then
   return {}
 end

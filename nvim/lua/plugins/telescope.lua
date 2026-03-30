@@ -1,3 +1,4 @@
+-- NOTE: This plugin has been replaced by `Snacks`, enabled if `Snacks` is not needed anymore
 if true then
   return {}
 end

@@ -1,3 +1,4 @@
+-- NOTE: Unable this plugin if Snacks Dashboard is no longer needed
 if true then
   return {}
 end
