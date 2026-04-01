@@ -18,7 +18,7 @@ return {
               height = 0.95,
               backdrop = 1,
               border = "rounded",
-              { win = "preview", height = 0.6 },
+              { win = "preview", height = 0.7 },
               { win = "list", height = 0.3, border = "top" },
               { win = "input", height = 1, border = "top" },
             },
