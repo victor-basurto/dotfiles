@@ -52,7 +52,6 @@ return {
       style = "wiki",
       format = "shortest",
     },
-    preferred_link_style = "wiki",
 
     -- Frontmatter updates
     frontmatter = {
