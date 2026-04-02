@@ -1,8 +1,11 @@
 return {
   "nvim-treesitter/nvim-treesitter",
   build = ":TSUpdate",
-  branch = "master",
   lazy = false,
+  dependencies = {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+  },
+  main = "nvim-treesitter.configs",
   opts = {
     ensure_installed = {
       "astro",
@@ -53,13 +56,21 @@ return {
       },
     },
     sync_install = false,
-    modules = {},
   },
   config = function(_, opts)
-    require("nvim-treesitter.configs").setup(opts)
-    vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
-      pattern = "*.tsx",
-      command = "set filetype=typescriptreact",
-    })
+    -- We don't call the require here because 'main' + 'opts' does it for us.
+    -- If you MUST call it manually, use pcall to prevent the hard crash:
+    local status, treesitter = pcall(require, "nvim-treesitter.configs")
+    if status then
+      treesitter.setup(opts)
+    end
+
+    -- Your TSX Autocmd
+    -- vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
+    --   pattern = "*.tsx",
+    --   callback = function()
+    --     vim.bo.filetype = "typescriptreact"
+    --   end,
+    -- })
   end,
 }
