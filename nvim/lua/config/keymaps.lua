@@ -384,10 +384,6 @@ wk.add({
   { "<CR>", desc = "[P]Toggle fold (Current)" }, -- Explicitly add CR
 })
 
-wk.add({
-  mode = { "n", "v", "i" }, -- For the <M-:> mapping
-  { "<M-:>", desc = "[P]Paste Github link" },
-})
 keymap.set("n", "<leader>mfj", function()
   vim.cmd("silent update")
   vim.cmd("edit!")
@@ -708,7 +704,7 @@ end, { desc = "[P]Fold the heading cursor currently on" })
 -------------------------------------------------------------------------------
 --                         End Folding section
 -------------------------------------------------------------------------------
--- paset a github link and add it in this format
+-- paste a github link and add it in this format
 keymap.set({ "n", "v", "i" }, "<M-:>", function()
   -- Insert the text in the desired format
   vim.cmd('normal! a[](){:target="_blank"} ')
