@@ -78,3 +78,11 @@ gprompt() {
     echo "❌ Error: Template not found at $TEMPLATE_PATH"
   fi
 }
+
+# Serialization alias
+serlogin() {
+  dotnet sitecore cloud login
+}
+serdev() {
+  dotnet sitecore ser pull -n dev
+}
