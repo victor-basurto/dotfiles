@@ -183,7 +183,11 @@ function list-dirs {
 function which ($command) {
   Get-Command -Name $command -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Path -ErrorAction SilentlyContinue
 }
-
+#####################################################
+# Serialization
+#####################################################
+function serlogin { dotnet sitecore cloud login }
+function serdev { dotnet sitecore ser pull -n dev }
 #####################################################
 # Prompt Generator Template
 #####################################################
