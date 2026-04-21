@@ -59,6 +59,7 @@ return {
       sync_install = false,
     },
     config = function(_, opts)
+      require("nvim-treesitter.install").compilers = { "gcc" }
       -- We don't call the require here because 'main' + 'opts' does it for us.
       -- If you MUST call it manually, use pcall to prevent the hard crash:
       local status, treesitter = pcall(require, "nvim-treesitter.configs")
