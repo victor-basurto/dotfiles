@@ -6,25 +6,41 @@ return {
   {
     "catppuccin/nvim",
     name = "catppuccin",
-    event = "VeryLazy",
     lazy = false,
     priority = 1000,
     enabled = true,
     config = function()
-      local catppuccin = require("catppuccin")
-      catppuccin.setup({
-        transparent_background = false,
-        float = {
-          transparent = false,
-          solid = false,
+      require("catppuccin").setup({
+        flavour = "macchiato", -- latte, frappe, macchiato, mocha
+        background = {
+          light = "latte",
+          dark = "frappe",
         },
-        flavour = "frappe",
+        transparent_background = false,
+        show_end_of_buffer = false,
+        term_colors = true, -- This is important for tmux/ghostty
         integrations = {
-          bufferline = {
+          treesitter = true,
+          -- Add these specifically:
+          html = true,
+          javascript = true,
+          typescript = true,
+          native_lsp = {
             enabled = true,
-            highlights = true, -- get highlights for bufferline
-            style = "default", -- "default" | "minimal" (optional)
+            virtual_text = {
+              errors = { "italic" },
+              hints = { "italic" },
+              warnings = { "italic" },
+              information = { "italic" },
+            },
+            underlines = {
+              errors = { "undercurl" },
+              hints = { "undercurl" },
+              warnings = { "undercurl" },
+              information = { "undercurl" },
+            },
           },
+          bufferline = true,
         },
       })
 

@@ -20,3 +20,4 @@ vim.g.lazyvim_statuscolumn = {
 
 opt.ignorecase = true
 opt.spell = true
+opt.termguicolors = true

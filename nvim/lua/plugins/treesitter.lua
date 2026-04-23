@@ -58,23 +58,6 @@ return {
       },
       sync_install = false,
     },
-    config = function(_, opts)
-      require("nvim-treesitter.install").compilers = { "gcc" }
-      -- We don't call the require here because 'main' + 'opts' does it for us.
-      -- If you MUST call it manually, use pcall to prevent the hard crash:
-      local status, treesitter = pcall(require, "nvim-treesitter.configs")
-      if status then
-        treesitter.setup(opts)
-      end
-
-      -- Your TSX Autocmd
-      -- vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
-      --   pattern = "*.tsx",
-      --   callback = function()
-      --     vim.bo.filetype = "typescriptreact"
-      --   end,
-      -- })
-    end,
   },
   {
     "ThePrimeagen/refactoring.nvim",
