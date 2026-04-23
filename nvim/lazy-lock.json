@@ -1,7 +1,7 @@
 {
   "LazyVim": { "branch": "main", "commit": "83d90f339defdb109a6ede333865a66ffc7ef6aa" },
   "LuaSnip": { "branch": "master", "commit": "a62e1083a3cfe8b6b206e7d3d33a51091df25357" },
-  "SchemaStore.nvim": { "branch": "main", "commit": "250aed7415ddd6cb3ea321490c7b35094ed9148d" },
+  "SchemaStore.nvim": { "branch": "main", "commit": "d09eb13366fe95deeecf3deba7a4639f0c82fcdc" },
   "async.nvim": { "branch": "main", "commit": "7a1d7d49933fbe902b84b55f352a3b10fd587331" },
   "blink-cmp-dictionary": { "branch": "master", "commit": "35142bba869b869715e91a99d2f46bcf93fca4ae" },
   "blink-emoji.nvim": { "branch": "master", "commit": "dff709139ad5389fb55ebab026e75278a12b325a" },
@@ -34,7 +34,7 @@
   "mini.pairs": { "branch": "main", "commit": "42387c7fe68fc0b6e95eaf37f1bb76e7bffaa0d9" },
   "mini.surround": { "branch": "main", "commit": "2715e04bea3ec9244f15b421dc5b18c0fe326210" },
   "multicursors.nvim": { "branch": "main", "commit": "72225ea9e4443c3f4b9df91d0193e07c4ee8d382" },
-  "neoconf.nvim": { "branch": "main", "commit": "dca5eeed72118f43fd8ffd02c0e19d7ed42d640c" },
+  "neoconf.nvim": { "branch": "main", "commit": "751c246c6c1780b94b063918759f352480e3db21" },
   "neogen": { "branch": "main", "commit": "23e7e9f883d01289ebd90e98025acc860ea26366" },
   "noice.nvim": { "branch": "main", "commit": "7bfd942445fb63089b59f97ca487d605e715f155" },
   "none-ls-extras.nvim": { "branch": "main", "commit": "70ec8815cdf186223af04cc5a15bc8bdface0ef0" },
