@@ -16,7 +16,7 @@ return {
           light = "latte",
           dark = "frappe",
         },
-        transparent_background = false,
+        transparent_background = true,
         show_end_of_buffer = false,
         term_colors = true, -- This is important for tmux/ghostty
         integrations = {
