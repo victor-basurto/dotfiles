@@ -120,6 +120,6 @@ function mono {
   fi
 }
 
-# Enable Tab-Completion for mono sites
+# Enable Tab-Completion for `monorepo` sites
 local _mono_completion_path="${CUSTOM_DIRS_PATH[mono]%/}/src/rendering/sites/"
 compdef "_path_files -W $_mono_completion_path" mono
