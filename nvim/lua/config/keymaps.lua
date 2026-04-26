@@ -3,6 +3,7 @@
 -- Add any additional keymaps here
 local opts = { noremap = true, silent = true }
 local keymap = vim.keymap
+local wk = require("which-key")
 -- discipline, custom plugin inspired by `craftzdog-max/devaslife`
 -------------------------------------------------------
 --               Discipline
@@ -13,34 +14,49 @@ discipline.strict()
 --              END Discipline
 -------------------------------------------------------
 -------------------------------------------------------
---              Todo-Comments
--------------------------------------------------------
-keymap.set("n", "<leader>tct", ":TodoTelescope <cr>", { desc = "[TODO] TodoTelescope find" })
-keymap.set("n", "<leader>tcq", ":TodoQuickFix <cr>", { desc = "[TODO] TodoQuickFix fix" })
-keymap.set("n", "<leader>tcl", ":TodoLocList <cr>", { desc = "[TODO] TodoLocList show all" })
-keymap.set("n", "<leader>tcf", ":Trouble todo <cr>", { desc = "[TODO] use Troubles filtering show all" })
--------------------------------------------------------
---              END Todo-Comments
--------------------------------------------------------
--------------------------------------------------------
 --              Trouble
 -------------------------------------------------------
-keymap.set("n", "<leader>ttd", ":Trouble diagnostics <cr>", { desc = "[TROUBLE] Diagnostics" })
+wk.add({
+  mode = { "n", "v" },
+  { "<leader>t", group = "[t]rouble" }, -- naming
+  { "<leader>tt", group = "[t]odos" }, -- naming
+  { "<leader>ttt", group = "[t]elescope" }, -- naming
+
+  -- trouble
+  { "<leader>tr", group = "[r]un" }, -- naming
+  { "<leader>trd", group = "[d]iagnostics" }, -- command
+  { "<leader>trb", group = "[b]uffers diagnostics" }, -- command
+  { "<leader>trs", group = "[s]ymbols" }, -- command
+  { "<leader>trD", group = "[D]efinitions" }, -- command
+  { "<leader>trl", group = "[l]ocation List" }, -- command
+  { "<leader>trq", group = "[q]uickfix List" }, -- command
+
+  -- todo
+  { "<leader>tttf", group = "[f]ind todos" }, -- command
+  { "<leader>ttQ", group = "[Q]uickfix todo" }, -- command
+  { "<leader>ttL", group = "[L]ist todo" }, -- command
+  { "<leader>ttA", group = "[A]ll todo" }, -- command
+})
+keymap.set("n", "<leader>trd", ":Trouble diagnostics <cr>", { desc = "[TROUBLE] Diagnostics" })
 keymap.set(
   "n",
-  "<leader>ttx",
+  "<leader>trb",
   ":Trouble diagnostics toggle filter.bug=0<cr>",
   { desc = "[TROUBLE] Buffer Diagnostics" }
 )
-keymap.set("n", "<leader>ttf", ":Trouble symbols toggle focus=false<cr>", { desc = "[TROUBLE] Symbols" })
+keymap.set("n", "<leader>trs", ":Trouble symbols toggle focus=false<cr>", { desc = "[TROUBLE] Symbols" })
 keymap.set(
   "n",
-  "<leader>ttl",
+  "<leader>trD",
   ":Trouble lsp toggle focus=false win.position=right <cr>",
   { desc = "[TROUBLE] LSP Definitions/references/..." }
 )
-keymap.set("n", "<leader>ttL", ":Trouble loclist toggle <cr>", { desc = "[TROUBLE] Location List" })
-keymap.set("n", "<leader>ttQ", ":Trouble qflist toggle <cr>", { desc = "[TROUBLE] QuickFix List" })
+keymap.set("n", "<leader>trl", ":Trouble loclist toggle <cr>", { desc = "[TROUBLE] Location List" })
+keymap.set("n", "<leader>trq", ":Trouble qflist toggle <cr>", { desc = "[TROUBLE] QuickFix List" })
+keymap.set("n", "<leader>tttf", ":TodoTelescope <cr>", { desc = "[TODO] TodoTelescope find" })
+keymap.set("n", "<leader>ttQ", ":TodoQuickFix <cr>", { desc = "[TODO] TodoQuickFix fix" })
+keymap.set("n", "<leader>ttL", ":TodoLocList <cr>", { desc = "[TODO] TodoLocList show all" })
+keymap.set("n", "<leader>ttA", ":Trouble todo <cr>", { desc = "[TODO] use Troubles filtering show all" })
 
 -------------------------------------------------------
 --              END Trouble
@@ -107,6 +123,7 @@ keymap.set("n", "<leader>ttQ", ":Trouble qflist toggle <cr>", { desc = "[TROUBLE
 -------------------------------------------------------
 --       Snacks Picker (replaces Telescope)
 -------------------------------------------------------
+---TODO: Set keymap grouping for SNACKS
 keymap.set("n", "<leader>ff", function()
   Snacks.picker.files()
 end, { desc = "[Snacks] find files" })
@@ -162,6 +179,14 @@ end, { desc = "[LAZYGIT] Open lazygit" })
 -------------------------------------------------------
 --               Print Current Directory
 -------------------------------------------------------
+wk.add({
+  mode = { "n", "v" },
+  { "<leader>mp", group = "[p]rint" }, -- naming
+  { "<leader>mpd", group = "[d]irectory" }, -- naming
+  { "<leader>mpr", group = "[r]elative directory" }, -- naming
+  { "<leader>mpf", group = "[f]ilename" }, -- naming
+  { "<leader>mpD", group = "[D]ate" }, -- naming
+})
 -- print full working directory
 keymap.set("n", "<leader>mpd", function()
   local filepath = vim.fn.expand("%:p")
@@ -305,7 +330,6 @@ keymap.set("n", "<leader>rn", ":IncRename ")
 -- ############################################################################
 --                          Markdown
 -- ############################################################################
-local wk = require("which-key")
 -------------------------------------------------------------------------------
 --                       Markdown Headings Local Function
 -------------------------------------------------------------------------------
@@ -364,9 +388,9 @@ end
 -------------------------------------------------------------------------------
 wk.add({
   mode = { "n", "v" }, -- Applies to normal and visual modes for these groups
-  { "<leader>m", group = "[P]markdown" }, -- Main markdown group
-  { "<leader>mf", group = "[P]Fold Markdown" }, -- Subgroup for folding actions (e.g., <leader>mfj, <leader>mfk)
-  { "<leader>mh", group = "[P]Headings Adjust" }, -- For mthf etc.
+  { "<leader>m", group = "[m]arkdown" }, -- Main markdown group
+  { "<leader>mf", group = "[f]old Markdown" }, -- Subgroup for folding actions (e.g., <leader>mfj, <leader>mfk)
+  { "<leader>mh", group = "[h]eadings Adjust" }, -- For mthf etc.
   -- Add other leader-prefixed groups here as needed, e.g., for links (<leader>ml), spell (<leader>ms)
 })
 
@@ -377,6 +401,7 @@ wk.add({
 })
 
 -- Add specific standalone keymaps to which-key
+-- TODO: add proper keymap grouping
 wk.add({
   mode = { "n" },
   { "<leader>mT", desc = "Show current, next, and same-level Markdown headings" },
@@ -728,24 +753,69 @@ end, { noremap = true, silent = true, desc = "mthf - add dashes to headings" })
 -- ############################################################################
 --                          Obsidian
 -- ############################################################################
+wk.add({
+  mode = { "n", "v" },
+  { "<leader>o", group = "[o]bsidian" }, -- naming
+
+  -- create new note
+  { "<leader>on", group = "[n]ew" }, -- naming
+  { "<leader>onn", group = "[n]ote" }, -- TODO: command
+
+  -- daily notes
+  { "<leader>od", group = "[d]aily" }, -- naming
+  { "<leader>odf", group = "[f]ormat" }, -- naming
+  { "<leader>odft", group = "[t]itle" }, -- TODO: command
+
+  -- format
+  { "<leader>of", group = "[f]ormat" }, -- naming
+  { "<leader>oft", group = "[t]itle" }, -- command
+  { "<leader>ofT", group = "[T]odo" }, -- command
+
+  -- insert template
+  { "<leader>oi", group = "[i]nsert" }, -- naming
+  { "<leader>oin", group = "[n]otes" }, -- command
+  { "<leader>oit", group = "[t]odo" }, -- command
+  { "<leader>oiw", group = "[w]ork-tracker" }, -- command
+
+  -- backlinks
+  { "<leader>oB", group = "[B]ack" }, -- naming
+  { "<leader>oBl", group = "[l]inks" }, -- command
+
+  -- zettlekasten save and delete
+  { "<leader>ok", group = "[k] zettlekasten move to folder" }, -- command
+  { "<leader>oD", group = "[D]elete note" }, -- command
+
+  -- windows
+  { "<leader>oW", group = "[W]indows" }, -- command
+  { "<leader>oWk", group = "[k] zettlekasten move to folder" }, -- command
+  { "<leader>oWD", group = "[D]elte note" }, -- command
+})
 -------------------------------------------------------------------------------
 --                         Obsidian Keymaps
 -------------------------------------------------------------------------------
+--- TODO: create Keymaps for dailynotes - grouping already added
+
 -- These commands below are tested and fully working in Ubuntu, MacOS, and Win
--- apply template `notes.md` to new notes using `<leader>on`
+-- apply template `notes.md` to new notes using `<leader>oin`
+-- FORMAT
+-- strip date from note title and replace dashes with spaces
+keymap.set("n", "<leader>oft", ":s/\\(# \\)[^_]*_/\\1/ | s/-/ /g<cr>")
+-- strip date, ignore `# Todo` e.g `# Todo: My New Note`
+keymap.set("n", "<leader>ofT", ":s/\\(# TODO: \\)[^_]*_\\(.*\\)/\\1\\2/ | s/-/ /g<cr>")
+
+-- INSERT
 -- keymap.set("n", "<leader>on", ":ObsidianTemplate notes<CR> :lua vim.cmd([[1,/^\\S/s/^\\n\\{1,}//]])<CR>")
-keymap.set("n", "<leader>on", ":Obsidian template notes<CR> :lua vim.cmd([[1,/^\\S/s/^\\n\\{1,}//]])<CR>")
+keymap.set("n", "<leader>oin", ":Obsidian template notes<CR> :lua vim.cmd([[1,/^\\S/s/^\\n\\{1,}//]])<CR>")
 -- keymap.set("n", "<leader>on", ":Obsidian notes<CR> :lua vim.cmd([[1,/^\\S/s/^\\n\\{1,}//]])<CR>")
 -- apply template `todo.md` to new notes using: `<leader>todo`
-keymap.set("n", "<leader>todo", ":Obsidian template todo<CR> :lua vim.cmd([[1,/^\\S/s/^\\n\\{1,}//]])<CR>")
--- strip date from note title and replace dashes with spaces
-keymap.set("n", "<leader>of", ":s/\\(# \\)[^_]*_/\\1/ | s/-/ /g<cr>")
--- strip date, ignore `# Todo` e.g `# Todo: My New Note`
-keymap.set("n", "<leader>otf", ":s/\\(# TODO: \\)[^_]*_\\(.*\\)/\\1\\2/ | s/-/ /g<cr>")
+keymap.set("n", "<leader>oit", ":Obsidian template todo<CR> :lua vim.cmd([[1,/^\\S/s/^\\n\\{1,}//]])<CR>")
 -- apply template `work-tracker` to work related new notes using: `<leader>owt`
-keymap.set("n", "<leader>owt", ":Obsidian template work-tracker<CR> :lua vim.cmd([[1,/^\\S/s/^\\n\\{1,}//]])<CR>")
--- backlinks
-keymap.set("n", "<leader>obl", ":Obsidian backlinks<CR>")
+keymap.set("n", "<leader>oiw", ":Obsidian template work-tracker<CR> :lua vim.cmd([[1,/^\\S/s/^\\n\\{1,}//]])<CR>")
+
+-- BACKLINKS
+keymap.set("n", "<leader>oBl", ":Obsidian backlinks<CR>")
+
+-- NEW NOTES
 -------------------------------------------------------------------------------
 --                         MacOS section
 -------------------------------------------------------------------------------
@@ -760,7 +830,7 @@ keymap.set("n", "<leader>ok", function()
   vim.cmd("bd")
 end)
 -- delete file in current buffer MacOs
-keymap.set("n", "<leader>odd", ":!rm '%:p'<cr>:bd<cr>")
+keymap.set("n", "<leader>oD", ":!rm '%:p'<cr>:bd<cr>")
 -------------------------------------------------------------------------------
 --                         END MacOS section
 -------------------------------------------------------------------------------
@@ -807,6 +877,13 @@ end, { desc = "Delete current buffer from system" })
 -- ############################################################################
 local home = os.getenv("HOME") or os.getenv("USERPROFILE")
 local template_file = home .. "/.config/.dotfiles/prompt-generator/templates/work-prompt.md"
+wk.add({
+  mode = { "n", "v" },
+  { "<leader>mP", group = "[P]rompt" }, -- naming
+  { "<leader>mPi", group = "[i]nsert" }, -- naming
+  { "<leader>mPiw", group = "[w]ork" }, -- naming
+  { "<leader>mPiwt", group = "[t]emplate" }, -- command
+})
 
 local function insert_work_prompt()
   print("attempting to insert template...")
@@ -827,13 +904,20 @@ local function insert_work_prompt()
   end
 end
 -- create keymap specific to markdown
-keymap.set("n", "<leader>mpt", insert_work_prompt, { desc = "Insert AI Work Prompt" })
+keymap.set("n", "<leader>mPiwt", insert_work_prompt, { desc = "Insert AI Work Prompt" })
 -- ############################################################################
 --                          END GPrompt Template
 -- ############################################################################
 -------------------------------------------------------------------------------
 --                         UTILS
 -------------------------------------------------------------------------------
+wk.add({
+  mode = { "n", "v" },
+  { "<leader>U", group = "[U]tils" }, -- naming
+  { "<leader>Uc", group = "[c]onsole" }, -- naming
+  { "<leader>Ucl", group = "[l]og variable copy" }, -- naming
+  { "<leader>UcL", group = "[L]og full copy" }, -- naming
+})
 --- CONSOLE.LOG() --
 -- Custom log from any variable
 -- put your cursor on a variable and this command will generate this structure
