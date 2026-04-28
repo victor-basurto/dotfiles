@@ -13,23 +13,18 @@ main_note_dir="$OBSIDIAN_VAULT/daily" # work vault
 #   odn "some text"  → create/open today's note and append text
 # ------------------------------------------------------------
 function odn() {
-  # ── date components ──────────────────────────────────────
   local current_year=$(date +"%Y")
-  local current_month_num=$(date +"%m")
   local current_month_abbr=$(date +"%b" | tr '[:upper:]' '[:lower:]')
-  local current_day=$(date +"%d")
   local current_weekday=$(date +"%A" | tr '[:upper:]' '[:lower:]')
   local full_date=$(date +"%Y-%m-%d")
 
-  # ── paths ────────────────────────────────────────────────
   local note_dir="${main_note_dir}/${current_year}/${current_month_abbr}"
   local note_name="${full_date}_${current_weekday}"
   local full_path="${note_dir}/${note_name}.md"
 
-  # ── create directory if needed ───────────────────────────
   mkdir -p "${note_dir}"
 
-  # ── write template only if file doesn't exist yet ────────
+# ── write template only if file doesn't exist yet ────────
   if [[ ! -f "${full_path}" ]]; then
     cat > "${full_path}" <<EOF
 ---
@@ -59,30 +54,19 @@ urls: []
 📋 Tasks: 0  |  ✅ Done: 0  |  🔲 Undone: 0
 EOF
     echo "✓ Created: ${full_path}"
-  else
-    echo "✓ Note exists: ${full_path}"
   fi
 
-  # ── append optional inline note as a task ────────────────
   if [[ -n "$1" ]]; then
     local tmp=$(mktemp)
-    # Target the 'Incomplete Tasks' header specifically to match the PS1 behavior
+    # Appends new tasks safely under the header
     awk -v task="- [ ] $1" '
-      /^## Incomplete Tasks/ {
-        print $0
-        print task
-        next
-      }
+      /^## Incomplete Tasks/ { print; print task; next }
       { print }
     ' "${full_path}" > "$tmp" && mv "$tmp" "${full_path}"
-    echo "  ↳ Appended task: \"$1\""
   fi
 
-  # ── write summary into file footer ───────────────────────
   _odn_task_summary "${full_path}"
-
-  # ── open in nvim ─────────────────────────────────────────
-  nvim -c "lua require('utils.odn').setup()" "${full_path}"
+  nvim -c "lua require('utilities.odn').setup()" "${full_path}"
 }
 
 # ------------------------------------------------------------
@@ -99,16 +83,11 @@ function _odn_task_summary() {
   done_count=$(grep -c '^\- \[x\]' "${file}" 2>/dev/null || echo 0)
   undone=$(grep -c '^\- \[ \]' "${file}" 2>/dev/null || echo 0)
 
-  # ── update summary block inside the file ─────────────────
   local summary_line="📋 Tasks: ${total}  |  ✅ Done: ${done_count}  |  🔲 Undone: ${undone}"
-  local tmp=$(mktemp)
-  awk -v line="${summary_line}" '
-    // { print; print line; skip=1; next }
-    // { skip=0 }
-    !skip { print }
-  ' "${file}" > "$tmp" && mv "$tmp" "${file}"
 
-  # ── print summary box to terminal ────────────────────────
+  # Replace the stat line in-place — targets the emoji prefix specifically
+  perl -i -pe "s/^📋 Tasks:.*\$/${summary_line}/" "${file}"
+
   echo ""
   echo "  ┌─────────────────────────────┐"
   printf "  │  📋 Tasks    %-3s             │\n" "${total}"
