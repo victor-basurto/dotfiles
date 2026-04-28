@@ -139,6 +139,7 @@ source "$HOME/.config/zsh/functions/dir-utils.zsh"
 source "$HOME/.config/zsh/functions/utils.zsh"
 source "$HOME/.config/zsh/functions/og.zsh"
 source "$HOME/.config/zsh/functions/on.zsh"
+source "$HOME/.config/zsh/functions/odn.zsh"
 source "$HOME/.config/zsh/functions/eza-utils.zsh"
 # Load environment variables
 for env_file in "$HOME/.config/zshenv/env-private.zsh" "$HOME/.config/zshenv/env-public.zsh"; do
