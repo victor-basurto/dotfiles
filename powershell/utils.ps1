@@ -37,7 +37,7 @@ Set-Alias -Name "less" -Value "C:\Program Files\Git\usr\bin\less.exe"
 # Definitions
 #####################################################
 # Working directory definitions
-$ObsidianDir    = "G:\My Drive\obsidian-work"
+$ObsidianDir    = "$env:GDRIVE\obsidian-work"
 $ConfigDir      = Join-Path $env:USERPROFILE ".config"
 $DotfilesDir    = Join-Path $env:USERPROFILE ".config\.dotfiles"
 $NvimDir        = Join-Path $env:USERPROFILE ".config\.dotfiles\nvim"

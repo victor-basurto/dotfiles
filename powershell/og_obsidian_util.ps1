@@ -5,7 +5,7 @@ found in the YAML fronmmatter, and moves the note to a corresponding subdirector
 within the 'notes' directory. If the tag's subdirectory does not exist, it will be created.
 #>
 # obsidian vault directory
-$VAULT_PATH = "G:\My Drive\obsidian-work"
+$VAULT_PATH = "$env:GDRIVE\obsidian-work"
 $ZETTELKASTEN_DIR = Join-Path $VAULT_PATH "zettelkasten"
 $NOTES_DIR = Join-Path $VAULT_PATH "notes"
 

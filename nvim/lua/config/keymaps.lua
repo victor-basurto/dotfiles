@@ -800,67 +800,76 @@ wk.add({
 -- apply template `notes.md` to new notes using `<leader>oin`
 -- FORMAT
 -- strip date from note title and replace dashes with spaces
-keymap.set("n", "<leader>oft", ":s/\\(# \\)[^_]*_/\\1/ | s/-/ /g<cr>")
+keymap.set(
+  "n",
+  "<leader>oft",
+  ":s/# \\d\\{4\\}-\\d\\{2\\}-\\d\\{2\\}_\\(.*\\)/\\=('# ' . substitute(substitute(submatch(1), '-', ' ', 'g'), '\\(\\w\\)', '\\u\\1', ''))<cr>"
+)
 -- strip date, ignore `# Todo` e.g `# Todo: My New Note`
 keymap.set("n", "<leader>ofT", ":s/\\(# TODO: \\)[^_]*_\\(.*\\)/\\1\\2/ | s/-/ /g<cr>")
 
 -- INSERT
--- keymap.set("n", "<leader>on", ":ObsidianTemplate notes<CR> :lua vim.cmd([[1,/^\\S/s/^\\n\\{1,}//]])<CR>")
-keymap.set("n", "<leader>oin", ":Obsidian template notes<CR> :lua vim.cmd([[1,/^\\S/s/^\\n\\{1,}//]])<CR>")
--- keymap.set("n", "<leader>on", ":Obsidian notes<CR> :lua vim.cmd([[1,/^\\S/s/^\\n\\{1,}//]])<CR>")
--- apply template `todo.md` to new notes using: `<leader>todo`
-keymap.set("n", "<leader>oit", ":Obsidian template todo<CR> :lua vim.cmd([[1,/^\\S/s/^\\n\\{1,}//]])<CR>")
--- apply template `work-tracker` to work related new notes using: `<leader>owt`
-keymap.set("n", "<leader>oiw", ":Obsidian template work-tracker<CR> :lua vim.cmd([[1,/^\\S/s/^\\n\\{1,}//]])<CR>")
+keymap.set("n", "<leader>oin", ":Obsidian template notes<CR>", { desc = "Insert notes template" })
+keymap.set("n", "<leader>oit", ":Obsidian template todo<CR>", { desc = "Insert todo template" })
+keymap.set("n", "<leader>oiw", ":Obsidian template work-tracker<CR>", { desc = "Insert work-tracker template" })
 
 -- BACKLINKS
 keymap.set("n", "<leader>oBl", ":Obsidian backlinks<CR>")
 
 -- NEW NOTES
 -------------------------------------------------------------------------------
---                         MacOS/Win section
+--                   MacOS/Win CROSS-PLATFORM
+-------------------------------------------------------------------------------
+-- ok: Move current file to zettelkasten folder
+-- oD: Delete current file in buffer
+keymap.set(
+  "n",
+  "<leader>ok",
+  obsidian_utils.move_current_file_to_zettelkasten,
+  { desc = "move current fiel to zettelkasten" }
+)
+keymap.set(
+  "n",
+  "<leader>oD",
+  obsidian_utils.delete_current_file_and_buffer,
+  { desc = "delete current file and buffer" }
+)
+-------------------------------------------------------------------------------
+--                     MacOS section LEGACY
 -------------------------------------------------------------------------------
 -- OK: Move current file to zettelkasten folder
 -- ODD: Delete current file in buffer
 -- add keymap to move file in current buffer to zettelkasten folder
-keymap.set("n", "<leader>ok", function()
-  local source = vim.fn.expand("%:p")
-  if source == "" then
-    return
-  end
-
-  local vault = obsidian_utils.get_vault()
-  local target = vault .. "/zettelkasten/" .. vim.fn.fnamemodify(source, ":t")
-
-  -- try fast move
-  local ok = os.rename(source, target)
-
-  -- fallback (cross-drive / Google Drive)
-  if not ok then
-    vim.notify("file doesn't exist!" .. target, vim.log.levels.ERROR)
-    vim.fn.writefile(vim.fn.readfile(source), target)
-    os.remove(source)
-  end
-
-  vim.cmd("bd")
-end)
-keymap.set("n", "<leader>oD", function()
-  local file = vim.api.nvim_buf_get_name(0)
-  if file == "" then
-    return
-  end
-
-  vim.fn.delete(file)
-  vim.api.nvim_buf_delete(0, { force = true })
-end, { desc = "Delete current file and buffer" })
--- delete file in current buffer MacOs
+-- local keymap = vim.keymap
+-- local obsidian_utils = require("utilities.obsidian_utils")
+--
+-- keymap.set("n", "<leader>ok", function()
+--   local source = vim.fn.expand("%:p")
+--   if source == "" then
+--     return
+--   end
+--
+--   local vault = obsidian_utils.get_vault()
+--   local target = vault .. "/zettelkasten/" .. vim.fn.fnamemodify(source, ":t")
+--
+--   -- try fast move
+--   local ok = os.rename(source, target)
+--
+--   -- fallback (cross-drive / Google Drive)
+--   if not ok then
+--     vim.fn.writefile(vim.fn.readfile(source), target)
+--     os.remove(source)
+--   end
+--
+--   vim.cmd("bd")
+-- end)
+-- -- delete file in current buffer MacOs
 -- keymap.set("n", "<leader>oD", ":!rm '%:p'<cr>:bd<cr>")
 -------------------------------------------------------------------------------
---                         END MacOS section
+--                    END MacOS section
 -------------------------------------------------------------------------------
-
 -------------------------------------------------------------------------------
---                         Windows section
+--                    Windows section LEGACY
 -------------------------------------------------------------------------------
 -- WOK: Move current file to zettelkasten folder
 -- WOD: Delete current file in buffer

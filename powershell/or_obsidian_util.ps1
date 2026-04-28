@@ -19,7 +19,7 @@
 #   Relies on $OBSIDIAN_PATH and $INBOX_PATH variables defined below.
 #
 # obsidian vault directory
-$OBSIDIAN_PATH = "G:\My Drive\obsidian-work"
+$OBSIDIAN_PATH = "$env:GDRIVE\obsidian-work"
 $INBOX_PATH = Join-Path $OBSIDIAN_PATH "inbox"
 
 function or {
