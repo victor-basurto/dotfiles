@@ -822,11 +822,27 @@ keymap.set("n", "<leader>oBl", ":Obsidian backlinks<CR>")
 -- OK: Move current file to zettelkasten folder
 -- ODD: Delete current file in buffer
 -- add keymap to move file in current buffer to zettelkasten folder
+local keymap = vim.keymap
+local obsidian_utils = require("utilities.obsidian_utils")
+
 keymap.set("n", "<leader>ok", function()
-  local dest = vim.fn.expand("~") .. "/Google Drive/My Drive/obsidian-work/zettelkasten/"
   local source = vim.fn.expand("%:p")
-  -- local cmd = string.format(":!mv '%s' \"%s\"<cr>:bd<cr>", source, dest)
-  vim.fn.system({ "mv", source, dest })
+  if source == "" then
+    return
+  end
+
+  local vault = obsidian_utils.get_vault()
+  local target = vault .. "/zettelkasten/" .. vim.fn.fnamemodify(source, ":t")
+
+  -- try fast move
+  local ok = os.rename(source, target)
+
+  -- fallback (cross-drive / Google Drive)
+  if not ok then
+    vim.fn.writefile(vim.fn.readfile(source), target)
+    os.remove(source)
+  end
+
   vim.cmd("bd")
 end)
 -- delete file in current buffer MacOs

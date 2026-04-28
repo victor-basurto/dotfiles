@@ -1,38 +1,14 @@
-local obsidian_path
-
-if vim.fn.has("mac") == 1 then
-  obsidian_path = vim.fn.expand("~/Google Drive/My Drive/obsidian-work")
-elseif vim.fn.has("win32") == 1 then
-  obsidian_path = "G:/My Drive/obsidian-work"
-else
-  obsidian_path = vim.fn.expand("~/.config/obsidian-vault")
-end
-
-local uv = vim.uv or vim.loop
-obsidian_path = uv.fs_realpath(obsidian_path) or obsidian_path
-obsidian_path = obsidian_path:gsub("\\", "/"):gsub("/$", "")
-obsidian_path = obsidian_path:gsub("G:/My Drive", "G:/My Drive")
-obsidian_path = obsidian_path:gsub("\\\\", "/"):gsub("/$", "")
+-- Obsidian
+local obsidian_utils = require("utilities.obsidian_utils")
+local obsidian_path = obsidian_utils.get_vault() -- get work vault
 
 return {
   "obsidian-nvim/obsidian.nvim",
   version = "*",
-  lazy = true,
   ft = "markdown",
   dependencies = {
     "nvim-lua/plenary.nvim",
   },
-  cond = function()
-    local cwd = vim.fn.getcwd()
-    if vim.fn.has("win32") == 1 then
-      cwd = cwd:gsub("\\", "/"):gsub("/$", "")
-    end
-    if vim.fn.has("win32") == 1 then
-      return string.find(cwd:lower(), obsidian_path:lower(), 1, true) == 1
-    else
-      return string.find(cwd, obsidian_path, 1, true) == 1
-    end
-  end,
   opts = {
     workspaces = {
       {
@@ -56,20 +32,43 @@ return {
     -- Frontmatter updates
     frontmatter = {
       enabled = true,
-      -- Using the new functional approach but keeping your logic
       func = function(note)
         if note.title then
           note:add_alias(note.title)
         end
-        local out = { id = note.id, aliases = note.aliases, tags = note.tags }
-        if note.metadata ~= nil and not vim.tbl_isempty(note.metadata) then
-          for k, v in pairs(note.metadata) do
+
+        -- Helper: return existing metadata value or a default
+        local meta = note.metadata or {}
+
+        -- Preserve `date` from existing frontmatter, or set today on new notes
+        local date = meta.date or os.date("%Y-%m-%d")
+
+        -- Preserve custom fields, defaulting to empty structures for new notes
+        local hubs = meta.hubs or { "[[]]" }
+        local parent = meta.parent or {}
+        local urls = meta.urls or {}
+
+        local out = {
+          id = note.id,
+          aliases = note.aliases,
+          tags = note.tags,
+          date = date,
+          hubs = hubs,
+          parent = parent,
+          urls = urls,
+        }
+
+        -- Pass through any OTHER metadata fields you may add in the future
+        for k, v in pairs(meta) do
+          if out[k] == nil then
             out[k] = v
           end
         end
+
         return out
       end,
-      sort = { "id", "aliases", "tags" },
+      -- Controls YAML key ordering in the file
+      sort = { "id", "aliases", "tags", "date", "hubs", "parent", "urls" },
     },
 
     backlinks = {
@@ -110,12 +109,12 @@ return {
     },
 
     completion = (function()
-      local has_nvim_cmp, _ = pcall(require, "cmp")
+      local has_nvim_cmp = pcall(require, "cmp")
       local has_blink = pcall(require, "blink.cmp")
       return {
         nvim_cmp = has_nvim_cmp and not has_blink,
         blink = has_blink,
-        min_chars = 3,
+        min_chars = 2,
         match_case = true,
         create_new = true,
       }
@@ -147,31 +146,6 @@ return {
       separator = string.rep("-", 80),
     },
 
-    ui = {
-      enable = false, -- As per your current file
-      ignore_conceal_warn = false,
-      update_debounce = 200,
-      max_file_length = 5000,
-      external_link_icon = { char = "", hl_group = "ObsidianExtLinkIcon" },
-      reference_text = { hl_group = "ObsidianRefText" },
-      highlight_text = { hl_group = "ObsidianHighlightText" },
-      tags = { hl_group = "ObsidianTag" },
-      block_ids = { hl_group = "ObsidianBlockID" },
-      hl_groups = {
-        ObsidianTodo = { bold = true, fg = "#f78c6c" },
-        ObsidianDone = { bold = true, fg = "#89ddff" },
-        ObsidianRightArrow = { bold = true, fg = "#f78c6c" },
-        ObsidianTilde = { bold = true, fg = "#ff5370" },
-        ObsidianImportant = { bold = true, fg = "#d73128" },
-        ObsidianBullet = { bold = true, fg = "#89ddff" },
-        ObsidianRefText = { underline = true, fg = "#c792ea" },
-        ObsidianExtLinkIcon = { fg = "#c792ea" },
-        ObsidianTag = { italic = true, fg = "#89ddff" },
-        ObsidianBlockID = { italic = true, fg = "#89ddff" },
-        ObsidianHighlightText = { bg = "#75662e" },
-      },
-    },
-
     picker = {
       name = "snacks",
       note_mappings = {
@@ -184,38 +158,38 @@ return {
       },
     },
 
-    search = {
-      sort_by = "modified",
-      sort_reversed = true,
-      max_lines = 1000,
-    },
+    -- search = {
+    --   sort_by = "modified",
+    --   sort_reversed = true,
+    --   max_lines = 1000,
+    -- },
 
-    callbacks = {
-      enter_note = function(_, note)
-        if note == nil then
-          return
-        end
-        vim.keymap.set("n", "<leader>cho", "<cmd>Obsidian toggle_checkbox<cr>", {
-          buffer = note.bufnr,
-          desc = "Toggle checkbox",
-        })
-        -- Using string require inside function to prevent early load issues
-        vim.keymap.set("n", "<Tab>", function()
-          require("obsidian.api").nav_link("next")
-        end, { buffer = note.bufnr, desc = "Go to next link" })
-
-        vim.keymap.set("n", "<S-Tab>", function()
-          require("obsidian.api").nav_link("prev")
-        end, { buffer = note.bufnr, desc = "Go to previous link" })
-      end,
-    },
-
-    open = {
-      use_advanced_uri = false,
-      func = vim.ui.open,
-      schemes = { "https", "http", "file", "mailto" },
-    },
-
-    exclude_dirs = { ".git", "node_modules", "dist", "build" },
+    -- callbacks = {
+    --   enter_note = function(_, note)
+    --     if note == nil then
+    --       return
+    --     end
+    --     vim.keymap.set("n", "<leader>cho", "<cmd>Obsidian toggle_checkbox<cr>", {
+    --       buffer = note.bufnr,
+    --       desc = "Toggle checkbox",
+    --     })
+    --     -- Using string require inside function to prevent early load issues
+    --     vim.keymap.set("n", "<Tab>", function()
+    --       require("obsidian.api").nav_link("next")
+    --     end, { buffer = note.bufnr, desc = "Go to next link" })
+    --
+    --     vim.keymap.set("n", "<S-Tab>", function()
+    --       require("obsidian.api").nav_link("prev")
+    --     end, { buffer = note.bufnr, desc = "Go to previous link" })
+    --   end,
+    -- },
+    --
+    -- open = {
+    --   use_advanced_uri = false,
+    --   func = vim.ui.open,
+    --   schemes = { "https", "http", "file", "mailto" },
+    -- },
+    --
+    -- exclude_dirs = { ".git", "node_modules", "dist", "build" },
   },
 }
