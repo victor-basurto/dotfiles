@@ -1,3 +1,4 @@
+. (Join-Path (Split-Path $MyInvocation.MyCommand.Path) "odn_obsidian_util.ps1")
 . (Join-Path (Split-Path $MyInvocation.MyCommand.Path) "og_obsidian_util.ps1")
 . (Join-Path (Split-Path $MyInvocation.MyCommand.Path) "on_obsidian_util.ps1")
 . (Join-Path (Split-Path $MyInvocation.MyCommand.Path) "or_obsidian_util.ps1")
