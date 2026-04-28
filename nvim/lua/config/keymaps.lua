@@ -4,6 +4,7 @@
 local opts = { noremap = true, silent = true }
 local keymap = vim.keymap
 local wk = require("which-key")
+local obsidian_utils = require("utilities.obsidian_utils")
 -- discipline, custom plugin inspired by `craftzdog-max/devaslife`
 -------------------------------------------------------
 --               Discipline
@@ -817,14 +818,11 @@ keymap.set("n", "<leader>oBl", ":Obsidian backlinks<CR>")
 
 -- NEW NOTES
 -------------------------------------------------------------------------------
---                         MacOS section
+--                         MacOS/Win section
 -------------------------------------------------------------------------------
 -- OK: Move current file to zettelkasten folder
 -- ODD: Delete current file in buffer
 -- add keymap to move file in current buffer to zettelkasten folder
-local keymap = vim.keymap
-local obsidian_utils = require("utilities.obsidian_utils")
-
 keymap.set("n", "<leader>ok", function()
   local source = vim.fn.expand("%:p")
   if source == "" then
@@ -839,14 +837,24 @@ keymap.set("n", "<leader>ok", function()
 
   -- fallback (cross-drive / Google Drive)
   if not ok then
+    vim.notify("file doesn't exist!" .. target, vim.log.levels.ERROR)
     vim.fn.writefile(vim.fn.readfile(source), target)
     os.remove(source)
   end
 
   vim.cmd("bd")
 end)
+keymap.set("n", "<leader>oD", function()
+  local file = vim.api.nvim_buf_get_name(0)
+  if file == "" then
+    return
+  end
+
+  vim.fn.delete(file)
+  vim.api.nvim_buf_delete(0, { force = true })
+end, { desc = "Delete current file and buffer" })
 -- delete file in current buffer MacOs
-keymap.set("n", "<leader>oD", ":!rm '%:p'<cr>:bd<cr>")
+-- keymap.set("n", "<leader>oD", ":!rm '%:p'<cr>:bd<cr>")
 -------------------------------------------------------------------------------
 --                         END MacOS section
 -------------------------------------------------------------------------------
@@ -858,30 +866,30 @@ keymap.set("n", "<leader>oD", ":!rm '%:p'<cr>:bd<cr>")
 -- WOD: Delete current file in buffer
 
 -- add keymap to move file in current buffer to zettelkasten folder
-keymap.set("n", "<leader>wok", function()
-  local current_file = vim.fn.expand("%:p")
-  local zettelkasten_folder_expanded = vim.fn.expand("G:/My Drive/obsidian-work/zettelkasten")
-  local filename = vim.fn.fnamemodify(current_file, ":t") -- Get the filename without the path
-  local destination_path = zettelkasten_folder_expanded .. "\\" .. filename
-
-  if vim.fn.isdirectory(zettelkasten_folder_expanded) == 0 then
-    vim.notify("Zettelkasten folder does not exist: " .. zettelkasten_folder_expanded, vim.log.levels.ERROR)
-    return
-  end
-  -- Rename/Move the file
-  local status = vim.fn.rename(current_file, destination_path)
-  if status == 0 then
-    print("File moved successfully to: " .. destination_path)
-    vim.cmd(":bd") -- Close the current buffer after moving the file
-  else
-    print("Error moving file, Status: " .. status)
-  end
-end, { desc = "Move current file to zettelkasten folder (PowerShell)" })
+-- keymap.set("n", "<leader>wok", function()
+--   local current_file = vim.fn.expand("%:p")
+--   local zettelkasten_folder_expanded = vim.fn.expand("G:/My Drive/obsidian-work/zettelkasten")
+--   local filename = vim.fn.fnamemodify(current_file, ":t") -- Get the filename without the path
+--   local destination_path = zettelkasten_folder_expanded .. "\\" .. filename
+--
+--   if vim.fn.isdirectory(zettelkasten_folder_expanded) == 0 then
+--     vim.notify("Zettelkasten folder does not exist: " .. zettelkasten_folder_expanded, vim.log.levels.ERROR)
+--     return
+--   end
+--   -- Rename/Move the file
+--   local status = vim.fn.rename(current_file, destination_path)
+--   if status == 0 then
+--     print("File moved successfully to: " .. destination_path)
+--     vim.cmd(":bd") -- Close the current buffer after moving the file
+--   else
+--     print("Error moving file, Status: " .. status)
+--   end
+-- end, { desc = "Move current file to zettelkasten folder (PowerShell)" })
 -- delete file in current buffer windows
-keymap.set("n", "<leader>wod", function()
-  local buffer_functions = require("utilities.delete_current_buffer_win")
-  buffer_functions.del_buffer_win()
-end, { desc = "Delete current buffer from system" })
+-- keymap.set("n", "<leader>wod", function()
+--   local buffer_functions = require("utilities.delete_current_buffer_win")
+--   buffer_functions.del_buffer_win()
+-- end, { desc = "Delete current buffer from system" })
 -------------------------------------------------------------------------------
 --                         END Windows section
 -------------------------------------------------------------------------------
