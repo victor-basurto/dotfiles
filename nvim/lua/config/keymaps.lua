@@ -1,14 +1,13 @@
 -- Keymaps are automatically loaded on the VeryLazy event
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
--- Add any additional keymaps here
 local opts = { noremap = true, silent = true }
 local keymap = vim.keymap
 local wk = require("which-key")
 local obsidian_utils = require("utilities.obsidian_utils")
--- discipline, custom plugin inspired by `craftzdog-max/devaslife`
 -------------------------------------------------------
 --               Discipline
 -------------------------------------------------------
+-- discipline, custom plugin inspired by `craftzdog-max/devaslife`
 local discipline = require("utilities.discipline")
 discipline.strict()
 -------------------------------------------------------
@@ -125,6 +124,21 @@ keymap.set("n", "<leader>ttA", ":Trouble todo <cr>", { desc = "[TODO] use Troubl
 --       Snacks Picker (replaces Telescope)
 -------------------------------------------------------
 ---TODO: Set keymap grouping for SNACKS
+wk.add({
+  mode = { "n", "v" },
+  { "<leader>f", group = "[Snacks] Snacks" }, -- snacks
+  { "<leader>ff", group = "[Snacks] picker" }, -- command
+  { "<leader>fg", group = "[Snacks] grep" }, -- command
+  { "<leader>fb", group = "[Snacks] buffers" }, -- command
+  { "<leader>fh", group = "[Snacks] help tags" }, -- command
+  { "<leader>fi", group = "[Snacks] resume" }, -- command
+  { "<leader>fj", group = "[Snacks] diagnostics" }, -- command
+  { "<leader>fk", group = "[Snacks] treesitter" }, -- command
+  { "<leader>fI", group = "[Snacks] LSP definitions" }, -- command
+  { "<leader>fd", group = "[Snacks] LSP type definitions" }, -- command
+  { "<leader>fl", group = "[Snacks] picker current with hidden" }, -- command
+  { "<leader>fL", group = "[Snacks] picker root with hidden" }, -- command
+})
 keymap.set("n", "<leader>ff", function()
   Snacks.picker.files()
 end, { desc = "[Snacks] find files" })
@@ -172,6 +186,11 @@ end, { desc = "[Snacks] files in root directory" })
 -------------------------------------------------------
 --              Snacks.LazyGit
 -------------------------------------------------------
+wk.add({
+  mode = { "n", "v" },
+  { "<leader>gl", group = "[l]azy" },
+  { "<leader>glg", group = "[g]it" },
+})
 local snacks_lazygit = require("snacks.lazygit")
 keymap.set("n", "<leader>glg", function()
   snacks_lazygit.open()
@@ -290,7 +309,7 @@ end, { desc = "Get next diagnostics error" })
 -------------------------------------------------------
 keymap.set("n", "<leader>O", function()
   vim.ui.open(vim.fn.expand("%"))
-end, { desc = "Open in Browser" })
+end, { desc = "[O]pen in Browser" })
 -------------------------------------------------------
 --         Strikethrough Command
 -------------------------------------------------------
