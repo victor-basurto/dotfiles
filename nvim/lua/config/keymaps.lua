@@ -121,9 +121,8 @@ keymap.set("n", "<leader>ttA", ":Trouble todo <cr>", { desc = "[TODO] use Troubl
 --              END fzf-lua
 -------------------------------------------------------
 -------------------------------------------------------
---       Snacks Picker (replaces Telescope)
+--       Snacks Picker (replace Telescope)
 -------------------------------------------------------
----TODO: Set keymap grouping for SNACKS
 wk.add({
   mode = { "n", "v" },
   { "<leader>f", group = "[Snacks] Snacks" }, -- snacks
@@ -251,15 +250,6 @@ keymap.set("n", "<leader>mpD", function()
   print("Copied date: " .. date)
 end, { desc = "[Date] Print current date" })
 -------------------------------------------------------
---     Clipboard Regex to Select all Checkboxes
---             in Markdown Files
--------------------------------------------------------
-keymap.set("n", "<leader>mcr", function()
-  local chkbx_cmd = [[%s/\v^\s*-\s\[\s\]\s/]]
-  vim.fn.setreg("+", chkbx_cmd) -- system clipboard
-  print("Copied regex: " .. chkbx_cmd)
-end, { desc = "Regex to select all checkboxes" })
--------------------------------------------------------
 --                  NeoGen
 -------------------------------------------------------
 vim.api.nvim_set_keymap("n", "<leader>ng", ":lua require('neogen').generate()<CR>", opts)
@@ -332,6 +322,16 @@ keymap.set("n", "<leader>ts", function()
     vim.fn.setline(".", indent .. "~" .. trimmed .. "~")
   end
 end, { desc = "[Text strikethrough] toggle strikethrough line" })
+-------------------------------------------------------
+--     Clipboard Regex to Select all Checkboxes
+--             in Markdown Files
+-------------------------------------------------------
+---TODO: set wk for mcr
+keymap.set("n", "<leader>mcr", function()
+  local chkbx_cmd = [[%s/\v^\s*-\s\[\s\]\s/]]
+  vim.fn.setreg("+", chkbx_cmd) -- system clipboard
+  print("Copied regex: " .. chkbx_cmd)
+end, { desc = "Regex to select all checkboxes" })
 -------------------------------------------------------
 --         END Strikethrough Command
 -------------------------------------------------------
@@ -406,6 +406,32 @@ end
 -------------------------------------------------------------------------------
 --               Markdown Folding Keymaps
 -------------------------------------------------------------------------------
+-- TODO: enable all the keymaps below once updated all the actual commands
+-- wk.add({
+--   mode = { "n", "v" }, -- Applies to normal and visual modes for these groups
+--   -- groups
+--   { "<leader>m", group = "[m]arkdown" }, -- naming
+--   { "<leader>mf", group = "[f]old Markdown" }, -- naming
+--   { "<leader>mt", group = "[t]ext" }, -- naming
+--   { "<leader>mth", desc = "[h]eadings" }, -- naming
+--   { "<leader>mr", desc = "[r]ender" }, -- naming
+--   -- fold
+--   { "<leader>mf1", group = "[1] fold headings level 1 or above" }, -- command
+--   { "<leader>mf2", group = "[2] fold headings level 2 or above" }, -- command
+--   { "<leader>mf3", group = "[3] fold headings level 3 or above" }, -- command
+--   { "<leader>mf4", group = "[4] fold headings level 4 or above" }, -- command
+--   { "<leader>mfu", group = "[u]nfold all headings" }, -- command
+--   { "<leader>mff", group = "[f]old the heading cursor currently on" }, -- command
+--   { "<leader>mft", group = "[t]oggle fold" }, -- command
+--   { "<leader>mfs", group = "[s]how current, next and same-level headings" }, -- command
+--   -- text
+--   { "<leader>mts", group = "[s]trikethrough" }, -- command
+--   { "<leader>mtc", group = "[c]heckbox select all" }, -- command
+--   { "<leader>mthd", desc = "[d]ashes to heading" }, -- command
+--   { "<CR>", desc = "[P]Toggle fold (Current)" }, -- Explicitly add CR
+--   -- render
+--   { "<leader>mrt", desc = "[t]oggle preview" }, -- command
+-- })
 wk.add({
   mode = { "n", "v" }, -- Applies to normal and visual modes for these groups
   { "<leader>m", group = "[m]arkdown" }, -- Main markdown group
