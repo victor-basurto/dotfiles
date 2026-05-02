@@ -178,7 +178,8 @@ return {
         pattern = "markdown",
         callback = function()
           -- NOTE: <leader>mtoc: Generates TOC using the default (browser-compatible) configuration
-          vim.keymap.set("n", "<leader>mtoc", function()
+          -- `motoC` documentation is added into Keymaps wk group
+          vim.keymap.set("n", "<leader>motoC", function()
             -- Even for the default, use the helper to ensure consistent behavior
             generate_toc_with_temp_config(browser_override_opts)
           end, {
@@ -187,6 +188,7 @@ return {
           })
 
           -- NOTE: <leader>motoc: Generates TOC using Obsidian wikilinks
+          -- `motoc` documentation is added into Keymaps wk group
           vim.keymap.set("n", "<leader>motoc", function()
             generate_toc_with_temp_config(obsidian_override_opts)
           end, {

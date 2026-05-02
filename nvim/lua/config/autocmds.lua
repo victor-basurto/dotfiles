@@ -3,6 +3,7 @@
 
 -- vim.api
 local api = vim.api
+local md_utils = require("utilities.markdown_utils")
 
 -- ConcealLevel for JSON Files
 api.nvim_create_autocmd("FileType", {
@@ -34,4 +35,10 @@ api.nvim_create_autocmd("WinLeave", {
       api.nvim_feedkeys(api.nvim_replace_termcodes("<C-\\><C-n>", true, false, true), "n", false)
     end
   end,
+})
+
+-- Use autocommand to apply only to markdown files
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "markdown",
+  callback = md_utils.set_markdown_folding,
 })
