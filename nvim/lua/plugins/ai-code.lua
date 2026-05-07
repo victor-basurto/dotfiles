@@ -17,7 +17,7 @@ return {
     -- Move keys here, to the same level as dependencies
     keys = {
       {
-        "<leader>aa",
+        "<leader>at",
         function()
           local oc = require("opencode")
           -- check if opencode window is currently visible
@@ -33,7 +33,7 @@ return {
         desc = "[AI] Toggle OpenCode (keep session)",
       },
       {
-        "<leader>as",
+        "<leader>aa",
         function()
           require("opencode").ask()
         end,

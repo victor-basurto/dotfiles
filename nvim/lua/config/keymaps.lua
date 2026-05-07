@@ -26,18 +26,18 @@ wk.add({
 
   -- trouble
   { "<leader>tr", group = "[r]un" }, -- naming
-  { "<leader>trd", group = "[d]iagnostics" }, -- command
-  { "<leader>trb", group = "[b]uffers diagnostics" }, -- command
-  { "<leader>trs", group = "[s]ymbols" }, -- command
-  { "<leader>trD", group = "[D]efinitions" }, -- command
-  { "<leader>trl", group = "[l]ocation List" }, -- command
-  { "<leader>trq", group = "[q]uickfix List" }, -- command
+  { "<leader>trd", group = "[d]iagnostics" }, -- open diagnostics
+  { "<leader>trb", group = "[b]uffers diagnostics" }, -- open buffers
+  { "<leader>trs", group = "[s]ymbols" }, -- open symbols
+  { "<leader>trD", group = "[D]efinitions" }, -- open definitions
+  { "<leader>trl", group = "[l]ocation List" }, -- open location list
+  { "<leader>trq", group = "[q]uickfix List" }, -- open quickFix list
 
   -- todo
-  { "<leader>tttf", group = "[f]ind todos" }, -- command
-  { "<leader>ttQ", group = "[Q]uickfix todo" }, -- command
-  { "<leader>ttL", group = "[L]ist todo" }, -- command
-  { "<leader>ttA", group = "[A]ll todo" }, -- command
+  { "<leader>tttf", group = "[f]ind todos" }, -- find todos
+  { "<leader>ttQ", group = "[Q]uickfix todo" }, -- open quickFix todos
+  { "<leader>ttL", group = "[L]ist todo" }, -- list all todos from project
+  { "<leader>ttA", group = "[A]ll todo" }, -- all todos
 })
 keymap.set("n", "<leader>trd", ":Trouble diagnostics <cr>", { desc = "[TROUBLE] Diagnostics" })
 keymap.set(
@@ -128,17 +128,17 @@ keymap.set("n", "<leader>ttA", ":Trouble todo <cr>", { desc = "[TODO] use Troubl
 wk.add({
   mode = { "n", "v" },
   { "<leader>f", group = "[Snacks] Snacks" }, -- snacks
-  { "<leader>ff", group = "[Snacks] picker" }, -- command
-  { "<leader>fg", group = "[Snacks] grep" }, -- command
-  { "<leader>fb", group = "[Snacks] buffers" }, -- command
-  { "<leader>fh", group = "[Snacks] help tags" }, -- command
-  { "<leader>fi", group = "[Snacks] resume" }, -- command
-  { "<leader>fj", group = "[Snacks] diagnostics" }, -- command
-  { "<leader>fk", group = "[Snacks] treesitter" }, -- command
-  { "<leader>fI", group = "[Snacks] LSP definitions" }, -- command
-  { "<leader>fd", group = "[Snacks] LSP type definitions" }, -- command
-  { "<leader>fl", group = "[Snacks] picker current with hidden" }, -- command
-  { "<leader>fL", group = "[Snacks] picker root with hidden" }, -- command
+  { "<leader>ff", group = "[Snacks] picker" }, -- find files
+  { "<leader>fg", group = "[Snacks] grep" }, -- live grep
+  { "<leader>fb", group = "[Snacks] buffers" }, -- buffers
+  { "<leader>fh", group = "[Snacks] help tags" }, -- help tags
+  { "<leader>fi", group = "[Snacks] resume" }, -- resume
+  { "<leader>fj", group = "[Snacks] diagnostics" }, -- open diagnostics
+  { "<leader>fk", group = "[Snacks] treesitter" }, -- open treesitter
+  { "<leader>fI", group = "[Snacks] LSP definitions" }, -- open lsp definitions
+  { "<leader>fd", group = "[Snacks] LSP type definitions" }, -- open lsp type definitions
+  { "<leader>fl", group = "[Snacks] picker current with hidden" }, -- find files include hidden
+  { "<leader>fL", group = "[Snacks] picker root with hidden" }, -- find files from root include hidden
 })
 keymap.set("n", "<leader>ff", function()
   Snacks.picker.files()
@@ -189,8 +189,8 @@ end, { desc = "[Snacks] files in root directory" })
 -------------------------------------------------------
 wk.add({
   mode = { "n", "v" },
-  { "<leader>gl", group = "[l]azy" },
-  { "<leader>glg", group = "[g]it" },
+  { "<leader>gl", group = "[l]azy" }, -- naming
+  { "<leader>glg", group = "[g]it" }, -- open git
 })
 local snacks_lazygit = require("snacks.lazygit")
 keymap.set("n", "<leader>glg", function()
@@ -203,10 +203,10 @@ end, { desc = "[LAZYGIT] Open lazygit" })
 wk.add({
   mode = { "n", "v" },
   { "<leader>mp", group = "[p]rint" }, -- naming
-  { "<leader>mpd", group = "[d]irectory" }, -- naming
-  { "<leader>mpr", group = "[r]elative directory" }, -- naming
-  { "<leader>mpf", group = "[f]ilename" }, -- naming
-  { "<leader>mpD", group = "[D]ate" }, -- naming
+  { "<leader>mpd", group = "[d]irectory" }, -- print directory path
+  { "<leader>mpr", group = "[r]elative directory" }, -- print relative directory path
+  { "<leader>mpf", group = "[f]ilename" }, -- print filename
+  { "<leader>mpD", group = "[D]ate" }, -- print date
 })
 -- print full working directory
 keymap.set("n", "<leader>mpd", utils.copy_full_path, { desc = "[Dir] Copy current file fullpath (pwd)" })
@@ -261,23 +261,23 @@ end, { desc = "Get next diagnostics error" })
 -------------------------------------------------------
 keymap.set("n", "<leader>O", function()
   vim.ui.open(vim.fn.expand("%"))
-end, { desc = "[O]pen in Browser" })
+end, { desc = "[O]pen in Browser" }) -- open html in browser
 -------------------------------------------------------
 --               IncRename
 -------------------------------------------------------
-keymap.set("n", "<leader>rn", ":IncRename ")
+keymap.set("n", "<leader>rn", ":IncRename ") -- rename file/folder
 
 -------------------------------------------------------
 --              LinkPaste
 -------------------------------------------------------
--- paste a github link and add it in this format
+-- paste a github link and add it in this format but works for every url
 keymap.set({ "n", "v", "i" }, "<C-p>", function()
   -- Insert the text in the desired format
   vim.cmd("normal! a[]() ")
   vim.cmd("normal! F(pv2F/lyF[p")
   -- Leave me in normal mode or command mode
   vim.cmd("stopinsert")
-end, { desc = "[P]Paste Github link" })
+end, { desc = "[P]Paste link" }) -- fast paste url link
 -- ############################################################################
 --                          Markdown
 -- ############################################################################
@@ -297,24 +297,24 @@ wk.add({
   { "<leader>mot", desc = "[t]table" }, -- naming
   { "<leader>moto", desc = "[o]ff" }, -- naming
   -- fold
-  { "<leader>mf1", group = "[1] fold headings level 1 or above" }, -- command
-  { "<leader>mf2", group = "[2] fold headings level 2 or above" }, -- command
-  { "<leader>mf3", group = "[3] fold headings level 3 or above" }, -- command
-  { "<leader>mf4", group = "[4] fold headings level 4 or above" }, -- command
-  { "<leader>mfu", group = "[u]nfold all headings" }, -- command
-  { "<leader>mff", group = "[f]old the heading cursor currently on" }, -- command
-  { "<leader>mft", group = "[t]oggle fold" }, -- command
-  { "<leader>mfs", group = "[s]how current, next and same-level headings" }, -- command
+  { "<leader>mf1", group = "[1] fold headings level 1 or above" }, -- folds all headings level 1 and/or above
+  { "<leader>mf2", group = "[2] fold headings level 2 or above" }, -- folds all headings level 2 and/or above
+  { "<leader>mf3", group = "[3] fold headings level 3 or above" }, -- folds all headings level 3 and/or above
+  { "<leader>mf4", group = "[4] fold headings level 4 or above" }, -- folds all headings level 4 and/or above
+  { "<leader>mfu", group = "[u]nfold all headings" }, -- unfolds all headings
+  { "<leader>mff", group = "[f]old the heading cursor currently on" }, -- folds the current heading under cursor
+  { "<leader>mft", group = "[t]oggle fold" }, -- toggles folding
+  { "<leader>mfs", group = "[s]how current, next and same-level headings" }, -- logs current, next and same-level headings
   -- text
-  { "<leader>mts", group = "[s]trikethrough" }, -- command
-  { "<leader>mtc", group = "[c]heckbox select all" }, -- command
-  { "<leader>mthd", desc = "[d]ashes to heading" }, -- command
-  { "<CR>", desc = "[f]Toggle fold (Current)" }, -- Explicitly add CR
+  { "<leader>mts", group = "[s]trikethrough" }, -- strikes through selected word
+  { "<leader>mtc", group = "[c]heckbox select all" }, -- checks all checkboxes
+  { "<leader>mthd", desc = "[d]ashes to heading" }, -- add dashes to heading
+  { "<CR>", desc = "[f]Toggle fold (Current)" }, -- toggle folding Explicitly with CR
   -- render
-  { "<leader>mrt", desc = "[t]oggle preview in browser" }, -- command
+  { "<leader>mrt", desc = "[t]oggle preview in browser" }, -- opens the markdown preview in the browser
   -- TOC for obsidian
-  { "<leader>motoc", desc = "[c]ontents TOC obisidian wikilinks" }, -- command
-  { "<leader>motoC", desc = "[C]ontents TOC browser compatible" }, -- command
+  { "<leader>motoc", desc = "[c]ontents TOC obisidian wikilinks" }, -- create Obsidian TOC
+  { "<leader>motoC", desc = "[C]ontents TOC browser compatible" }, -- create default TOC (browser compatible)
 })
 keymap.set("n", "<leader>mf1", function()
   md_utils.fold_headings_cmd({ 6, 5, 4, 3, 2, 1 })
@@ -467,27 +467,27 @@ wk.add({
 
   -- format
   { "<leader>of", group = "[f]ormat" }, -- naming
-  { "<leader>oft", group = "[t]itle" }, -- command
-  { "<leader>ofT", group = "[T]odo" }, -- command
+  { "<leader>oft", group = "[t]itle" }, -- formats title
+  { "<leader>ofT", group = "[T]odo" }, -- formats todo title
 
   -- insert template
   { "<leader>oi", group = "[i]nsert" }, -- naming
-  { "<leader>oin", group = "[n]otes" }, -- command
-  { "<leader>oit", group = "[t]odo" }, -- command
-  { "<leader>oiw", group = "[w]ork-tracker" }, -- command
+  { "<leader>oin", group = "[n]otes" }, -- insert new note from template
+  { "<leader>oit", group = "[t]odo" }, -- insert new todo note from template
+  { "<leader>oiw", group = "[w]ork-tracker" }, -- insert new work-tracker note from template
 
   -- backlinks
   { "<leader>oB", group = "[B]ack" }, -- naming
-  { "<leader>oBl", group = "[l]inks" }, -- command
+  { "<leader>oBl", group = "[l]inks" }, -- follow link
 
   -- zettlekasten save and delete
-  { "<leader>ok", group = "[k] zettlekasten move to folder" }, -- command
-  { "<leader>oD", group = "[D]elete note" }, -- command
+  { "<leader>ok", group = "[k] zettlekasten move to folder" }, -- save note to zettelkasten
+  { "<leader>oD", group = "[D]elete note" }, -- delete note
 
   -- windows
   { "<leader>oW", group = "[W]indows" }, -- command
-  { "<leader>oWk", group = "[k] zettlekasten move to folder" }, -- command
-  { "<leader>oWD", group = "[D]elte note" }, -- command
+  { "<leader>oWk", group = "[k] zettlekasten move to folder" }, -- save note to zettlekasten in windows
+  { "<leader>oWD", group = "[D]elte note" }, -- delete note in windows
 })
 -------------------------------------------------------------------------------
 --                         Obsidian Keymaps
@@ -604,6 +604,18 @@ keymap.set(
 --                          END Obsidian
 -- ############################################################################
 -- ############################################################################
+--                          OpenCode
+-- ############################################################################
+wk.add({
+  mode = { "n", "v" },
+  { "<leader>a", group = "[ai]" }, -- naming
+  { "<leader>at", group = "[t]oggle opencode (keep session)" }, -- open opencode session
+  { "<leader>aa", group = "[a]sk question" }, -- ask question to opencode
+})
+-- ############################################################################
+--                        end OpenCode
+-- ############################################################################
+-- ############################################################################
 --                          GPrompt Template
 -- ############################################################################
 local home = os.getenv("HOME") or os.getenv("USERPROFILE")
@@ -613,7 +625,7 @@ wk.add({
   { "<leader>mP", group = "[P]rompt" }, -- naming
   { "<leader>mPi", group = "[i]nsert" }, -- naming
   { "<leader>mPiw", group = "[w]ork" }, -- naming
-  { "<leader>mPiwt", group = "[t]emplate" }, -- command
+  { "<leader>mPiwt", group = "[t]emplate" }, -- insert context prompt for AI
 })
 
 local function insert_work_prompt()
@@ -646,8 +658,8 @@ wk.add({
   mode = { "n", "v" },
   { "<leader>U", group = "[U]tils" }, -- naming
   { "<leader>Uc", group = "[c]onsole" }, -- naming
-  { "<leader>Ucl", group = "[l]og variable copy" }, -- naming
-  { "<leader>UcL", group = "[L]og full copy" }, -- naming
+  { "<leader>Ucl", group = "[l]og variable copy" }, -- create a `console.log()` with variable under cursor
+  { "<leader>UcL", group = "[L]og full copy" }, -- create a `console.log()` with variable under cursor includes special characters
 })
 --- CONSOLE.LOG() --
 -- Custom log from any variable
