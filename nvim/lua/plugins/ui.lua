@@ -247,11 +247,6 @@ return {
           winblend = 0,
         },
       },
-      keymaps = {
-        ["<leader>glg"] = function()
-          require("snacks.lazygit").open()
-        end,
-      },
     },
   },
   {

@@ -190,7 +190,7 @@ end, { desc = "[Snacks] files in root directory" })
 wk.add({
   mode = { "n", "v" },
   { "<leader>gl", group = "[l]azy" }, -- naming
-  { "<leader>glg", group = "[g]it" }, -- open git
+  { "<leader>glg", group = "[g]it lazygit" }, -- open git
 })
 local snacks_lazygit = require("snacks.lazygit")
 keymap.set("n", "<leader>glg", function()
@@ -651,9 +651,37 @@ keymap.set("n", "<leader>mPiwt", insert_work_prompt, { desc = "Insert AI Work Pr
 -- ############################################################################
 --                          END GPrompt Template
 -- ############################################################################
--------------------------------------------------------------------------------
+-- ############################################################################
+--                  Sticky Annotations and Notes
+-- ############################################################################
+wk.add({
+  mode = { "n", "v" },
+  { "<leader>A", group = "[A]annotation/Notes" }, -- naming
+  { "<leader>AS", group = "[S]ticky" }, -- naming
+  { "<leader>AN", group = "[N]otes" }, -- naming
+
+  -- sticky annotations
+  { "<leader>ASa", group = "[a]dd/edit note" }, -- naming
+  { "<leader>ASc", group = "[c]lear note" }, -- naming
+  { "<leader>ASC", group = "[C]lear buffer notes" }, -- naming
+  { "<leader>ASD", group = "[D]elete/clear ALL notes" }, -- naming
+  { "<leader>ASn", group = "[n]ext note" }, -- naming
+  { "<leader>ASp", group = "[p]revious note" }, -- naming
+  { "<leader>ASl", group = "[l]ist all notes" }, -- naming
+
+  -- sidebar notes
+  { "<leader>ANt", group = "[t]oggle right sidebar" }, -- naming
+  { "<leader>ANf", group = "[f]loating window toggle" }, -- naming
+  { "<leader>ANs", group = "[s]how notes" }, -- naming
+  { "<leader>ANh", group = "[h]ide notes" }, -- naming
+  { "<leader>ANe", group = "[e]dit notes file" }, -- naming
+})
+-- ############################################################################
+--                END Sticky Annotations and Notes
+-- ############################################################################
+-- ############################################################################
 --                         UTILS
--------------------------------------------------------------------------------
+-- ############################################################################
 wk.add({
   mode = { "n", "v" },
   { "<leader>U", group = "[U]tils" }, -- naming
@@ -690,6 +718,6 @@ keymap.set("t", "<C-h>", [[<C-\><C-n><C-w>h]], { desc = "Move to left pane" })
 keymap.set("t", "<C-j>", [[<C-\><C-n><C-w>j]], { desc = "Move to bottom pane" })
 keymap.set("t", "<C-k>", [[<C-\><C-n><C-w>k]], { desc = "Move to top pane" })
 keymap.set("t", "<C-l>", [[<C-\><C-n><C-w>l]], { desc = "Move to right pane" })
--------------------------------------------------------------------------------
+-- ############################################################################
 --                       END UTILS
--------------------------------------------------------------------------------
+-- ############################################################################

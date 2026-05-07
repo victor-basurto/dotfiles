@@ -34,19 +34,19 @@ return {
       local fusen = require("fusen")
 
       -- [N]otes [a]nnotattion [e]dit/add
-      vim.keymap.set("n", "<leader>Nae", fusen.add_mark, { desc = "[Annotation]: Add/Edit note" })
+      vim.keymap.set("n", "<leader>ASa", fusen.add_mark, { desc = "[Annotation]: Add/Edit note" })
       -- [N]otes [a]nnotattion [c]lear note
-      vim.keymap.set("n", "<leader>Nac", fusen.clear_mark, { desc = "[Annotation]: Clear note" })
+      vim.keymap.set("n", "<leader>ASc", fusen.clear_mark, { desc = "[Annotation]: Clear note" })
       -- [N]otes [a]nnotattion [C]lear buffer notes
-      vim.keymap.set("n", "<leader>NaC", fusen.clear_buffer, { desc = "[Annotation]: Clear buffer notes" })
+      vim.keymap.set("n", "<leader>ASC", fusen.clear_buffer, { desc = "[Annotation]: Clear buffer notes" })
       -- [N]otes [a]nnotattion [D] Clear All Notes
-      vim.keymap.set("n", "<leader>NaD", fusen.clear_all, { desc = "[Annotation]: Clear ALL notes" })
+      vim.keymap.set("n", "<leader>ASD", fusen.clear_all, { desc = "[Annotation]: Clear ALL notes" })
       -- [N]otes [a]nnotattion [n]ext note
-      vim.keymap.set("n", "<leader>Nan", fusen.next_mark, { desc = "[Annotation]: Next note" })
+      vim.keymap.set("n", "<leader>ASn", fusen.next_mark, { desc = "[Annotation]: Next note" })
       -- [N]otes [a]nnotattion [p]revious note
-      vim.keymap.set("n", "<leader>Nap", fusen.prev_mark, { desc = "[Annotation]: Previous note" })
+      vim.keymap.set("n", "<leader>ASp", fusen.prev_mark, { desc = "[Annotation]: Previous note" })
       -- [N]otes [a]nnotattion [l]ist all notes
-      vim.keymap.set("n", "<leader>Nal", fusen.list_marks, { desc = "[Annotation]: List all notes" })
+      vim.keymap.set("n", "<leader>ASl", fusen.list_marks, { desc = "[Annotation]: List all notes" })
     end,
   },
   {
@@ -71,18 +71,18 @@ return {
       require("notes").setup(opts)
 
       -- Main toggle: Open / Close notes in vertical split on the right
-      vim.keymap.set("n", "<leader>Nnt", "<cmd>NotesToggle vsplit<CR>", { desc = "[Notes] Toggle right sidebar" })
+      vim.keymap.set("n", "<leader>ANt", "<cmd>NotesToggle vsplit<CR>", { desc = "[Notes] Toggle right sidebar" })
 
       -- Open as floating window (good for temporary use)
-      vim.keymap.set("n", "<leader>NnF", "<cmd>NotesToggle float<CR>", { desc = "[Notes] Toggle floating window" })
+      vim.keymap.set("n", "<leader>ANf", "<cmd>NotesToggle float<CR>", { desc = "[Notes] Toggle floating window" })
 
       -- Force show / hide (useful if you want separate control)
-      vim.keymap.set("n", "<leader>Nns", "<cmd>NotesShow<CR>", { desc = "[Notes] Show notes" })
+      vim.keymap.set("n", "<leader>ANs", "<cmd>NotesShow<CR>", { desc = "[Notes] Show notes" })
 
-      vim.keymap.set("n", "<leader>Nnh", "<cmd>NotesHide<CR>", { desc = "[Notes] Hide notes" })
+      vim.keymap.set("n", "<leader>ANh", "<cmd>NotesHide<CR>", { desc = "[Notes] Hide notes" })
 
       -- Directly edit the notes file in current window (rarely needed)
-      vim.keymap.set("n", "<leader>Nne", "<cmd>NotesEdit<CR>", { desc = "[Notes] Edit notes file" })
+      vim.keymap.set("n", "<leader>ANe", "<cmd>NotesEdit<CR>", { desc = "[Notes] Edit notes file" })
     end,
   },
 }
