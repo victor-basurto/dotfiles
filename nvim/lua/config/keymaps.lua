@@ -718,6 +718,14 @@ keymap.set("t", "<C-h>", [[<C-\><C-n><C-w>h]], { desc = "Move to left pane" })
 keymap.set("t", "<C-j>", [[<C-\><C-n><C-w>j]], { desc = "Move to bottom pane" })
 keymap.set("t", "<C-k>", [[<C-\><C-n><C-w>k]], { desc = "Move to top pane" })
 keymap.set("t", "<C-l>", [[<C-\><C-n><C-w>l]], { desc = "Move to right pane" })
+
+-- Text UTILS --
+-- insert bold and place cursor in middle.
+keymap.set("i", "<C-b>", function()
+  vim.api.nvim_put({ "****" }, "c", true, true)
+  vim.cmd("normal! 2h")
+end, { noremap = true, silent = true })
+
 -- ############################################################################
 --                       END UTILS
 -- ############################################################################
