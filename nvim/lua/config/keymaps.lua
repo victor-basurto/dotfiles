@@ -375,7 +375,7 @@ keymap.set("n", "zj", function()
   vim.cmd("edit!")
   -- Unfold everything first or I had issues
   vim.cmd("normal! zR")
-  fold_markdown_headings({ 6, 5, 4, 3, 2, 1 })
+  md_utils.fold_markdown_headings({ 6, 5, 4, 3, 2, 1 })
   vim.cmd("normal! zz") -- center the cursor line on screen
 end, { desc = "[P]Fold all headings level 1 or above" })
 -- Keymap for folding markdown headings of level 2 or above
@@ -388,7 +388,7 @@ keymap.set("n", "zk", function()
   vim.cmd("edit!")
   -- Unfold everything first or I had issues
   vim.cmd("normal! zR")
-  fold_markdown_headings({ 6, 5, 4, 3, 2 })
+  md_utils.fold_markdown_headings({ 6, 5, 4, 3, 2 })
   vim.cmd("normal! zz") -- center the cursor line on screen
 end, { desc = "[P]Fold all headings level 2 or above" })
 -- Keymap for folding markdown headings of level 3 or above
@@ -400,7 +400,7 @@ keymap.set("n", "zl", function()
   vim.cmd("edit!")
   -- Unfold everything first or I had issues
   vim.cmd("normal! zR")
-  fold_markdown_headings({ 6, 5, 4, 3 })
+  md_utils.fold_markdown_headings({ 6, 5, 4, 3 })
   vim.cmd("normal! zz") -- center the cursor line on screen
 end, { desc = "[P]Fold all headings level 3 or above" })
 -- Keymap for folding markdown headings of level 4 or above
@@ -412,7 +412,7 @@ keymap.set("n", "z;", function()
   vim.cmd("edit!")
   -- Unfold everything first or I had issues
   vim.cmd("normal! zR")
-  fold_markdown_headings({ 6, 5, 4 })
+  md_utils.fold_markdown_headings({ 6, 5, 4 })
   vim.cmd("normal! zz") -- center the cursor line on screen
 end, { desc = "[P]Fold all headings level 4 or above" })
 -- Keymap for unfolding markdown headings of level 2 or above
