@@ -235,50 +235,59 @@ find_nextjs_root() {
 
   return 1
 }
-# Print Architectual Tree only but exclude folder
-# This function also allows you to set the deep level
-#  One folder to exclude
-#  Multiple folders to exclude
-#  Error checking for each folder
-#  Folders‑only tree
-#  Icons + color
-#  No eza ignore flags (since eza removed them)
-#  No modification to your real directory
-# usage:
-#   exclude one folder:
-#   lt-dirs-exclude serialization
+# Print architectural directory tree (folders only) with exclusions
 #
-#   exclude multiple folders:
-#   lt-dirs-exclude serialization
-#   
-#   exclude folders inside a specific path
-#   lt-dirs-exclude node_modules .git build -Path C:\Projects\App
+# Uses eza to display a clean folder-only tree view with:
+# - icons + color
+# - configurable depth
+# - ability to exclude one or multiple folders
+# - safe argument parsing
 #
-#   exclude multiple folder with 2 depth delimiter
-#   lt-dirs-exclude serialization platform -Depth 2
+# ⚠️ Note:
+# Uses --ignore-glob with wildcard matching:
+#   *folder* (matches anywhere in path/name)
+#
+# Usage:
+#
+# ▶ Basic usage (current directory)
+# lt-dirs-exclude tmux
+#
+# ▶ Exclude multiple folders
+# lt-dirs-exclude node_modules .git build
+#
+# ▶ Limit tree depth
+# lt-dirs-exclude tmux --depth 2
+#
+# ▶ Run on a specific path
+# lt-dirs-exclude tmux --path ~/projects/app
+#
+# ▶ Combine all options
+# lt-dirs-exclude node_modules .git dist --depth 3 --path ~/projects/app
+#
+# Behavior:
+# - Only directories are shown (--only-dirs)
+# - Matches any folder containing the pattern (glob: *name*)
+# - Does NOT modify or delete any files
+# - Safe read-only tree visualization tool
+#
 lt-dirs-exclude() {
-  local path="."
+  local target_path="."
   local depth=0
   local excludes=()
-  
-  # Parse arguments
-  # This separates the 'ExcludeFolders' from the optional --path and --depth flags
+
   while [[ $# -gt 0 ]]; do
     case "$1" in
-      --path) path="$2"; shift 2 ;;
+      --path) target_path="$2"; shift 2 ;;
       --depth) depth="$2"; shift 2 ;;
       *) excludes+=("$1"); shift ;;
     esac
   done
 
-  # Check if at least one folder was provided to exclude
   if [[ ${#excludes[@]} -eq 0 ]]; then
     echo "❌ Error: Please provide at least one folder name to exclude."
     return 1
   fi
 
-  # Build the ignore pattern
-  # We join the array with '|' and wrap in wildcards
   local ignore_pattern=""
   for folder in "${excludes[@]}"; do
     if [[ -z "$ignore_pattern" ]]; then
@@ -288,19 +297,13 @@ lt-dirs-exclude() {
     fi
   done
 
-  # Build depth argument
   local depth_arg=()
   if [[ $depth -gt 0 ]]; then
     depth_arg=("--level=$depth")
   fi
 
-  # Execute eza
   eza --tree --only-dirs --icons=always --color=always \
       --ignore-glob="$ignore_pattern" \
       "${depth_arg[@]}" \
-      "$path"
+      "$target_path"
 }
-
-# EZA Theme
-export EZA_CONFIG_DIR="$HOME/.config/.dotfiles/eza"
-
