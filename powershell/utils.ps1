@@ -1,19 +1,3 @@
-# Utility functions
-# Requirements: eza, fzf, bat
-
-#####################################################
-# eza functions (already there)
-#####################################################
-function l {
-  eza -l --tree --group-directories-first --icons=always --color=always --all --git-ignore --no-permissions --no-time --no-user --no-filesize --git $args
-}
-function l-all {
-  eza -l --tree --group-directories-first --icons=always --color=always --all --git-ignore --git $args
-}
-
-# eza theme configuration
-$env:EZA_CONFIG_DIR = "$env:USERPROFILE\.config\.dotfiles\eza"
-
 #####################################################
 # fzf function (already there)
 #####################################################

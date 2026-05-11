@@ -235,5 +235,72 @@ find_nextjs_root() {
 
   return 1
 }
+# Print Architectual Tree only but exclude folder
+# This function also allows you to set the deep level
+#  One folder to exclude
+#  Multiple folders to exclude
+#  Error checking for each folder
+#  Folders‑only tree
+#  Icons + color
+#  No eza ignore flags (since eza removed them)
+#  No modification to your real directory
+# usage:
+#   exclude one folder:
+#   lt-dirs-exclude serialization
+#
+#   exclude multiple folders:
+#   lt-dirs-exclude serialization
+#   
+#   exclude folders inside a specific path
+#   lt-dirs-exclude node_modules .git build -Path C:\Projects\App
+#
+#   exclude multiple folder with 2 depth delimiter
+#   lt-dirs-exclude serialization platform -Depth 2
+lt-dirs-exclude() {
+  local path="."
+  local depth=0
+  local excludes=()
+  
+  # Parse arguments
+  # This separates the 'ExcludeFolders' from the optional --path and --depth flags
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --path) path="$2"; shift 2 ;;
+      --depth) depth="$2"; shift 2 ;;
+      *) excludes+=("$1"); shift ;;
+    esac
+  done
+
+  # Check if at least one folder was provided to exclude
+  if [[ ${#excludes[@]} -eq 0 ]]; then
+    echo "❌ Error: Please provide at least one folder name to exclude."
+    return 1
+  fi
+
+  # Build the ignore pattern
+  # We join the array with '|' and wrap in wildcards
+  local ignore_pattern=""
+  for folder in "${excludes[@]}"; do
+    if [[ -z "$ignore_pattern" ]]; then
+      ignore_pattern="*${folder}*"
+    else
+      ignore_pattern="${ignore_pattern}|*${folder}*"
+    fi
+  done
+
+  # Build depth argument
+  local depth_arg=()
+  if [[ $depth -gt 0 ]]; then
+    depth_arg=("--level=$depth")
+  fi
+
+  # Execute eza
+  eza --tree --only-dirs --icons=always --color=always \
+      --ignore-glob="$ignore_pattern" \
+      "${depth_arg[@]}" \
+      "$path"
+}
+
 # EZA Theme
 export EZA_CONFIG_DIR="$HOME/.config/.dotfiles/eza"
+

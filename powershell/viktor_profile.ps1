@@ -3,6 +3,7 @@
 . (Join-Path (Split-Path $MyInvocation.MyCommand.Path) "on_obsidian_util.ps1")
 . (Join-Path (Split-Path $MyInvocation.MyCommand.Path) "or_obsidian_util.ps1")
 . (Join-Path (Split-Path $MyInvocation.MyCommand.Path) "utils.ps1")
+. (Join-Path (Split-Path $MyInvocation.MyCommand.Path) "eza-utils.ps1")
 # Prompt
 Import-Module posh-git
 # Import-Module oh-my-posh
