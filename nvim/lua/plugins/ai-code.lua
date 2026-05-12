@@ -41,4 +41,7 @@ return {
       },
     },
   },
+  config = function()
+    vim.o.autoread = true
+  end,
 }
