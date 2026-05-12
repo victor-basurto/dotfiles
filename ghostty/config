@@ -83,3 +83,21 @@ background-blur = 10
 # selection-background = #a063eb
 # selection-foreground = #1b1b22
 mouse-hide-while-typing = true
+
+# terminal multiplexer
+# cmd + d = Splits vertical
+# cmd + shift + d = Splits horizontal
+
+# Fast navigation (Vim-style)
+keybind = ctrl+h=goto_split:left
+keybind = ctrl+l=goto_split:right
+keybind = ctrl+k=goto_split:top
+keybind = ctrl+j=goto_split:bottom
+
+# Visual Tweaks for Splits
+# Set the color of the split dividers
+split-divider-color = #a063eb
+
+# If you still get an "unknown field" for window-divider-color, 
+# it's likely because your version uses the decoration setting:
+window-decoration = true
