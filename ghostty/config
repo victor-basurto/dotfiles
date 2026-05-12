@@ -89,14 +89,31 @@ mouse-hide-while-typing = true
 # cmd + shift + d = Splits horizontal
 
 # Fast navigation (Vim-style)
-keybind = ctrl+h=goto_split:left
-keybind = ctrl+l=goto_split:right
-keybind = ctrl+k=goto_split:top
-keybind = ctrl+j=goto_split:bottom
+keybind = ctrl+a>h=goto_split:left
+keybind = ctrl+a>l=goto_split:right
+keybind = ctrl+a>k=goto_split:top
+keybind = ctrl+a>j=goto_split:bottom
 
+# Resize panes (Option + h,j,k,l)
+keybind = alt+h=resize_split:left,20
+keybind = alt+l=resize_split:right,20
+keybind = alt+k=resize_split:up,20
+keybind = alt+j=resize_split:down,20
+
+# Equalize splits (Option + r)
+keybind = alt+r=equalize_splits
+# zoom stack
+keybind = cmd+z=toggle_split_zoom
 # Visual Tweaks for Splits
 # Set the color of the split dividers
 split-divider-color = #a063eb
+# Add internal padding (top, right, bottom, left)
+window-padding-x = 12
+# window-padding-y = 12
+
+# Optional: Add extra padding at the very top specifically 
+# if it's hitting the macOS traffic lights
+window-padding-balance = true
 
 # If you still get an "unknown field" for window-divider-color, 
 # it's likely because your version uses the decoration setting:
