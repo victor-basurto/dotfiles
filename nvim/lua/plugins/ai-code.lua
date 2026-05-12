@@ -41,8 +41,4 @@ return {
       },
     },
   },
-  config = function()
-    -- TODO: enable after setup
-    -- vim.o.autoread = true
-  end,
 }
