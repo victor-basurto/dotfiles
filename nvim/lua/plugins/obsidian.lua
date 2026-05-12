@@ -158,6 +158,9 @@ return {
       },
     },
 
+    ui = {
+      enable = false,
+    },
     -- search = {
     --   sort_by = "modified",
     --   sort_reversed = true,
