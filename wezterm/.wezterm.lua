@@ -101,7 +101,7 @@ config.font = wezterm.font_with_fallback({
 
 config.bold_brightens_ansi_colors = "BrightAndBold"
 config.font_size = 14
-config.window_background_opacity = 0.85
+config.window_background_opacity = 0.95
 
 -- Return the configuration
 return config
