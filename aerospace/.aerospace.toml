@@ -239,4 +239,6 @@ on-mode-changed = []
 [[on-window-detected]]
     if.app-id = "com.apple.Preview"
     run = 'layout floating'                     # optional — many prefer floating PDFs
-
+[[on-window-detected]]
+    if.app-id = "com.mitchellh.ghostty"
+    run = 'layout floating'
