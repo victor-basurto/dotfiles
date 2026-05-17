@@ -121,8 +121,14 @@ alias gfetch="git fetch"
 alias gsth="git stash"
 
 # aerospace
+alias aero="open -a Aerospace"
+alias aero-x='osascript -e "tell application \"AeroSpace\" to quit"'
+# list active windows with id and name
 function ff() {
-  aerospace list-windows --all | fzf --bind 'enter:execute(bash -c "aerospace focus --windows-id {1}")+abort'
+  aerospace list-windows --all \
+    | awk '{printf "%s  [%s]  %s\n", $1, $2, substr($0, index($0,$3))}' \
+    | fzf --with-nth=2.. \
+          --bind 'enter:execute(bash -c "aerospace focus --window-id {1}")+abort'
 }
 
 # yazi function
