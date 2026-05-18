@@ -153,3 +153,4 @@ bindkey '^f'   autosuggest-accept     # Ctrl+F = accept suggestion (better than 
 # Uncomment to measure zsh loading time along with top zprof
 # zprof
 export PATH="$HOME/.local/bin:$PATH"
+export MANPAGER="nvim -c ASMANPAGER -"

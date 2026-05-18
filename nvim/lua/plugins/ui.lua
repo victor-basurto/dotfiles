@@ -298,4 +298,5 @@ return {
       },
     },
   },
+  { "lambdalisue/vim-manpager" },
 }
