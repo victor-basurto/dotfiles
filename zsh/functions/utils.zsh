@@ -71,3 +71,22 @@ serlogin() {
 serdev() {
   dotnet sitecore ser pull -n dev
 }
+
+# AEROSPACE
+# list active windows with id and name
+function ff() {
+  aerospace list-windows --all \
+    | awk '{printf "%s  [%s]  %s\n", $1, $2, substr($0, index($0,$3))}' \
+    | fzf --with-nth=2.. \
+          --bind 'enter:execute(bash -c "aerospace focus --window-id {1}")+abort'
+}
+
+# YAZI
+# start yazi navigation
+function y() {
+  local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+  yazi "$@" --cwd-file="$tmp"
+  IFS= read -r -d '' cwd < "$tmp"
+  [ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+  rm -f -- "$tmp"
+}
