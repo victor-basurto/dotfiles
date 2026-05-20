@@ -2,6 +2,7 @@
 
 ## Neovim Configuration Overview
 
+Neovim v0.12.2
 This Neovim configuration enhances the editing experience with a selection of powerful plugins and custom key mappings.
 
 ### Key Mappings
