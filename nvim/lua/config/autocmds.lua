@@ -42,3 +42,9 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = "markdown",
   callback = md_utils.set_markdown_folding,
 })
+vim.filetype.add({
+  extension = {
+    cshtml = "razor",
+    razor = "razor",
+  },
+})

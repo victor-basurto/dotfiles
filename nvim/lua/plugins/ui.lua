@@ -1,4 +1,16 @@
 return {
+  {
+    "nvim-tree/nvim-web-devicons",
+    lazy = true,
+    config = function()
+      require("nvim-web-devicons").setup({
+        override = {
+          cshtml = { icon = "󰈙", color = "#6CB6FF", name = "Cshtml" }, -- or any icon you like
+          razor = { icon = "󰈙", color = "#6CB6FF", name = "Razor" },
+        },
+      })
+    end,
+  },
   { "smjonas/inc-rename.nvim", opts = {} },
   { "bullets-vim/bullets.vim" },
   {
@@ -299,4 +311,8 @@ return {
     },
   },
   { "lambdalisue/vim-manpager" },
+  {
+    "jlcrochet/vim-razor",
+    ft = { "razor" },
+  },
 }

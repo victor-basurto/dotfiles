@@ -13,6 +13,8 @@ return {
         "bash",
         "comment",
         "css",
+        "c_sharp",
+        "razor",
         "git_config",
         "git_rebase",
         "gitattributes",
