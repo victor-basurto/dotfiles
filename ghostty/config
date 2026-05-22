@@ -63,7 +63,7 @@ theme = "Catppuccin Frappe"
 # purplepeter - GREAT
 # rapture
 # rebecca
-font-size = 13
+font-size = 14
 # font-style = medium
 bold-is-bright = true
 
@@ -83,44 +83,3 @@ background-blur = 10
 # selection-background = #a063eb
 # selection-foreground = #1b1b22
 mouse-hide-while-typing = true
-
-# terminal multiplexer
-# cmd + d = Splits vertical
-# cmd + shift + d = Splits horizontal
-# Create a new tab (equivalent to tmux 'ctrl+a c')
-keybind = ctrl+n=new_tab
-# Navigate to the previous tab (equivalent to tmux 'ctrl+a p')
-keybind = ctrl+[=previous_tab
-# Navigate to the next tab (equivalent to tmux 'ctrl+a n')
-keybind = ctrl+]=next_tab
-
-# Fast navigation (Vim-style)
-keybind = ctrl+w>h=goto_split:left
-keybind = ctrl+w>j=goto_split:bottom
-keybind = ctrl+w>k=goto_split:top
-keybind = ctrl+w>l=goto_split:right
-
-# Resize panes (Option + h,j,k,l)
-keybind = ctrl+r>h=resize_split:left,20
-keybind = ctrl+r>l=resize_split:right,20
-keybind = ctrl+r>k=resize_split:up,20
-keybind = ctrl+r>j=resize_split:down,20
-
-# Equalize splits (Option + r)
-keybind = cmd+r=equalize_splits
-# zoom stack
-keybind = cmd+z=toggle_split_zoom
-# Visual Tweaks for Splits
-# Set the color of the split dividers
-split-divider-color = #a063eb
-# Add internal padding (top, right, bottom, left)
-window-padding-x = 12
-# window-padding-y = 12
-
-# Optional: Add extra padding at the very top specifically 
-# if it's hitting the macOS traffic lights
-window-padding-balance = true
-macos-titlebar-style = tabs
-# If you still get an "unknown field" for window-divider-color, 
-# it's likely because your version uses the decoration setting:
-window-decoration = true
