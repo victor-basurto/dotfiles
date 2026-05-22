@@ -55,3 +55,25 @@ Obsidian will use these files as `tags`
 - `xmcloud-websites.md`
 - `xmcloud-work.md`
 - `xmcloud.md`
+
+## Create All Files at Once Pro-Tip
+
+Here is an extra tip if you want to create multiple files at once
+
+### MacOS
+
+```bash
+# e.g.
+touch {angular,lint,vim,linux,db,devops,xmcloud,todo,ts}.md
+# you get the idea
+```
+
+### Windows
+
+```ps1
+# e.g. using the `ni` command
+ni (echo angular lint vim linux db devops xmcloud todo ts | % { "$_.md" })
+
+# or use the `ForEach-Object`
+'angular','lint','vim','linux','db','devops','xmcloud','todo','ts' | ForEach-Object {New-Item "$_.md"}
+```
