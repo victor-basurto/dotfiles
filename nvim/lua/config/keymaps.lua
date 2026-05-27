@@ -361,6 +361,22 @@ keymap.set(
 -- clipboard Regex to Select all Checkboxes in Markdown Files
 keymap.set("n", "<leader>mtc", md_utils.copy_checkbox_regex, { desc = "[c]heckbox select all" })
 
+wk.add({
+  mode = { "n", "x" },
+  { "<leader>wv", group = "[v]isual" }, -- naming
+
+  { "<leader>w`", group = "wrap word with backticks" }, -- command
+  { "<leader>wv`", group = "wrap visual selection with backticks" }, -- command
+})
+
+-- wrap text with mini-surround for backticks
+keymap.set("n", "<leader>w`", function()
+  vim.cmd.normal({ "viwgsa`" })
+end, { desc = "wrap word with backticks" })
+
+keymap.set("x", "<leader>wv`", function()
+  vim.cmd.normal({ "gsa`" })
+end, { desc = "wrap selection with backticks" })
 -------------------------------------------------------------------------
 --     HACKS provided by Linkarzu
 --     https://github.com/linkarzu/dotfiles-latest
