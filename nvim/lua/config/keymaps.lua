@@ -361,6 +361,9 @@ keymap.set(
 -- clipboard Regex to Select all Checkboxes in Markdown Files
 keymap.set("n", "<leader>mtc", md_utils.copy_checkbox_regex, { desc = "[c]heckbox select all" })
 
+-------------------------------------------------------------------------------
+--             Word actions
+-------------------------------------------------------------------------------
 wk.add({
   mode = { "n", "x" },
   { "<leader>wv", group = "[v]isual" }, -- naming
