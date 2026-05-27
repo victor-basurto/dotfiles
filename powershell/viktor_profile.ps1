@@ -1,8 +1,8 @@
 # ==========================================
 # THEME TOGGLE CONFIGURATION
 # ==========================================
-# Set to $true for your custom 'zeus' theme, or $false to use the built-in default theme
-$UseCustomTheme = $false
+# Set to $true to enable custom theme, or $false to use the built-in default theme
+$UseCustomTheme = $true
 
 # ==========================================
 # UTILITY DOT-SCRIPTS (Your Rock-Solid Config)
@@ -20,14 +20,24 @@ Import-Module posh-git
 # ==========================================
 # LOAD PROMPT (DYNAMIC SWITCH)
 # ==========================================
+# minimalistic themes:
+#   material (2)
+#   json
+#   multiverse-neon
+#   robbyrussell
+#   spaceship
+#   star
+#   the-unnamed
+#   tokyonight_storm (3)
+#   zash (1)
 if ($UseCustomTheme) {
-    # Load your custom theme folder layout
-    function Get-ScriptDirectory { Split-Path $MyInvocation.ScriptName }
-    $PROMPT_CONFIG = Join-Path (Get-ScriptDirectory) 'zeus.omp.json'
-    oh-my-posh --init --shell pwsh --config $PROMPT_CONFIG | Invoke-Expression
+  # Load your custom theme folder layout
+  function Get-ScriptDirectory { Split-Path $MyInvocation.ScriptName }
+  $PROMPT_CONFIG = Join-Path (Get-ScriptDirectory) '/themes/zash.omp.json'
+  oh-my-posh --init --shell pwsh --config $PROMPT_CONFIG | Invoke-Expression
 } else {
-    # Load a clean, built-in Oh-My-Posh default theme (no local json file needed)
-    oh-my-posh init pwsh --config ~/jandedobbeleer.omp.json | Invoke-Expression
+  # Load a clean, built-in Oh-My-Posh default theme (no local json file needed)
+  oh-my-posh init pwsh --config ~/jandedobbeleer.omp.json | Invoke-Expression
 }
 
 # ==========================================
