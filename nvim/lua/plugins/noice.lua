@@ -5,7 +5,7 @@ return {
     event = "VeryLazy",
     opts = {
       cmdline = {
-        view = "cmdline",
+        view = "cmdline_popup",
         format = {
           lua = { icon = "🌙" },
         },
@@ -36,7 +36,7 @@ return {
           filter = {
             event = "notify",
             -- Match the common LSP "no information" message (case-insensitive)
-            pattern = "No information available",
+            find = "No information available",
           },
           opts = { skip = true },
         },

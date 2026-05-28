@@ -94,13 +94,13 @@ config.color_scheme = "Catppuccin Frappe"
 -- { family = "Agave Nerd Font Propo", weight = "Regular", stretch = "Normal", style = "Normal" },
 -- currently in use: { family = "ZedMono Nerd Font Mono", weight = "Medium", stretch = "Normal", style = "Normal" },
 config.font = wezterm.font_with_fallback({
-	{ family = "ZedMono Nerd Font Mono", weight = "Medium", stretch = "Normal", style = "Normal" },
+	{ family = "JetBrainsMono Nerd Font", weight = "Medium", stretch = "Normal", style = "Normal" },
 	"Noto Color Emoji", -- Supports many symbols and emojis
 	"Nerd Font Symbols", -- Covers powerline and other special glyphs
 })
 
 config.bold_brightens_ansi_colors = "BrightAndBold"
-config.font_size = 14
+config.font_size = 13
 config.window_background_opacity = 0.95
 
 -- Return the configuration

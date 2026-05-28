@@ -7,6 +7,35 @@
 -- NOTE: Specify the trigger character(s) used for luasnip
 local trigger_text = ";"
 
+-- Nerd Font v3 icons per LSP kind — no external plugin required
+local kind_icons = {
+  Text          = "󰉿",
+  Method        = "󰆧",
+  Function      = "󰊕",
+  Constructor   = "",
+  Field         = "󰜢",
+  Variable      = "󰀫",
+  Class         = "󰠱",
+  Interface     = "",
+  Module        = "",
+  Property      = "󰜢",
+  Unit          = "󰑭",
+  Value         = "󰎠",
+  Enum          = "",
+  Keyword       = "󰌋",
+  Snippet       = "",
+  Color         = "󰏘",
+  File          = "󰈙",
+  Reference     = "󰈇",
+  Folder        = "󰉋",
+  EnumMember    = "",
+  Constant      = "󰏿",
+  Struct        = "󰙅",
+  Event         = "",
+  Operator      = "󰆕",
+  TypeParameter = "󰅲",
+}
+
 return {
   "saghen/blink.cmp",
   enabled = true,
@@ -27,6 +56,18 @@ return {
     -- (they should be top-level plugins, but listed here for clarity if not already implicitly handled)
     "L3MON4D3/LuaSnip",
     "rafamadriz/friendly-snippets",
+    {
+      "xzbdmw/colorful-menu.nvim",
+      opts = {
+        ls = {
+          lua_ls = { arguments_hl = "@comment" },
+          ts_ls = { extra_info_hl = "@comment" },
+          vtsls = { extra_info_hl = "@comment" },
+        },
+        fallback_highlight = "@variable",
+        max_width = 60,
+      },
+    },
     {
       "saghen/blink.compat",
       optional = true, -- make optional so it's only enabled if any extras need it
@@ -107,7 +148,6 @@ return {
           name = "lsp",
           enabled = true,
           module = "blink.cmp.sources.lsp",
-          kind = "LSP",
           min_keyword_length = 0,
           -- When linking markdown notes, I would get snippets and text in the
           -- suggestions, I want those to show only if there are no LSP
@@ -203,6 +243,7 @@ return {
       completion = {
         menu = {
           auto_show = true,
+          border = "single",
         },
       },
     }
@@ -212,29 +253,26 @@ return {
         border = "single",
         draw = {
           padding = { 0, 0 },
-          draw = {
-            components = {
-              kind_icon = {
-                text = function(ctx)
-                  if ctx.source_name ~= "Path" then
-                    return (require("lspkind").symbol_map[ctx.kind] or "") .. ctx.icon_gap
-                  end
-
+          -- label and label_description are combined by colorful-menu
+          columns = { { "kind_icon" }, { "label", gap = 1 } },
+          components = {
+            kind_icon = {
+              text = function(ctx)
+                if ctx.source_name == "Path" then
                   local is_unknown_type =
                     vim.tbl_contains({ "link", "socket", "fifo", "char", "block", "unknown" }, ctx.item.data.type)
                   local mini_icon, _ = require("mini.icons").get(
                     is_unknown_type and "os" or ctx.item.data.type,
                     is_unknown_type and "" or ctx.label
                   )
-
                   return (mini_icon or ctx.kind_icon) .. ctx.icon_gap
-                end,
+                end
 
-                highlight = function(ctx)
-                  if ctx.source_name ~= "Path" then
-                    return ctx.kind_hl
-                  end
+                return (kind_icons[ctx.kind] or ctx.kind_icon) .. ctx.icon_gap
+              end,
 
+              highlight = function(ctx)
+                if ctx.source_name == "Path" then
                   local is_unknown_type =
                     vim.tbl_contains({ "link", "socket", "fifo", "char", "block", "unknown" }, ctx.item.data.type)
                   local mini_icon, mini_hl = require("mini.icons").get(
@@ -242,8 +280,18 @@ return {
                     is_unknown_type and "" or ctx.label
                   )
                   return mini_icon ~= nil and mini_hl or ctx.kind_hl
-                end,
-              },
+                end
+
+                return ctx.kind_hl
+              end,
+            },
+            label = {
+              text = function(ctx)
+                return require("colorful-menu").blink_components_text(ctx)
+              end,
+              highlight = function(ctx)
+                return require("colorful-menu").blink_components_highlight(ctx)
+              end,
             },
           },
         },
