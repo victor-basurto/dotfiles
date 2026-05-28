@@ -47,7 +47,11 @@ return {
   opts = function(_, opts)
     -- set immplemetation to Lua to avoid .dll issues on Windows
     opts.fuzzy = {
-      implementation = "lua",
+      implementation = "prefer_rust_with_warning",
+    }
+    opts.appearance = {
+      use_nvim_cmp_as_default = true,
+      nerd_font_variant = "normal",
     }
     -- I noticed that telescope was extremeley slow and taking too long to open,
     -- assumed related to blink, so disabled blink and in fact it was related
@@ -68,7 +72,7 @@ return {
       obsidian_path = uv.fs_realpath(obsidian_path) or obsidian_path
 
       -- If filetype is markdown and inside obsidian vault, disable
-      if filetype == "markdown" then
+      if vim.bo.filetype == "markdown" then
         local cwd = vim.fn.getcwd()
         local is_obsidian = false
         if vim.fn.has("win32") == 1 then
@@ -206,13 +210,53 @@ return {
     opts.completion = {
       menu = {
         border = "single",
+        draw = {
+          padding = { 0, 0 },
+          draw = {
+            components = {
+              kind_icon = {
+                text = function(ctx)
+                  if ctx.source_name ~= "Path" then
+                    return (require("lspkind").symbol_map[ctx.kind] or "") .. ctx.icon_gap
+                  end
+
+                  local is_unknown_type =
+                    vim.tbl_contains({ "link", "socket", "fifo", "char", "block", "unknown" }, ctx.item.data.type)
+                  local mini_icon, _ = require("mini.icons").get(
+                    is_unknown_type and "os" or ctx.item.data.type,
+                    is_unknown_type and "" or ctx.label
+                  )
+
+                  return (mini_icon or ctx.kind_icon) .. ctx.icon_gap
+                end,
+
+                highlight = function(ctx)
+                  if ctx.source_name ~= "Path" then
+                    return ctx.kind_hl
+                  end
+
+                  local is_unknown_type =
+                    vim.tbl_contains({ "link", "socket", "fifo", "char", "block", "unknown" }, ctx.item.data.type)
+                  local mini_icon, mini_hl = require("mini.icons").get(
+                    is_unknown_type and "os" or ctx.item.data.type,
+                    is_unknown_type and "" or ctx.label
+                  )
+                  return mini_icon ~= nil and mini_hl or ctx.kind_hl
+                end,
+              },
+            },
+          },
+        },
       },
       documentation = {
         auto_show = true,
+        auto_show_delay_ms = 200,
         window = {
           border = "single",
         },
       },
+      -- show preview of the selected item
+      ghost_text = { enabled = true },
     }
 
     opts.snippets = {
@@ -221,10 +265,11 @@ return {
       -- and calls `LazyVim.cmp.expand(snippet)`. If you are completely replacing LazyVim's
       -- config, you might need to add it explicitly here, otherwise, it's handled.
       expand = function(snippet, _)
-        return LazyVim.cmp.expand(snippet)
+        return require("lazyvim.util").cmp.expand(snippet)
       end,
     }
 
+    opts.signature = { enabled = true }
     -- The default preset used by lazyvim accepts completions with enter
     -- I don't like using enter because if on markdown and typing
     -- something, but you want to go to the line below, if you press enter,

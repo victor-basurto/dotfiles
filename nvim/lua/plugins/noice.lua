@@ -14,6 +14,9 @@ return {
         progress = {
           enabled = false,
         },
+        signature = {
+          enabled = false,
+        },
         override = {
           ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
           ["vim.lsp.util.stylize_markdown"] = true,
@@ -43,8 +46,5 @@ return {
       "MunifTanjim/nui.nvim",
       -- Remove the second plugin block for nvim-notify, as noice handles it.
     },
-    config = function()
-      require("noice").setup(require("noice").opts)
-    end,
   },
 }
