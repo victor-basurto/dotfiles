@@ -253,9 +253,10 @@ keymap.set("n", "<C-w><down>", "<C-w>-")
 -------------------------------------------------------
 --              Diagnostics
 -------------------------------------------------------
-keymap.set("n", "<C-j>", function()
-  vim.diagnostic.jump({ buffer = 0, severity = vim.diagnostic.severity.ERROR })
-end, { desc = "Get next diagnostics error" })
+-- keymap.set("n", "<C-j>", function()
+--   vim.diagnostic.jump({ buffer = 0, severity = vim.diagnostic.severity.ERROR })
+--   vim.diagnostic.jump({ count = 1, float = true })
+-- end, { desc = "Get next diagnostics error" })
 -------------------------------------------------------
 --         Open HTML Files in Browser
 -------------------------------------------------------
