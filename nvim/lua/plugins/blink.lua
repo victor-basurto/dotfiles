@@ -8,33 +8,33 @@
 local trigger_text = ";"
 
 -- Nerd Font v3 icons per LSP kind — no external plugin required
-local kind_icons = {
-  Text          = "󰉿",
-  Method        = "󰆧",
-  Function      = "󰊕",
-  Constructor   = "",
-  Field         = "󰜢",
-  Variable      = "󰀫",
-  Class         = "󰠱",
-  Interface     = "",
-  Module        = "",
-  Property      = "󰜢",
-  Unit          = "󰑭",
-  Value         = "󰎠",
-  Enum          = "",
-  Keyword       = "󰌋",
-  Snippet       = "",
-  Color         = "󰏘",
-  File          = "󰈙",
-  Reference     = "󰈇",
-  Folder        = "󰉋",
-  EnumMember    = "",
-  Constant      = "󰏿",
-  Struct        = "󰙅",
-  Event         = "",
-  Operator      = "󰆕",
-  TypeParameter = "󰅲",
-}
+-- local kind_icons = {
+--   Text = "󰉿",
+--   Method = "󰆧",
+--   Function = "󰊕",
+--   Constructor = "",
+--   Field = "󰜢",
+--   Variable = "󰀫",
+--   Class = "󰠱",
+--   Interface = "",
+--   Module = "",
+--   Property = "󰜢",
+--   Unit = "󰑭",
+--   Value = "󰎠",
+--   Enum = "",
+--   Keyword = "󰌋",
+--   Snippet = "",
+--   Color = "󰏘",
+--   File = "󰈙",
+--   Reference = "󰈇",
+--   Folder = "󰉋",
+--   EnumMember = "",
+--   Constant = "󰏿",
+--   Struct = "󰙅",
+--   Event = "",
+--   Operator = "󰆕",
+--   TypeParameter = "󰅲",
+-- }
 
 return {
   "saghen/blink.cmp",
@@ -57,18 +57,6 @@ return {
     "L3MON4D3/LuaSnip",
     "rafamadriz/friendly-snippets",
     {
-      "xzbdmw/colorful-menu.nvim",
-      opts = {
-        ls = {
-          lua_ls = { arguments_hl = "@comment" },
-          ts_ls = { extra_info_hl = "@comment" },
-          vtsls = { extra_info_hl = "@comment" },
-        },
-        fallback_highlight = "@variable",
-        max_width = 60,
-      },
-    },
-    {
       "saghen/blink.compat",
       optional = true, -- make optional so it's only enabled if any extras need it
       opts = {},
@@ -82,8 +70,6 @@ return {
         integrations = { blink_cmp = true },
       },
     },
-    -- NOTE: Enable copilot
-    -- { "giuxtaposition/blink-cmp-copilot" },
   },
   opts = function(_, opts)
     -- set immplemetation to Lua to avoid .dll issues on Windows
@@ -92,7 +78,7 @@ return {
     }
     opts.appearance = {
       use_nvim_cmp_as_default = true,
-      nerd_font_variant = "normal",
+      nerd_font_variant = "mono",
     }
     -- I noticed that telescope was extremeley slow and taking too long to open,
     -- assumed related to blink, so disabled blink and in fact it was related
@@ -131,10 +117,6 @@ return {
         end
       end
 
-      -- -- Disable for Telescope buffers
-      -- if filetype == "TelescopePrompt" or filetype == "minifiles" or filetype == "snacks_picker_input" then
-      --   return false
-      -- end
       return true
     end
 
@@ -243,48 +225,19 @@ return {
       completion = {
         menu = {
           auto_show = true,
-          border = "single",
+          border = "solid",
         },
       },
     }
 
     opts.completion = {
+      list = { selection = { preselect = true, auto_insert = true } },
+      ghost_text = { enabled = true },
       menu = {
-        border = "single",
         draw = {
-          padding = { 0, 0 },
-          -- label and label_description are combined by colorful-menu
+          padding = { 1, 0 },
           columns = { { "kind_icon" }, { "label", gap = 1 } },
           components = {
-            kind_icon = {
-              text = function(ctx)
-                if ctx.source_name == "Path" then
-                  local is_unknown_type =
-                    vim.tbl_contains({ "link", "socket", "fifo", "char", "block", "unknown" }, ctx.item.data.type)
-                  local mini_icon, _ = require("mini.icons").get(
-                    is_unknown_type and "os" or ctx.item.data.type,
-                    is_unknown_type and "" or ctx.label
-                  )
-                  return (mini_icon or ctx.kind_icon) .. ctx.icon_gap
-                end
-
-                return (kind_icons[ctx.kind] or ctx.kind_icon) .. ctx.icon_gap
-              end,
-
-              highlight = function(ctx)
-                if ctx.source_name == "Path" then
-                  local is_unknown_type =
-                    vim.tbl_contains({ "link", "socket", "fifo", "char", "block", "unknown" }, ctx.item.data.type)
-                  local mini_icon, mini_hl = require("mini.icons").get(
-                    is_unknown_type and "os" or ctx.item.data.type,
-                    is_unknown_type and "" or ctx.label
-                  )
-                  return mini_icon ~= nil and mini_hl or ctx.kind_hl
-                end
-
-                return ctx.kind_hl
-              end,
-            },
             label = {
               text = function(ctx)
                 return require("colorful-menu").blink_components_text(ctx)
@@ -295,16 +248,15 @@ return {
             },
           },
         },
-      },
-      documentation = {
-        auto_show = true,
-        auto_show_delay_ms = 200,
-        window = {
-          border = "single",
+        border = "solid",
+        documentation = {
+          window = {
+            border = "solid",
+          },
         },
+        -- show preview of the selected item
+        ghost_text = { enabled = true },
       },
-      -- show preview of the selected item
-      ghost_text = { enabled = true },
     }
 
     opts.snippets = {
@@ -317,7 +269,7 @@ return {
       end,
     }
 
-    opts.signature = { enabled = true }
+    opts.signature = { enabled = true, window = { border = "solid" } }
     -- The default preset used by lazyvim accepts completions with enter
     -- I don't like using enter because if on markdown and typing
     -- something, but you want to go to the line below, if you press enter,

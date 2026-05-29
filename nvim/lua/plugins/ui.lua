@@ -315,4 +315,7 @@ return {
     "jlcrochet/vim-razor",
     ft = { "razor" },
   },
+  {
+    "xzbdmw/colorful-menu.nvim",
+  },
 }
