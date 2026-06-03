@@ -80,3 +80,149 @@ function lt-dirs-exclude {
         --ignore-glob="$($ignorePattern -join '|')" `
         @depthArg $Path
 }
+#####################################################
+# Print project tree while excluding folders
+#
+# Features:
+#   • Tree view
+#   • Files + folders by default
+#   • Optional directories-only mode
+#   • Multiple folder exclusions
+#   • Respects .gitignore
+#   • Icons + colors
+#   • Optional depth limit
+#   • Group directories first
+#   • No file metadata (mode, size, dates, etc.)
+#
+# Parameters:
+#   -ExcludeFolders
+#       One or more folder names to exclude.
+#
+#   -Path
+#       Root path to inspect.
+#       Default: current directory (.)
+#
+#   -Depth
+#       Maximum tree depth.
+#       0 = unlimited depth.
+#
+#   -DirsOnly
+#       Show directories only.
+#
+# Examples:
+#
+#   Exclude a single folder:
+#   lt-exclude node_modules
+#
+#   Exclude multiple folders:
+#   lt-exclude node_modules .git dist build
+#
+#   Limit tree depth:
+#   lt-exclude node_modules .git -Depth 2
+#
+#   Show only directories:
+#   lt-exclude node_modules .git -DirsOnly
+#
+#   Show only directories with depth limit:
+#   lt-exclude node_modules .git -DirsOnly -Depth 3
+#
+#   Run against another path:
+#   lt-exclude node_modules .git -Path C:\Projects\App
+#
+# Notes:
+#   • Uses eza --tree
+#   • Uses eza --git-ignore to respect .gitignore
+#   • Exclusions are implemented through --ignore-glob
+#   • Excluded folder names are matched recursively
+#     throughout the tree
+#####################################################
+function lt-exclude {
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory = $true, Position = 0, ValueFromRemainingArguments = $true)]
+    [string[]]$ExcludeFolders,
+
+    [Parameter()]
+    [string]$Path = ".",
+
+    [Parameter()]
+    [int]$Depth = 0,
+
+    [switch]$DirsOnly
+  )
+
+  # Build ignore patterns for eza
+  $ignorePattern = $ExcludeFolders | ForEach-Object { "*$_*" }
+
+  # Build eza arguments
+  $ezaArgs = @(
+    "--tree"
+    "--group-directories-first"
+    "--icons=always"
+    "--color=always"
+    "--git-ignore"
+    "--ignore-glob=$($ignorePattern -join '|')"
+  )
+
+  if ($Depth -gt 0) {
+    $ezaArgs += "--level=$Depth"
+  }
+
+  if ($DirsOnly) {
+    $ezaArgs += "--only-dirs"
+  }
+
+  $ezaArgs += $Path
+
+  eza @ezaArgs
+}
+#####################################################
+# Quick project tree
+#
+# Convenience wrapper around lt-exclude that
+# automatically excludes common development folders.
+#
+# Default exclusions:
+#   • node_modules
+#   • .git
+#   • dist
+#   • build
+#
+# Features:
+#   • Tree view
+#   • Files + folders
+#   • Respects .gitignore
+#   • Icons + colors
+#   • Directories grouped first
+#   • No file metadata
+#
+# Examples:
+#
+#   Show project tree:
+#   lt
+#
+#   Limit depth:
+#   lt -Depth 2
+#
+#   Directories only:
+#   lt -DirsOnly
+#
+#   Directories only with depth:
+#   lt -DirsOnly -Depth 3
+#
+#   Different root path:
+#   lt -Path C:\Projects\App
+#
+# Equivalent to:
+#
+#   lt-exclude node_modules .git dist build @args
+#
+# Notes:
+#   • Ideal for JavaScript, TypeScript, React,
+#     Next.js, Angular, Vue, .NET, and monorepo
+#     projects where generated folders create
+#     excessive noise.
+#####################################################
+function lt {
+  lt-exclude node_modules .git dist build @args
+}
