@@ -108,17 +108,17 @@ return {
       template = "notes.md",
     },
 
-    completion = (function()
-      local has_nvim_cmp = pcall(require, "cmp")
-      local has_blink = pcall(require, "blink.cmp")
-      return {
-        nvim_cmp = has_nvim_cmp and not has_blink,
-        blink = has_blink,
-        min_chars = 2,
-        match_case = true,
-        create_new = true,
-      }
-    end)(),
+    -- completion = (function()
+    --   local has_nvim_cmp = pcall(require, "cmp")
+    --   local has_blink = pcall(require, "blink.cmp")
+    --   return {
+    --     nvim_cmp = has_nvim_cmp and not has_blink,
+    --     blink = has_blink,
+    --     min_chars = 2,
+    --     match_case = true,
+    --     create_new = true,
+    --   }
+    -- end)(),
 
     templates = {
       enabled = true,
