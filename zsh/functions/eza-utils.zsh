@@ -307,3 +307,139 @@ lt-dirs-exclude() {
       "${depth_arg[@]}" \
       "$target_path"
 }
+#####################################################
+# Print project tree while excluding folders
+#
+# Features:
+#   • Tree view
+#   • Files + folders by default
+#   • Optional directories-only mode
+#   • Multiple folder exclusions
+#   • Respects .gitignore
+#   • Icons + colors
+#   • Optional depth limit
+#   • Group directories first
+#   • No file metadata (permissions, size, dates, etc.)
+#
+# Options:
+#   --path PATH
+#       Root path to inspect.
+#       Default: current directory (.)
+#
+#   --depth N
+#       Maximum tree depth.
+#       0 = unlimited depth.
+#
+#   --dirs-only
+#       Show directories only.
+#
+# Examples:
+#
+#   Exclude a single folder:
+#   lt-exclude node_modules
+#
+#   Exclude multiple folders:
+#   lt-exclude node_modules .git dist build
+#
+#   Limit tree depth:
+#   lt-exclude node_modules .git --depth 2
+#
+#   Show only directories:
+#   lt-exclude node_modules .git --dirs-only
+#
+#   Show only directories with depth limit:
+#   lt-exclude node_modules .git --dirs-only --depth 3
+#
+#   Run against another path:
+#   lt-exclude node_modules .git --path ~/Projects/App
+#
+# Notes:
+#   • Uses eza --tree
+#   • Uses eza --git-ignore to respect .gitignore
+#   • Exclusions are implemented through --ignore-glob
+#   • Excluded folder names are matched recursively
+#     throughout the tree
+#####################################################
+lt-exclude() {
+    local target_path="."
+    local depth=0
+    local dirs_only=false
+    local excludes=()
+
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --path)
+                target_path="$2"
+                shift 2
+                ;;
+            --depth)
+                depth="$2"
+                shift 2
+                ;;
+            --dirs-only)
+                dirs_only=true
+                shift
+                ;;
+            *)
+                excludes+=("$1")
+                shift
+                ;;
+        esac
+    done
+
+    if [[ ${#excludes[@]} -eq 0 ]]; then
+        echo "❌ Error: Please provide at least one folder name to exclude."
+        return 1
+    fi
+
+    local ignore_pattern=""
+    for folder in "${excludes[@]}"; do
+        if [[ -z "$ignore_pattern" ]]; then
+            ignore_pattern="*${folder}*"
+        else
+            ignore_pattern="${ignore_pattern}|*${folder}*"
+        fi
+    done
+
+    local eza_args=(
+        --tree
+        --group-directories-first
+        --icons=always
+        --color=always
+        --git-ignore
+        "--ignore-glob=${ignore_pattern}"
+    )
+
+    if [[ $depth -gt 0 ]]; then
+        eza_args+=( "--level=${depth}" )
+    fi
+
+    if [[ "$dirs_only" == true ]]; then
+        eza_args+=( --only-dirs )
+    fi
+
+    eza "${eza_args[@]}" "$target_path"
+}
+#####################################################
+# Quick project tree
+#
+# Convenience wrapper around lt-exclude that
+# automatically excludes common development folders.
+#
+# Default exclusions:
+#   • node_modules
+#   • .git
+#   • dist
+#   • build
+#
+# Examples:
+#
+#   lt
+#   lt --depth 2
+#   lt --dirs-only
+#   lt --dirs-only --depth 3
+#   lt --path ~/Projects/App
+#####################################################
+lt() {
+    lt-exclude node_modules .git dist build "$@"
+}
