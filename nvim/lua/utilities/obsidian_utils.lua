@@ -75,6 +75,21 @@ function M.get_vaults()
   }
 end
 
+-- TODO: once M.get_vaults() is enabled, rename this function to M.get_vault()
+-- return the current path for either archive vault or work vault
+function M.get_vault_detector()
+  local cwd = vim.fn.getcwd()
+  local paths = M.get_vaults()
+
+  -- if path is archive, return the archive
+  if cwd:find(paths.archive, 1, true) then
+    return paths.archive
+  end
+
+  -- otherwise main
+  return paths.main
+end
+
 -- Move the current file into the zettelkasten folder.
 function M.move_current_file_to_zettelkasten()
   -- try rename first for same-drive moves
