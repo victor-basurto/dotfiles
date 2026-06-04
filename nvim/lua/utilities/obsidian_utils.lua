@@ -1,3 +1,11 @@
+---@module [TODO:description]
+---@author [TODO:description]
+---@license [TODO:description]
+
+---@module [TODO:description]
+---@author [TODO:description]
+---@license [TODO:description]
+
 local M = {}
 local uv = vim.uv or vim.loop
 
@@ -38,6 +46,33 @@ function M.get_vault()
   end
 
   return M.normalize_path(path)
+end
+
+-- TODO: Enable once obsidian is ready for migration
+-- return multiple obsidian vault paths to handle archive and new vault
+function M.get_vaults()
+  local main
+  local archive
+
+  -- use OS-specific defaults
+  if vim.fn.has("mac") == 1 then
+    -- macOS path
+    main = vim.fn.expand("~/Google Drive/My Drive/obsidian-work")
+    archive = vim.fn.expand("~/Google Drive/My Drive/obsidian-work-archive")
+  elseif vim.fn.has("win32") == 1 then
+    -- Windows path
+    main = "G:/My Drive/obsidian-work"
+    archive = "G:/My Drive/obsidian-work-archive"
+  else
+    -- Default for Linux or other systems
+    main = vim.fn.expand("~/.config/obsidian-vault")
+    archive = vim.fn.expand("~/.config/obsidian-vault-archive")
+  end
+
+  return {
+    main = M.normalize_path(main),
+    archive = M.normalize_path(archive),
+  }
 end
 
 -- Move the current file into the zettelkasten folder.
