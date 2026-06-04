@@ -84,41 +84,41 @@ return {
     -- assumed related to blink, so disabled blink and in fact it was related
     -- :lua print(vim.bo[0].filetype)
     -- So I'm disabling blink.cmp for Telescope
-    opts.enabled = function()
-      -- Detect Obsidian Vault (same logic as in plugins/obsidian.lua)
-      local obsidian_path
-      if vim.fn.has("mac") == 1 then
-        obsidian_path = vim.fn.expand("~/Google Drive/My Drive/obsidian-work")
-      elseif vim.fn.has("win32") == 1 then
-        obsidian_path = "G:/My Drive/obsidian-work"
-      else
-        obsidian_path = vim.fn.expand("~/.config/obsidian-vault")
-      end
-      -- resolve symlinks (especially for Google Drive on macOS)
-      local uv = vim.uv or vim.loop
-      obsidian_path = uv.fs_realpath(obsidian_path) or obsidian_path
-
-      -- If filetype is markdown and inside obsidian vault, disable
-      if vim.bo.filetype == "markdown" then
-        local cwd = vim.fn.getcwd()
-        local is_obsidian = false
-        if vim.fn.has("win32") == 1 then
-          cwd = cwd:gsub("\\", "/")
-          if string.find(cwd:lower(), obsidian_path:lower(), 1, true) == 1 then
-            is_obsidian = true
-          end
-        else
-          if string.find(cwd, obsidian_path, 1, true) == 1 then
-            is_obsidian = true
-          end
-        end
-        if is_obsidian then
-          return false
-        end
-      end
-
-      return true
-    end
+    -- opts.enabled = function()
+    --   -- Detect Obsidian Vault (same logic as in plugins/obsidian.lua)
+    --   local obsidian_path
+    --   if vim.fn.has("mac") == 1 then
+    --     obsidian_path = vim.fn.expand("~/Google Drive/My Drive/obsidian-work")
+    --   elseif vim.fn.has("win32") == 1 then
+    --     obsidian_path = "G:/My Drive/obsidian-work"
+    --   else
+    --     obsidian_path = vim.fn.expand("~/.config/obsidian-vault")
+    --   end
+    --   -- resolve symlinks (especially for Google Drive on macOS)
+    --   local uv = vim.uv or vim.loop
+    --   obsidian_path = uv.fs_realpath(obsidian_path) or obsidian_path
+    --
+    --   -- If filetype is markdown and inside obsidian vault, disable
+    --   if vim.bo.filetype == "markdown" then
+    --     local cwd = vim.fn.getcwd()
+    --     local is_obsidian = false
+    --     if vim.fn.has("win32") == 1 then
+    --       cwd = cwd:gsub("\\", "/")
+    --       if string.find(cwd:lower(), obsidian_path:lower(), 1, true) == 1 then
+    --         is_obsidian = true
+    --       end
+    --     else
+    --       if string.find(cwd, obsidian_path, 1, true) == 1 then
+    --         is_obsidian = true
+    --       end
+    --     end
+    --     if is_obsidian then
+    --       return false
+    --     end
+    --   end
+    --
+    --   return true
+    -- end
 
     -- NOTE: The new way to enable LuaSnip
     -- Merge custom sources with the existing ones from lazyvim
