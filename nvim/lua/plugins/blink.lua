@@ -7,41 +7,10 @@
 -- NOTE: Specify the trigger character(s) used for luasnip
 local trigger_text = ";"
 
--- Nerd Font v3 icons per LSP kind — no external plugin required
--- local kind_icons = {
---   Text = "󰉿",
---   Method = "󰆧",
---   Function = "󰊕",
---   Constructor = "",
---   Field = "󰜢",
---   Variable = "󰀫",
---   Class = "󰠱",
---   Interface = "",
---   Module = "",
---   Property = "󰜢",
---   Unit = "󰑭",
---   Value = "󰎠",
---   Enum = "",
---   Keyword = "󰌋",
---   Snippet = "",
---   Color = "󰏘",
---   File = "󰈙",
---   Reference = "󰈇",
---   Folder = "󰉋",
---   EnumMember = "",
---   Constant = "󰏿",
---   Struct = "󰙅",
---   Event = "",
---   Operator = "󰆕",
---   TypeParameter = "󰅲",
--- }
-
 return {
   "saghen/blink.cmp",
+  version = "2.*",
   enabled = true,
-  -- IMPORTANT: Ensure this plugin is loaded at the right time.
-  -- LazyVim's default for blink.cmp is usually `event = "InsertEnter"`.
-  -- If you're not seeing completion, ensure this is set or inherited.
   event = "InsertEnter",
   opts_extend = {
     "sources.completion.enabled_providers",
@@ -50,18 +19,10 @@ return {
   },
 
   dependencies = {
-    "moyiz/blink-emoji.nvim",
     "Kaiser-Yang/blink-cmp-dictionary",
-    -- Ensure LuaSnip and friendly-snippets are also available to blink.cmp
-    -- (they should be top-level plugins, but listed here for clarity if not already implicitly handled)
     "L3MON4D3/LuaSnip",
     "rafamadriz/friendly-snippets",
-    {
-      "saghen/blink.compat",
-      optional = true, -- make optional so it's only enabled if any extras need it
-      opts = {},
-      version = not vim.g.lazyvim_blink_main and "*",
-    },
+    "saghen/blink.lib",
     {
       "catppuccin/nvim",
       name = "catppuccin",
@@ -72,44 +33,31 @@ return {
     },
   },
   opts = function(_, opts)
-    -- set immplemetation to Lua to avoid .dll issues on Windows
+    -- set implementation to Lua to avoid .dll issues on Windows
     opts.fuzzy = {
-      implementation = "prefer_rust_with_warning",
+      implementation = "lua",
     }
     opts.appearance = {
       use_nvim_cmp_as_default = true,
       nerd_font_variant = "mono",
     }
-    -- NOTE: The new way to enable LuaSnip
-    -- Merge custom sources with the existing ones from lazyvim
-    -- NOTE: by default lazyvim already includes the lazydev source, so not adding it here again
+
+    -- Merge custom sources cleanly with standard built-ins
     opts.sources = vim.tbl_deep_extend("force", opts.sources or {}, {
-      default = { "lsp", "path", "snippets", "buffer", "emoji" },
+      default = { "lsp", "path", "snippets", "buffer" },
       providers = {
         lsp = {
           name = "lsp",
           enabled = true,
           module = "blink.cmp.sources.lsp",
           min_keyword_length = 0,
-          -- When linking markdown notes, I would get snippets and text in the
-          -- suggestions, I want those to show only if there are no LSP
-          -- suggestions
-          --
-          -- Enabled fallbacks as this seems to be working now
-          -- Disabling fallbacks as my snippets wouldn't show up when editing
-          -- lua files
-          -- fallbacks = { "snippets", "buffer" },
-          score_offset = 90, -- the higher the number, the higher the priority
+          score_offset = 90,
         },
         path = {
           name = "Path",
           module = "blink.cmp.sources.path",
           score_offset = 25,
-          -- When typing a path, I would get snippets and text in the
-          -- suggestions, I want those to show only if there are no path
-          -- suggestions
           fallbacks = { "snippets", "buffer" },
-          -- min_keyword_length = 2,
           opts = {
             trailing_slash = false,
             label_trailing_slash = true,
@@ -125,7 +73,7 @@ return {
           max_items = 3,
           module = "blink.cmp.sources.buffer",
           min_keyword_length = 2,
-          score_offset = 15, -- the higher the number, the higher the priority
+          score_offset = 15,
         },
         snippets = {
           name = "snippets",
@@ -133,19 +81,12 @@ return {
           max_items = 15,
           min_keyword_length = 2,
           module = "blink.cmp.sources.snippets",
-          score_offset = 85, -- the higher the number, the higher the priority
-          -- Only show snippets if I type the trigger_text characters, so
-          -- to expand the "bash" snippet, if the trigger_text is ";" I have to
+          score_offset = 85,
           should_show_items = function()
             local col = vim.api.nvim_win_get_cursor(0)[2]
             local before_cursor = vim.api.nvim_get_current_line():sub(1, col)
-            -- NOTE: remember that `trigger_text` is modified at the top of the file
             return before_cursor:match(trigger_text .. "%w*$") ~= nil
           end,
-          -- NOTE: I also tried to add the ";" prefix to all of the snippets loaded from
-          -- friendly-snippets in the luasnip.lua file, but I was unable to do
-          -- so, so I still have to use the transform_items here
-          -- This removes the ";" only for the friendly-snippets snippets
           transform_items = function(_, items)
             local line = vim.api.nvim_get_current_line()
             local col = vim.api.nvim_win_get_cursor(0)[2]
@@ -169,23 +110,14 @@ return {
             return items
           end,
         },
-        emoji = {
-          module = "blink-emoji",
-          name = "Emoji",
-          score_offset = 93, -- the higher the number, the higher the priority
-          min_keyword_length = 2,
-          opts = { insert = true }, -- Insert emoji (default) or complete its name
-        },
       },
     })
 
-    -- Documentation site: https://cmp.saghen.dev/configuration/appereance.html
     opts.cmdline = {
       enabled = true,
       completion = {
         menu = {
           auto_show = true,
-          border = "solid",
         },
       },
     }
@@ -195,7 +127,7 @@ return {
       ghost_text = { enabled = true },
       menu = {
         draw = {
-          padding = { 1, 0 },
+          padding = 1,
           columns = { { "kind_icon" }, { "label", gap = 1 } },
           components = {
             label = {
@@ -209,42 +141,26 @@ return {
           },
         },
         border = "solid",
-        documentation = {
-          window = {
-            border = "solid",
-          },
-        },
-        -- show preview of the selected item
-        ghost_text = { enabled = true },
       },
     }
 
     opts.snippets = {
-      preset = "luasnip", -- Choose LuaSnip as the snippet engine
-      -- This `expand` function is typically provided by LazyVim's default blink.cmp config
-      -- and calls `LazyVim.cmp.expand(snippet)`. If you are completely replacing LazyVim's
-      -- config, you might need to add it explicitly here, otherwise, it's handled.
+      preset = "luasnip",
       expand = function(snippet, _)
         return require("lazyvim.util").cmp.expand(snippet)
       end,
     }
 
     opts.signature = { enabled = true, window = { border = "solid" } }
-    -- The default preset used by lazyvim accepts completions with enter
-    -- I don't like using enter because if on markdown and typing
-    -- something, but you want to go to the line below, if you press enter,
-    -- the completion will be accepted
-    -- https://cmp.saghen.dev/configuration/keymap.html#default
+
     opts.keymap = {
       preset = "default",
-
-      ["<Tab>"] = { "select_next", "fallback" }, -- or "snippet_forward", or whichever you want
-      ["<S-Tab>"] = { "select_prev", "fallback" }, -- or "snippet_backward"
+      ["<Tab>"] = { "select_next", "fallback" },
+      ["<S-Tab>"] = { "select_prev", "fallback" },
       ["<Up>"] = { "select_prev", "fallback" },
       ["<Down>"] = { "select_next", "fallback" },
       ["<S-k>"] = { "scroll_documentation_up", "fallback" },
       ["<S-j>"] = { "scroll_documentation_down", "fallback" },
-
       ["<C-space>"] = { "show" },
       ["<C-e>"] = { "cancel", "fallback" },
       ["<CR>"] = { "accept", "fallback" },
