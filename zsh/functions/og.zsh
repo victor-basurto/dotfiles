@@ -51,40 +51,35 @@ og() {
 
     # Extract function: Strips leading dashes, brackets, and spaces
     extract_val() {
-        local key=$1
-        local content=$2
-        # 1. Find the key line and the line after it
-        # 2. Remove the key name (e.g., 'tags:')
-        # 3. Strip brackets []
-        # 4. Remove the leading dash '-' and any space following it
-        # 5. Trim leading/trailing whitespace
-        echo "$content" | ggrep -A 1 "^${key}:" | \
-        sed "/^${key}:/d" | \
-        tr -d '[]' | \
-        sed 's/^[[:space:]]*-//' | \
+      local key=$1
+      local content=$2
+      # 1. Find line matching the key (e.g., target_folder: terminal)
+      # 2. Extract everything after the first colon
+      # 3. Strip out unwanted quotes if they slip in, and trim spaces
+      echo "$content" | \
+        ggrep -i "^${key}:" | \
+        sed -E "s/^${key}:[[:space:]]*//" | \
+        tr -d '"'\''[]' | \
         sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | \
         head -n 1
     }
 
     content=$(cat "$file")
     
-    tag=$(extract_val "tags" "$content")
-    parentTag=$(extract_val "parent" "$content")
+    # extract explicit routing keys
+    folder=$(extract_val "target_folder" "$content")
+    subFolder=$(extract_val "target_subfolder" "$content")
 
-    # Final Safety Check for weird characters
-    [[ "$tag" == "[" || "$tag" == "]" || -z "$tag" ]] && tag=""
-    [[ "$parentTag" == "[" || "$parentTag" == "]" || -z "$parentTag" ]] && parentTag=""
+    echo "Found Target Folder: '$folder'"
+    echo "Found Target Subfolder: '$subFolder'"
 
-    echo "Found tag: '$tag'"
-    echo "Found parent tag: '$parentTag'"
-
-    if [ -n "$tag" ]; then
+    if [ -n "$folder" ]; then
       targetBaseDir="$VAULT_DIR/$DEST_DIR"
       
-      if [ -n "$parentTag" ]; then
-        targetTagDir="$targetBaseDir/$parentTag/$tag"
+      if [ -n "$subFolder" ]; then
+        targetTagDir="$targetBaseDir/$folder/$subFolder"
       else
-        targetTagDir="$targetBaseDir/$tag"
+        targetTagDir="$targetBaseDir/$folder"
       fi
 
       # The -p flag ensures it creates the parent and the tag folder correctly
@@ -96,7 +91,7 @@ og() {
         echo "Failed to move $filename"
       fi
     else
-      echo "No valid tag found for $filename, skipping."
+      echo "No target_folder defined for $filename, skipping"
     fi
   done
   echo "-----"

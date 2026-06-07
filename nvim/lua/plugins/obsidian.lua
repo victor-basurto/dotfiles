@@ -91,6 +91,9 @@ return {
 
         -- modernized frontmatter
         local links = meta.links or {}
+        if type(links) == "string" then
+          links = { links }
+        end
         local target_folder = meta.target_folder or ""
         local target_subfolder = meta.target_subfolder or ""
         local urls = meta.urls or {}
