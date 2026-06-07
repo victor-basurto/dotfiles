@@ -13,8 +13,6 @@ return {
   enabled = true,
   event = "InsertEnter",
   opts_extend = {
-    "sources.completion.enabled_providers",
-    "sources.compat",
     "sources.default",
   },
 
@@ -33,19 +31,24 @@ return {
     },
   },
   opts = function(_, opts)
+    ---@cast opts blink.cmp.Config
     -- set implementation to Lua to avoid .dll issues on Windows
     opts.fuzzy = {
       implementation = "lua",
     }
     opts.appearance = {
-      use_nvim_cmp_as_default = true,
       nerd_font_variant = "mono",
     }
 
     -- Merge custom sources cleanly with standard built-ins
     opts.sources = vim.tbl_deep_extend("force", opts.sources or {}, {
-      default = { "lsp", "path", "snippets", "buffer" },
+      default = { "lazydev", "lsp", "path", "snippets", "buffer" },
       providers = {
+        lazydev = {
+          name = "LazyDev",
+          module = "lazydev.integrations.blink",
+          score_offset = 100,
+        },
         lsp = {
           name = "lsp",
           enabled = true,
@@ -129,16 +132,6 @@ return {
         draw = {
           padding = 1,
           columns = { { "kind_icon" }, { "label", gap = 1 } },
-          components = {
-            label = {
-              text = function(ctx)
-                return require("colorful-menu").blink_components_text(ctx)
-              end,
-              highlight = function(ctx)
-                return require("colorful-menu").blink_components_highlight(ctx)
-              end,
-            },
-          },
         },
         border = "solid",
       },

@@ -139,7 +139,13 @@ return {
               maxPreload = 2000,
               preloadFileSize = 1000,
               ignoreSubmodules = true,
-              -- library is handled by lazydev.nvim to prevent type issues
+              library = {
+                vim.fn.expand("$VIMRUNTIME/lua"),
+                vim.fn.stdpath("data") .. "/lazy/blink.cmp",
+                vim.fn.stdpath("data") .. "/lazy/lazydev.nvim",
+                vim.fn.stdpath("data") .. "/lazy/lazy.nvim",
+                vim.fn.stdpath("data") .. "/lazy/snacks.nvim",
+              },
               ignoreDir = {
                 ".git",
                 "node_modules",

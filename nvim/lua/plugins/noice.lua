@@ -40,6 +40,15 @@ return {
           },
           opts = { skip = true },
         },
+        {
+          -- Show plugin config errors as a compact bottom notification
+          -- instead of a full screen popup with stack trace
+          filter = {
+            event = "notify",
+            find = "Failed to run `config`",
+          },
+          view = "mini",
+        },
       },
     },
     dependencies = {

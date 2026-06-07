@@ -318,4 +318,13 @@ return {
   {
     "xzbdmw/colorful-menu.nvim",
   },
+  {
+    "folke/lazydev.nvim",
+    opts_extend = { "library" },
+    opts = {
+      library = {
+        { path = "blink.cmp" },
+      },
+    },
+  },
 }
