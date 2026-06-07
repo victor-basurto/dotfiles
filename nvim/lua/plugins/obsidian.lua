@@ -1,6 +1,7 @@
 -- Obsidian
 local obsidian_utils = require("utilities.obsidian_utils")
-local obsidian_path = obsidian_utils.get_vault() -- get work vault
+-- local obsidian_path = obsidian_utils.get_vault() -- get work vault
+local obsidian_paths = obsidian_utils.get_vaults()
 
 return {
   "obsidian-nvim/obsidian.nvim",
@@ -13,7 +14,11 @@ return {
     workspaces = {
       {
         name = "ObsidianWork",
-        path = obsidian_path,
+        path = obsidian_paths.main,
+      },
+      {
+        name = "ObsidianWorkArchive",
+        path = obsidian_paths.archive,
       },
     },
     log_level = vim.log.levels.INFO,
@@ -30,6 +35,47 @@ return {
     },
 
     -- Frontmatter updates
+    -- frontmatter = {
+    --   enabled = true,
+    --   func = function(note)
+    --     if note.title then
+    --       note:add_alias(note.title)
+    --     end
+    --
+    --     -- Helper: return existing metadata value or a default
+    --     local meta = note.metadata or {}
+    --
+    --     -- Preserve `date` from existing frontmatter, or set today on new notes
+    --     local date = meta.date or os.date("%Y-%m-%d")
+    --
+    --     -- Preserve custom fields, defaulting to empty structures for new notes
+    --     local hubs = meta.hubs or { "[[]]" }
+    --     local parent = meta.parent or {}
+    --     local urls = meta.urls or {}
+    --
+    --     local out = {
+    --       id = note.id,
+    --       aliases = note.aliases,
+    --       tags = note.tags,
+    --       date = date,
+    --       hubs = hubs,
+    --       parent = parent,
+    --       urls = urls,
+    --     }
+    --
+    --     -- Pass through any OTHER metadata fields you may add in the future
+    --     for k, v in pairs(meta) do
+    --       if out[k] == nil then
+    --         out[k] = v
+    --       end
+    --     end
+    --
+    --     return out
+    --   end,
+    --   -- Controls YAML key ordering in the file
+    --   sort = { "id", "aliases", "tags", "date", "hubs", "parent", "urls" },
+    -- },
+
     frontmatter = {
       enabled = true,
       func = function(note)
@@ -43,9 +89,10 @@ return {
         -- Preserve `date` from existing frontmatter, or set today on new notes
         local date = meta.date or os.date("%Y-%m-%d")
 
-        -- Preserve custom fields, defaulting to empty structures for new notes
-        local hubs = meta.hubs or { "[[]]" }
-        local parent = meta.parent or {}
+        -- modernized frontmatter
+        local links = meta.links or {}
+        local target_folder = meta.target_folder or ""
+        local target_subfolder = meta.target_subfolder or ""
         local urls = meta.urls or {}
 
         local out = {
@@ -53,8 +100,9 @@ return {
           aliases = note.aliases,
           tags = note.tags,
           date = date,
-          hubs = hubs,
-          parent = parent,
+          links = links,
+          target_folder = target_folder,
+          target_subfolder = target_subfolder,
           urls = urls,
         }
 
@@ -68,9 +116,8 @@ return {
         return out
       end,
       -- Controls YAML key ordering in the file
-      sort = { "id", "aliases", "tags", "date", "hubs", "parent", "urls" },
+      sort = { "id", "aliases", "tags", "date", "links", "target_folder", "target_subfolder", "urls" },
     },
-
     backlinks = {
       parse_headers = true,
     },

@@ -27,7 +27,7 @@ function M.normalize_path(path)
 end
 
 -- Get the Obsidian vault path.
-function M.get_vault()
+function M.get_vault_single()
   local path
   -- Prefer OBSIDIAN_VAULT from the environment
   if vim.env.OBSIDIAN_VAULT and vim.env.OBSIDIAN_VAULT ~= "" then
@@ -77,7 +77,7 @@ end
 
 -- TODO: once M.get_vaults() is enabled, rename this function to M.get_vault()
 -- return the current path for either archive vault or work vault
-function M.get_vault_detector()
+function M.get_vault()
   local cwd = vim.fn.getcwd()
   local paths = M.get_vaults()
 

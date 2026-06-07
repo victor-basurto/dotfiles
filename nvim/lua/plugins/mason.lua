@@ -73,6 +73,9 @@ return {
       local lspconfig = require("lspconfig")
       -- local capabilities = require("cmp_nvim_lsp").default_capabilities()
       local util = require("lspconfig.util")
+      local obsidian_utils = require("utilities.obsidian_utils")
+      -- local osidian_current_vault = obsidian_utils.get_vault()
+      local obsidian_vaults = obsidian_utils.get_vaults()
 
       local capabilities = {
         textDocument = {
@@ -225,27 +228,10 @@ return {
         },
       })
       lspconfig.yamlls.setup({})
-      -- Detect Obsidian Vault (same logic as in plugins/obsidian.lua)
-      local obsidian_path
-      if vim.fn.has("mac") == 1 then
-        obsidian_path = vim.fn.expand("~/Google Drive/My Drive/obsidian-work")
-      elseif vim.fn.has("win32") == 1 then
-        obsidian_path = "G:/My Drive/obsidian-work"
-      else
-        obsidian_path = vim.fn.expand("~/.config/obsidian-vault")
-      end
-      -- resolve symlinks (especially for Google Drive on macOS)
-      local uv = vim.uv or vim.loop
-      obsidian_path = uv.fs_realpath(obsidian_path) or obsidian_path
 
       local function is_obsidian_vault()
         local cwd = vim.fn.getcwd()
-        if vim.fn.has("win32") == 1 then
-          -- cwd = cwd:gsub("\\", "/")
-          return string.find(cwd:lower(), obsidian_path:lower(), 1, true) == 1
-        else
-          return string.find(cwd, obsidian_path, 1, true) == 1
-        end
+        return cwd:find(obsidian_vaults.main, 1, true) == 1 or cwd:find(obsidian_vaults.archive, 1, true) == 1
       end
 
       if not is_obsidian_vault() then
