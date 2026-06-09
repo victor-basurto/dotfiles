@@ -39,10 +39,8 @@ aliases:
 tags:
   - daily-notes
 date: $fullDateString
-hubs:
+links:
   - "[[daily-notes]]"
-parent:
-  - work
 urls: []
 ---
 # $fullDateString ($currentWeekday)
