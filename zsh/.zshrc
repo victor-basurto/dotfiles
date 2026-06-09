@@ -7,6 +7,7 @@ export OBSIDIAN_VAULT="$HOME/Google Drive/My Drive/obsidian-work"
 export PATH="/Applications/kitty.app/Contents/MacOS:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 
 # nvm
 export NVM_DIR="$HOME/.nvm"
@@ -18,12 +19,27 @@ export PNPM_HOME="$HOME/Library/pnpm"
 [[ ":$PATH:" != *":$PNPM_HOME:"* ]] && export PATH="$PNPM_HOME:$PATH"
 
 # ===============================================================
+# TUXEDO PATHS
+# ===============================================================
+export TODO_DIR="$HOME/Google Drive/My Drive/work-todo"
+export TODO_FILE="$HOME/Google Drive/My Drive/work-todo/todo.txt"
+export DONE_FILE="$HOME/Google Drive/My Drive/work-todo/done.txt"
+
+LOCAL_COMP_DIR="$HOME/.local/share/zsh/site-functions"
+mkdir -p "$LOCAL_COMP_DIR"
+
+# Generate completion file locally if it doesn't exist
+if [[ ! -s "$LOCAL_COMP_DIR/_tuxedo" ]] && command -v tuxedo &>/dev/null; then
+  tuxedo completions zsh > "$LOCAL_COMP_DIR/_tuxedo"
+fi
+
+fpath=("$LOCAL_COMP_DIR" $fpath)
+# ===============================================================
 # PERFORMANCE OPTIMIZATIONS
 # ===============================================================
 DISABLE_AUTO_UPDATE="true"
 DISABLE_MAGIC_FUNCTIONS="true"
 DISABLE_COMPFIX="true"
-
 # ===============================================================
 # PLUGIN MANAGER (Antidote)
 # ===============================================================
@@ -121,8 +137,8 @@ alias gfetch="git fetch"
 alias gsth="git stash"
 
 # aerospace
-alias aero="open -a Aerospace"
-alias aero-x='osascript -e "tell application \"AeroSpace\" to quit"'
+alias space="open -a Aerospace"
+alias space-x='osascript -e "tell application \"AeroSpace\" to quit"'
 
 # Source external files
 source "$HOME/.config/zsh/functions/dir-utils.zsh"
@@ -152,5 +168,13 @@ bindkey '^f'   autosuggest-accept     # Ctrl+F = accept suggestion (better than 
 
 # Uncomment to measure zsh loading time along with top zprof
 # zprof
-export PATH="$HOME/.local/bin:$PATH"
 export MANPAGER="nvim -c ASMANPAGER -"
+
+# ===============================================================
+# TUXEDO WRAPPERS & COMPDEF
+# ===============================================================
+alias tux="tuxedo"
+alias todo="tuxedo"
+
+compdef _tuxedo tux
+compdef _tuxedo todo
