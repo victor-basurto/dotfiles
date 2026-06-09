@@ -1,8 +1,8 @@
 <#
 This script automates the organization of Obsidian Zettelkasten notes based on their tags.
-It reads markdown files from a designated 'zettelkasten' directory, extracts the first tag
+It reads markdown files from a designated 'zettelkasten' directory, extracts the target_folder value
 found in the YAML fronmmatter, and moves the note to a corresponding subdirectory
-within the 'notes' directory. If the tag's subdirectory does not exist, it will be created.
+within the 'notes' directory. If the target_folder or target_folder does not exist, it will be created.
 #>
 # obsidian vault directory
 $VAULT_PATH = "$env:GDRIVE\obsidian-work"
@@ -32,53 +32,46 @@ function og {
     # Read the file content
     $content = Get-Content -Path $filePath -Raw
     # Helper function to extract tags from both formats
-    # Helper function to extract tags from both formats
-    function Get-ObsidianTag($key, $text) {
-      # Using ${key} to prevent PowerShell from misinterpreting the colon as a scope modifier
-      $pattern = "(?m)^${key}:\s*(?:\[([^\]]*)\]|(?:\r?\n)\s*-\s*([^\s\r\n]+))"
-      $match = [regex]::Match($text, $pattern)
+    function Get-ObsidianValue($key, $text) {
+      # Matches the key at the start of a line and captures everything after the colon
+      $pattern = "(?m)^${key}:\s*(.*)"
 
-      if ($match.Success) {
-        # Group 1 is the inline [value], Group 2 is the list - value
-        $val = if ($match.Groups[1].Success) { $match.Groups[1].Value } else { $match.Groups[2].Value }
-
-        if ($val) {
-          # Trim leading/trailing spaces, brackets, and the YAML dash
-          return $val.Split(',')[0].Trim(" []-")
-        }
+      if ($text -match $pattern) {
+        # Clean out any accidental quotes or bracket remnants and trim whitespace
+        return $Matches[1].Trim(" `"'[]`r`n")
       }
       return $null
     }
-    $firstTag = Get-ObsidianTag "tags" $content
-    $parentTag = Get-ObsidianTag "parent" $content
+    $folder = Get-ObsidianValue "target_folder" $content
+    $subFolder = Get-ObsidianValue "target_subfolder" $content
 
-    # Final sanitization: ensure we don't have empty strings or just brackets
-    if ($firstTag -eq "[" -or $firstTag -eq "]") { $firstTag = $null }
-    if ($parentTag -eq "[" -or $parentTag -eq "]") { $parentTag = $null }
+    Write-Host "Target Folder: '$folder'"
+    Write-Host "Target Subfolder: '$subFolder'"
 
-    Write-Host "First Tag: '$firstTag'"
-    Write-Host "Parent Tag: '$parentTag'"
-
-    if (-not [string]::IsNullOrEmpty($firstTag)) {
-      $targetTagDir = if (-not [string]::IsNullOrEmpty($parentTag)) {
-        Join-Path (Join-Path $NOTES_DIR $parentTag) $firstTag
+    if (-not [string]::IsNullOrEmpty($folder)) {
+      # build the path structure properly
+      $targetDir = if (-not [string]::IsNullOrEmpty($subFolder)) {
+        # strutures: notes/bash/snippets/
+        Join-Path (Join-Path $NOTES_DIR $folder) $subFolder
       } else {
-        Join-Path $NOTES_DIR $firstTag
+        # strucures: notes/bash/
+        Join-Path $NOTES_DIR $folder
       }
 
-      if (-not (Test-Path $targetTagDir)) {
-        New-Item -ItemType Directory -Path $targetTagDir -Force | Out-Null
-        Write-Host "Created directory: $targetTagDir"
+      # create directory path if missing
+      if (-not (Test-Path $targetDir)) {
+        New-Item -ItemType Directory -Path $targetDir -Force | Out-Null
+        Write-Host "Created directory: $targetDir"
       }
 
       try {
-        Move-Item -Path $filePath -Destination $targetTagDir -Force
+        Move-Item -Path $filePath -Destination $targetDir -Force
         Write-Host "Successfully moved '$fileName'"
       } catch {
         Write-Host "Failed to move '$fileName'. Error: $($_.Exception.Message)" -ForegroundColor Red
       }
     } else {
-      Write-Host "No valid tag found. Skipping." -ForegroundColor Yellow
+      Write-Host "No valid target_folder defined. Skipping." -ForegroundColor Yellow
     }
   }
   Write-Host "---"
