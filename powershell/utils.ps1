@@ -269,3 +269,26 @@ function gbfromdev {
 function gfinish {
   Write-Host "✅ Open a PR. Do NOT merge locally."
 }
+
+#####################################################
+# tuxedo todo app aliases
+#####################################################
+function Invoke-Tuxedo {
+  param (
+    [Parameter(ValueFromRemainingArguments = $true)]
+    $Args
+  )
+  tuxedo.exe @Args
+}
+Set-Alias tux Invoke-Tuxedo
+Set-Alias todo Invoke-Tuxedo
+
+# autocompletion for tuxedo and aliases
+Register-ArgumentCompleter -Native -CommandName todo -ScriptBlock {
+  param($wordToComplete, $commandAst, $cursorPosition)
+  tuxedo.exe completions powershell | Invoke-Expression
+}
+Register-ArgumentCompleter -Native -CommandName tux -ScriptBlock {
+  param($wordToComplete, $commandAst, $cursorPosition)
+  tuxedo.exe completions powershell | Invoke-Expression
+}

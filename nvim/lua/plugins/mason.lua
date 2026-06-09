@@ -74,8 +74,9 @@ return {
       -- local capabilities = require("cmp_nvim_lsp").default_capabilities()
       local util = require("lspconfig.util")
       local obsidian_utils = require("utilities.obsidian_utils")
-      -- local osidian_current_vault = obsidian_utils.get_vault()
       local obsidian_vaults = obsidian_utils.get_vaults()
+      -- mason path
+      local mason_path = vim.fn.stdpath("data") .. "/mason/packages/powershell-editor-services"
 
       local capabilities = {
         textDocument = {
@@ -226,6 +227,12 @@ return {
             },
           },
         },
+      })
+      lspconfig.powershell_es.setup({
+        capabilities = capabilities,
+        on_attach = lsp_utils.on_attach,
+
+        bundle_path = mason_path,
       })
       lspconfig.yamlls.setup({})
 
