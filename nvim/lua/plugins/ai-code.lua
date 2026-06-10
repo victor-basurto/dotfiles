@@ -1,44 +1,37 @@
 return {
   {
-    "NickvanDyke/opencode.nvim",
-    version = "*",
-    -- dependencies should only contain the list of required plugins
-    dependencies = {
-      {
-        "folke/snacks.nvim",
-        optional = true,
-        opts = {
-          input = {},
-          picker = {},
-          terminal = {},
-        },
-      },
-    },
-    -- Move keys here, to the same level as dependencies
-    keys = {
-      {
-        "<leader>at",
-        function()
-          local oc = require("opencode")
-          -- check if opencode window is currently visible
-          local winid = vim.fn.bufwinid("opencode")
-          if winid ~= -1 then
-            -- if its open, just hid the window (dont kill the buffer/session)
-            vim.api.nvim_win_hide(winid)
-          else
-            -- if its closed, open it back up
-            oc.toggle()
-          end
-        end,
-        desc = "[AI] Toggle OpenCode (keep session)",
-      },
-      {
-        "<leader>aa",
-        function()
-          require("opencode").ask()
-        end,
-        desc = "[AI] Ask OpenCode",
-      },
-    },
+    "nickjvandyke/opencode.nvim",
+    version = "*", -- Latest stable release
+    config = function()
+      ---@type opencode.Opts
+      vim.g.opencode_opts = {
+        -- Your configuration, if any; goto definition on the type or field for details
+      }
+
+      vim.o.autoread = true -- Required for `vim.g.opencode_opts.events.reload`
+
+      -- TODO: Create proper keymaps for opencode based on the keymaps abc's
+      -- Recommended/example keymaps
+      vim.keymap.set({ "n", "x" }, "<leader>oa", function()
+        require("opencode").ask("@this: ")
+      end, { desc = "Ask opencode…" })
+      vim.keymap.set({ "n", "x" }, "<leader>os", function()
+        require("opencode").select()
+      end, { desc = "Select opencode…" })
+
+      vim.keymap.set({ "n", "x" }, "go", function()
+        return require("opencode").operator("@this ")
+      end, { desc = "Add range to opencode", expr = true })
+      vim.keymap.set("n", "goo", function()
+        return require("opencode").operator("@this ") .. "_"
+      end, { desc = "Add line to opencode", expr = true })
+
+      vim.keymap.set("n", "<S-C-u>", function()
+        require("opencode").command("session.half.page.up")
+      end, { desc = "Scroll opencode up" })
+      vim.keymap.set("n", "<S-C-d>", function()
+        require("opencode").command("session.half.page.down")
+      end, { desc = "Scroll opencode down" })
+    end,
   },
 }

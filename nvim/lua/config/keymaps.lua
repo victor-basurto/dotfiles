@@ -626,12 +626,13 @@ keymap.set(
 -- ############################################################################
 --                          OpenCode
 -- ############################################################################
-wk.add({
-  mode = { "n", "v" },
-  { "<leader>a", group = "[ai]" }, -- naming
-  { "<leader>at", group = "[t]oggle opencode (keep session)" }, -- open opencode session
-  { "<leader>aa", group = "[a]sk question" }, -- ask question to opencode
-})
+-- TODO: provide the proper keymaps once the opencode has been updated.
+-- wk.add({
+--   mode = { "n", "v" },
+--   { "<leader>a", group = "[ai]" }, -- naming
+--   { "<leader>at", group = "[t]oggle opencode (keep session)" }, -- open opencode session
+--   { "<leader>aa", group = "[a]sk question" }, -- ask question to opencode
+-- })
 -- ############################################################################
 --                        end OpenCode
 -- ############################################################################
