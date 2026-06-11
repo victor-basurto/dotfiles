@@ -15,7 +15,7 @@ return {
   },
   {
     "mason-org/mason.nvim",
-    version = "2.3.0",
+    version = "2.3.1",
     opts = {
       ensure_installed = {
         "gitui",
