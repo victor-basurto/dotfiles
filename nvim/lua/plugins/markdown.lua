@@ -36,7 +36,7 @@ return {
         },
         html = { enabled = true },
         -- Winbar / statusline integration (shows current heading)
-        winbar = false,
+        winbar = nil,
         latex = { enabled = false },
         yaml = { enabled = false },
       })
