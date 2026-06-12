@@ -92,6 +92,7 @@ zstyle ':fzf-tab:complete:git-show:*' fzf-preview \
 # Preview for 'git checkout' (files)
 zstyle ':fzf-tab:complete:git-checkout:argument-1' fzf-preview \
 	'git diff $word | delta || git diff $word'
+export BAT_THEME="TwoDark"
 # ===============================================================
 # MODERN TOOLS (fzf, zoxide, bat, ripgrep)
 # ===============================================================

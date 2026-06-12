@@ -74,13 +74,18 @@ serdev() {
 
 # AEROSPACE
 # list active windows with id and name
-function ff() {
+function aero-active() {
   aerospace list-windows --all \
     | awk '{printf "%s  [%s]  %s\n", $1, $2, substr($0, index($0,$3))}' \
     | fzf --with-nth=2.. \
           --bind 'enter:execute(bash -c "aerospace focus --window-id {1}")+abort'
 }
-
+function ff() {
+  local file
+  file=$(fd . --type f | fzf \
+    --preview 'bat --color=always --style=numbers {}')
+  [[ -n $file ]] && nvim "$file"
+}
 # YAZI
 # start yazi navigation
 function y() {
