@@ -80,11 +80,25 @@ function aero-active() {
     | fzf --with-nth=2.. \
           --bind 'enter:execute(bash -c "aerospace focus --window-id {1}")+abort'
 }
+#--------------------------------
+# fzf utils
+#--------------------------------
+# search files
 function ff() {
   local file
   file=$(fd . --type f | fzf \
     --preview 'bat --color=always --style=numbers {}')
   [[ -n $file ]] && nvim "$file"
+}
+# search words in files
+function fw() {
+  local result
+  result=$(rg --line-number --no-heading --color=always . | fzf \
+    --ansi \
+    --preview 'bat --color=always --style=numbers --highlight-line {2} {1}' \
+    --delimiter ':' \
+    --nth 3.. \
+    --bind 'enter:execute(nvim +{2} {1})')
 }
 # YAZI
 # start yazi navigation
