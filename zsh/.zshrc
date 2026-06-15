@@ -60,6 +60,16 @@ source ~/.zsh_plugins.zsh
 zstyle ':completion:*' menu no
 zstyle ':fzf-tab:*' use-fzf-default-opts yes
 # ===============================================================
+# EDIT COMMAND BUFFER
+# ===============================================================
+export VISUAL="nvim"
+export EDITOR="nvim"
+
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey '^x^e' edit-command-line
+
+# ===============================================================
 # fzf-tab – styled fuzzy completions
 # ===============================================================
 # Tokyo Night / Starship matching colors for FZF
