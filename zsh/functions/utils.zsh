@@ -109,3 +109,11 @@ function y() {
   [ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
   rm -f -- "$tmp"
 }
+
+#--------------------------------------------------
+# TUXEDO utils
+# Open tuxedo inside GoogleDrive/work-todo/
+#---------------------------------------------------
+function tx() {
+  tuxedo "$TODO_DIR/$1"
+}

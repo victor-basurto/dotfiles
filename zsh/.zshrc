@@ -184,8 +184,8 @@ export MANPAGER="nvim -c ASMANPAGER -"
 # ===============================================================
 # TUXEDO WRAPPERS & COMPDEF
 # ===============================================================
-alias tux="tuxedo"
-alias todo="tuxedo"
-
-compdef _tuxedo tux
-compdef _tuxedo todo
+# alias tux="tuxedo"
+# alias todo="tuxedo"
+#
+# compdef _tuxedo tux
+# compdef _tuxedo todo
