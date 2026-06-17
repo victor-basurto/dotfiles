@@ -2,7 +2,7 @@
 # fzf function (already there)
 #####################################################
 function fz {
-  fzf --style full --preview 'bat -n --color=always {}'
+  nvim (fzf --style full --preview 'bat -n --color=always {}')
 }
 
 #####################################################
