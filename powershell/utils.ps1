@@ -273,12 +273,66 @@ function gfinish {
 #####################################################
 # tuxedo todo app aliases
 #####################################################
+<#
+.SYNOPSIS
+Runs Tuxedo from the directory defined by TODO_DIR while protecting the existing todo file.
+
+.DESCRIPTION
+Invoke-Tuxedo is a wrapper around tuxedo.exe that:
+
+- Verifies TODO_DIR is set.
+- Verifies TODO_DIR points to a valid directory.
+- Ensures todo.txt exists in TODO_DIR without overwriting an existing file.
+- Temporarily changes to TODO_DIR before launching tuxedo.exe.
+- Restores the original working directory afterward.
+
+This is useful when you want Tuxedo to always operate on the same todo.txt file,
+especially when working across multiple machines or shells.
+
+.PARAMETER Args
+Arguments passed directly through to tuxedo.exe.
+
+.EXAMPLE
+tux
+Runs Tuxedo using the configured TODO_DIR.
+
+.EXAMPLE
+todo add "buy milk"
+Passes the add command to tuxedo.exe while keeping file operations in TODO_DIR.
+
+.NOTES
+Place this function in your PowerShell profile or dot-source it from a separate script file.
+The function is designed to avoid accidental overwrites of the todo.txt file.
+#>
 function Invoke-Tuxedo {
   param (
     [Parameter(ValueFromRemainingArguments = $true)]
     $Args
   )
-  tuxedo.exe @Args
+
+  if (-not $env:TODO_DIR) {
+    throw "TODO_DIR is not set."
+  }
+
+  if (-not (Test-Path -LiteralPath $env:TODO_DIR -PathType Container)) {
+    throw "TODO_DIR is not a valid directory: $env:TODO_DIR"
+  }
+
+  $todoFile = Join-Path -Path $env:TODO_DIR -ChildPath 'todo.txt'
+  if (Test-Path -LiteralPath $todoFile -PathType Leaf) {
+    Write-Host "Using existing todo file: $todoFile"
+  } else {
+    New-Item -ItemType File -Path $todoFile -Force | Out-Null
+  }
+
+  $old = Get-Location
+  try {
+    Set-Location -LiteralPath $env:TODO_DIR -ErrorAction Stop
+    tuxedo.exe @Args
+  }
+  finally {
+    Set-Location -LiteralPath $old -ErrorAction SilentlyContinue
+  }
 }
 Set-Alias tux Invoke-Tuxedo
 Set-Alias todo Invoke-Tuxedo
