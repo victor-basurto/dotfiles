@@ -318,16 +318,15 @@ function Invoke-Tuxedo {
     throw "TODO_DIR is not a valid directory: $env:TODO_DIR"
   }
 
-  $todoFile = Join-Path -Path $env:TODO_DIR -ChildPath 'todo.txt'
-  if (Test-Path -LiteralPath $todoFile -PathType Leaf) {
-    Write-Host "Using existing todo file: $todoFile"
-  } else {
-    New-Item -ItemType File -Path $todoFile -Force | Out-Null
-  }
-
   $old = Get-Location
   try {
     Set-Location -LiteralPath $env:TODO_DIR -ErrorAction Stop
+
+    $todoFile = Join-Path -Path $env:TODO_DIR -ChildPath 'todo.txt'
+    if (-not (Test-Path -LiteralPath $todoFile -PathType Leaf)) {
+      New-Item -ItemType File -Path $todoFile -Force | Out-Null
+    }
+
     tuxedo.exe @Args
   }
   finally {
