@@ -83,3 +83,28 @@ background-blur = 10
 # selection-background = #a063eb
 # selection-foreground = #1b1b22
 mouse-hide-while-typing = true
+
+# keybindings (mirroring kitty layout)
+# Tab creation / navigation
+keybind = ctrl+n=new_tab
+keybind = ctrl+bracket_left=previous_tab
+keybind = ctrl+bracket_right=next_tab
+
+# Split navigation (ctrl+w prefix, same as kitty/tmux)
+keybind = ctrl+w>h=goto_split:left
+keybind = ctrl+w>j=goto_split:down
+keybind = ctrl+w>k=goto_split:up
+keybind = ctrl+w>l=goto_split:right
+
+# Split resize (ctrl+r prefix, vim-direction)
+keybind = ctrl+r>h=resize_split:left,5
+keybind = ctrl+r>j=resize_split:down,5
+keybind = ctrl+r>k=resize_split:up,5
+keybind = ctrl+r>l=resize_split:right,5
+
+# Split creation
+keybind = super+d=new_split:right
+keybind = super+shift+d=new_split:down
+
+# Split zoom
+keybind = super+z=toggle_split_zoom
