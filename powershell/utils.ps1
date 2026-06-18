@@ -5,6 +5,83 @@ function fz {
   nvim (fzf --style full --preview 'bat -n --color=always {}')
 }
 
+function fzg {
+<#
+.SYNOPSIS
+Static, codebase-wide fuzzy text search utilizing Ripgrep and FZF.
+.DESCRIPTION
+Scans all files in the current directory tree for text contents using Ripgrep,
+pipes the consolidated list into FZF for fuzzy filtering, and previews the file
+using Bat. Selecting a line automatically opens Neovim directly at that line number.
+.INPUTS
+None.
+.OUTPUTS
+None.
+.EXAMPLE
+fzg
+Launches the interface. Type your search string (e.g., "function fz") to filter.
+#>
+  $selection = rg --line-number --no-heading --color=always --smart-case "" | 
+  fzf --ansi `
+  --style full `
+  --delimiter ':' `
+  --bind 'ctrl-j:down,ctrl-k:up' `
+  --preview 'bat --color=always --highlight-line {2} {1}' `
+  --preview-window 'right,60%'
+
+  if ($selection) {
+    # Split cleanly by the first colons to separate file, line, and content
+    $parts = $selection -split ':'
+
+    $file = $parts[0].Trim()
+    $line = $parts[1].Trim()
+
+    # Absolute path fallback check (e.g., C:\path\file.ps1)
+    if ($parts[0].Length -eq 1) {
+      $file = "$($parts[0]):$($parts[1])".Trim()
+      $line = $parts[2].Trim()
+    }
+
+    nvim "+$line" $file
+  }
+}
+function fzlive {
+<#
+.SYNOPSIS
+Dynamic Live Grep matching text interactively as you type.
+.DESCRIPTION
+Instead of searching everything at startup, this maps your active keystrokes
+directly to a live background Ripgrep query. Ideal for large codebases or monorepos
+where a blank startup search is resource-heavy. Previews with syntax highlighting.
+.INPUTS
+None.
+.OUTPUTS
+None.
+.EXAMPLE
+fzlive
+Launches a blank prompt. Type any phrase (e.g., "Set-Alias") to query files on the fly.
+#>
+  $selection = fzf --ansi --disabled --style full `
+  --bind "start:reload(rg --column --line-number --no-heading --color=always --smart-case '')" `
+  --bind "change:reload(rg --column --line-number --no-heading --color=always --smart-case {q} || true)" `
+  --bind 'ctrl-j:down,ctrl-k:up' `
+  --delimiter ':' `
+  --preview 'bat --color=always --highlight-line {2} {1}' `
+  --preview-window 'right,60%'
+
+  if ($selection) {
+    $parts = $selection -split ':'
+    $file = $parts[0].Trim()
+    $line = $parts[1].Trim()
+
+    if ($parts[0].Length -eq 1) {
+      $file = "$($parts[0]):$($parts[1])".Trim()
+      $line = $parts[2].Trim()
+    }
+
+    nvim "+$line" $file
+  }
+}
 #####################################################
 # Global Aliases
 #####################################################
