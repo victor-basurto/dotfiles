@@ -633,6 +633,82 @@ keymap.set(
 --   { "<leader>at", group = "[t]oggle opencode (keep session)" }, -- open opencode session
 --   { "<leader>aa", group = "[a]sk question" }, -- ask question to opencode
 -- })
+wk.add({
+  mode = { "n", "x" },
+  { "<leader>a", group = "[ai] opencode" },
+  { "<leader>ag", group = "[ai] opencode range" },
+
+  -- ask questions
+  {
+    "<leader>aa",
+    function()
+      -- Safely schedule the execution onto the main loop to prevent the json_decode crash
+      vim.schedule(function()
+        require("opencode").ask("@this: ")
+      end)
+    end,
+    desc = "[a]sk question",
+  },
+
+  -- select opencode
+  {
+    "<leader>as",
+    function()
+      -- Safely schedule the execution onto the main loop to prevent the json_decode crash
+      vim.schedule(function()
+        require("opencode").select()
+      end)
+    end,
+    desc = "[s]elect opencode...",
+  },
+  -- add range opencode
+  {
+    "<leader>agr",
+    function()
+      -- Safely schedule the execution onto the main loop to prevent the json_decode crash
+      vim.schedule(function()
+        require("opencode").operator("@this ")
+      end)
+    end,
+    desc = "[r] add range to opencode",
+  },
+  -- add range opencode
+  {
+    "<leader>ago",
+    function()
+      -- Safely schedule the execution onto the main loop to prevent the json_decode crash
+      vim.schedule(function()
+        require("opencode").operator("@this ")
+      end)
+    end,
+    desc = "[o] add line to opencode",
+    expr = true,
+  },
+  -- 2. Global Normal Mode Mappings (Scrolling shortcuts)
+  {
+    mode = "n",
+    {
+      "<S-C-u>",
+      function()
+        require("opencode").command("session.half.page.up")
+      end,
+      desc = "Scroll opencode up",
+    },
+    {
+      "<S-C-d>",
+      function()
+        require("opencode").command("session.half.page.down")
+      end,
+      desc = "Scroll opencode down",
+    },
+  },
+})
+-- vim.keymap."<S-C-u>", function()
+--   require("opencode").command("session.half.page.up")
+-- end, { desc = "Scroll opencode up" })
+-- vim.keymap.set("n", "<S-C-d>", function()
+--   require("opencode").command("session.half.page.down")
+-- end, { desc = "Scroll opencode down" })
 -- ############################################################################
 --                        end OpenCode
 -- ############################################################################
