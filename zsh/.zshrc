@@ -129,7 +129,6 @@ alias l="ls -l"
 alias ll="ls -la"
 alias la="ls -a"
 alias cat="bat --paging=never"      # beautiful syntax highlighting
-alias grep="rg --color=auto"        # fast ripgrep
 
 # git aliases
 alias gc="git commit -m"

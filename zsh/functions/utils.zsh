@@ -30,12 +30,6 @@ ltree() {
 }
 
 
-# EZA Theme
-export EZA_CONFIG_DIR="$HOME/.config/.dotfiles/eza"
-
-# obsidian review
-alias or='cd ${OBSIDIAN_VAULT:-$HOME/Google Drive/My Drive/obsidian-work} && nvim ./inbox/*.md'
-
 # Function to backup Obsidian vault
 # Creates timestamped backups and maintains last 8 backups
 #
