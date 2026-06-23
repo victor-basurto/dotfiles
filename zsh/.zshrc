@@ -151,12 +151,7 @@ alias space="open -a Aerospace"
 alias space-x='osascript -e "tell application \"AeroSpace\" to quit"'
 
 # Source external files
-source "$HOME/.config/zsh/functions/dir-utils.zsh"
-source "$HOME/.config/zsh/functions/utils.zsh"
-source "$HOME/.config/zsh/functions/og.zsh"
-source "$HOME/.config/zsh/functions/on.zsh"
-source "$HOME/.config/zsh/functions/odn.zsh"
-source "$HOME/.config/zsh/functions/eza-utils.zsh"
+source "$HOME/.config/zsh/functions/source.zsh"
 # Load environment variables
 for env_file in "$HOME/.config/zshenv/env-private.zsh" "$HOME/.config/zshenv/env-public.zsh"; do
   [ -f "$env_file" ] && source "$env_file"
