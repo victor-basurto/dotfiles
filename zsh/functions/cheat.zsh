@@ -14,7 +14,7 @@ function cheat() {
   fi
 
   local file
-  if [[ -n "$file" ]]; then
+  if [[ -n "$1" ]]; then
     # direct matching logic (e.g., 'cheat zsh' matches 'zsh.md')
     file=$(fd -t f -e md . "$cheat_dir" | grep -i "$1" | head -n 1)
 
@@ -36,3 +36,7 @@ function cheat() {
     nvim -R "$file"
   fi
 }
+
+# enable tab-completion for custom cheatsheet files
+local _cheat_completion_path="$HOME/.config/.dotfiles/cheatsheets/"
+compdef "_path_files -W _cheat_completion_path -g '*.md'" cheat
