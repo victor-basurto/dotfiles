@@ -24,10 +24,10 @@ INBOX_PATH="$VAULT_DIR/inbox"
 
 or() {
   # check if the $INBOX_PATH exists
-  if [[ ! -d $VAULT_DIR ]]; then
+  if [[ ! -d $INBOX_PATH ]]; then
     # print error in bold red (%F{red}...%f)
     print -P "%F{red}Error: $INBOX_PATH not found%f"
-    return 1   
+    return 1
   fi
 
   # change to the obsidian vault root

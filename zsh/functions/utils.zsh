@@ -139,3 +139,8 @@ fdir() {
   find . -type d -iname "*$1*"
 }
 
+# reload PROFILE
+reload() {
+  source ~/.zshrc
+}
+
