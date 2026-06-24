@@ -12,7 +12,7 @@ main_note_dir="$OBSIDIAN_VAULT/daily" # work vault
 #   odn              → create/open today's note (no extra content)
 #   odn "some text"  → create/open today's note and append text
 # ------------------------------------------------------------
-function odn() {
+odn() {
   local current_year=$(date +"%Y")
   local current_month_abbr=$(date +"%b" | tr '[:upper:]' '[:lower:]')
   local current_weekday=$(date +"%A" | tr '[:upper:]' '[:lower:]')
@@ -73,7 +73,7 @@ EOF
 #   - Updates the <!-- task-summary --> block at the bottom
 #   - Also prints the box to the terminal
 # ------------------------------------------------------------
-function _odn_task_summary() {
+_odn_task_summary() {
   local file="$1"
   local total done_count undone
 

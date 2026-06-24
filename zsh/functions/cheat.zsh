@@ -4,7 +4,7 @@
 #   cheat          -> Open interactive fuzzy finder for all sheets
 #   cheat git      -> Directly open the git cheatsheet if found
 #   cheat nvim     -> Directly open the nvim cheatsheet if found
-function cheat() {
+cheat() {
   local cheat_dir="$HOME/.config/.dotfiles/cheatsheets"
 
   # ensure directory exists

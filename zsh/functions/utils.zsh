@@ -68,7 +68,7 @@ serdev() {
 
 # AEROSPACE
 # list active windows with id and name
-function aero-active() {
+aero-active() {
   aerospace list-windows --all \
     | awk '{printf "%s  [%s]  %s\n", $1, $2, substr($0, index($0,$3))}' \
     | fzf --with-nth=2.. \
@@ -78,14 +78,14 @@ function aero-active() {
 # fzf utils
 #--------------------------------
 # search files
-function ff() {
+ff() {
   local file
   file=$(fd . --type f | fzf \
     --preview 'bat --color=always --style=numbers {}')
   [[ -n $file ]] && nvim "$file"
 }
 # search words in files
-function fw() {
+fw() {
   local result
   result=$(rg --line-number --no-heading --color=always . | fzf \
     --ansi \
@@ -96,7 +96,7 @@ function fw() {
 }
 # YAZI
 # start yazi navigation
-function y() {
+y() {
   local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
   yazi "$@" --cwd-file="$tmp"
   IFS= read -r -d '' cwd < "$tmp"
@@ -108,6 +108,14 @@ function y() {
 # TUXEDO utils
 # Open tuxedo inside GoogleDrive/work-todo/
 #---------------------------------------------------
-function tx() {
+tx() {
   tuxedo "$TODO_DIR/$1"
+}
+
+#--------------------------------------------------
+# MKDIR utils
+#---------------------------------------------------
+# mkdir and cd into it.
+mkcd() {
+  mkdir -p "$1" && cd "$1"
 }

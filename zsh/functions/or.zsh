@@ -22,7 +22,7 @@
 VAULT_DIR="${OBSIDIAN_VAULT:-$HOME/Google Drive/My Drive/obsidian-work}"
 INBOX_PATH="$VAULT_DIR/inbox"
 
-function or() {
+or() {
   # check if the $INBOX_PATH exists
   if [[ ! -d $VAULT_DIR ]]; then
     # print error in bold red (%F{red}...%f)

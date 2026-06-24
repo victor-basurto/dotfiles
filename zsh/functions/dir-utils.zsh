@@ -46,7 +46,7 @@ CUSTOM_DIRS_DESC=(
 
 # Function to list custom directories
 # Function to list custom directories
-function list-dirs {
+list-dirs() {
   echo "--- Custom Directory Shortcuts ---"
   echo "----------------------------------"
 
@@ -81,25 +81,25 @@ function list-dirs {
 }
 
 # --- Functions ---
-function brook { cd "$CUSTOM_DIRS_PATH[brook]" || echo "Error: Path not found"; }
-function conf  { cd "$CUSTOM_DIRS_PATH[conf]"  || echo "Error: Path not found"; }
-function dot   { cd "$CUSTOM_DIRS_PATH[dot]"   || echo "Error: Path not found"; }
-function jsd   { cd "$CUSTOM_DIRS_PATH[jsd]"   || echo "Error: Path not found"; }
-function pers  { cd "$CUSTOM_DIRS_PATH[pers]"  || echo "Error: Path not found"; }
-function nex   { cd "$CUSTOM_DIRS_PATH[nex]"   || echo "Error: Path not found"; }
-function webd  { cd "$CUSTOM_DIRS_PATH[webd]"  || echo "Error: Path not found"; }
-function xmd   { cd "$CUSTOM_DIRS_PATH[xmd]"   || echo "Error: Path not found"; }
-function mono  { cd "$CUSTOM_DIRS_PATH[mono]"  || echo "Error: Path not found"; }
-function zshd  { cd "$CUSTOM_DIRS_PATH[zshd]"  || echo "Error: Path not found"; }
-function oo    { cd "$CUSTOM_DIRS_PATH[oo]"    || echo "Error: Path not found"; }
-function reactd { cd "$CUSTOM_DIRS_PATH[reactd]" || echo "Error: Path not found"; }
-function safer { cd "$CUSTOM_DIRS_PATH[safer]" || echo "Error: Path not found"; }
-function strap { cd "$CUSTOM_DIRS_PATH[strap]" || echo "Error: Path not found"; }
-function umbd  { cd "$CUSTOM_DIRS_PATH[umbd]"  || echo "Error: Path not found"; }
-function vimd  { cd "$CUSTOM_DIRS_PATH[vimd]"  || echo "Error: Path not found"; }
+brook() { cd "$CUSTOM_DIRS_PATH[brook]" || echo "Error: Path not found"; }
+conf()  { cd "$CUSTOM_DIRS_PATH[conf]"  || echo "Error: Path not found"; }
+dot()   { cd "$CUSTOM_DIRS_PATH[dot]"   || echo "Error: Path not found"; }
+jsd()   { cd "$CUSTOM_DIRS_PATH[jsd]"   || echo "Error: Path not found"; }
+pers()  { cd "$CUSTOM_DIRS_PATH[pers]"  || echo "Error: Path not found"; }
+nex()   { cd "$CUSTOM_DIRS_PATH[nex]"   || echo "Error: Path not found"; }
+webd()  { cd "$CUSTOM_DIRS_PATH[webd]"  || echo "Error: Path not found"; }
+xmd()   { cd "$CUSTOM_DIRS_PATH[xmd]"   || echo "Error: Path not found"; }
+mono()  { cd "$CUSTOM_DIRS_PATH[mono]"  || echo "Error: Path not found"; }
+zshd()  { cd "$CUSTOM_DIRS_PATH[zshd]"  || echo "Error: Path not found"; }
+oo()    { cd "$CUSTOM_DIRS_PATH[oo]"    || echo "Error: Path not found"; }
+reactd() { cd "$CUSTOM_DIRS_PATH[reactd]" || echo "Error: Path not found"; }
+safer() { cd "$CUSTOM_DIRS_PATH[safer]" || echo "Error: Path not found"; }
+strap() { cd "$CUSTOM_DIRS_PATH[strap]" || echo "Error: Path not found"; }
+umbd()  { cd "$CUSTOM_DIRS_PATH[umbd]"  || echo "Error: Path not found"; }
+vimd()  { cd "$CUSTOM_DIRS_PATH[vimd]"  || echo "Error: Path not found"; }
 
 # The "mono" function with argument support
-function mono {
+mono() {
   # Strip trailing slash from base_path if it exists to avoid // errors
   local base_path="${CUSTOM_DIRS_PATH[mono]%/}"
   
