@@ -422,3 +422,45 @@ Register-ArgumentCompleter -Native -CommandName tux -ScriptBlock {
   param($wordToComplete, $commandAst, $cursorPosition)
   tuxedo.exe completions powershell | Invoke-Expression
 }
+
+#####################################################
+# Directories and Files Utilities
+#####################################################
+
+# mkdir and cd into it.
+function mkcd {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$Path
+  )
+  New-Item -ItemType Directory -Force -Path $Path | Out-Null
+  Set-Location $Path
+}
+
+# switch up several parent directories
+function up {
+  param(
+    [Parameter(Mandatory = $true)]
+    [int]$Count
+  )
+  $path = ('../' * $Count)
+  Set-Location $path
+}
+
+# find file quickly
+function ffile {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$Pattern
+  )
+  Get-ChildItem -Recurse -File -Filter "*$Pattern*" -ErrorAction SilentlyContinue
+}
+
+# find directory
+function fdir {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$Pattern
+  )
+  Get-ChildItem -Recurse -Directory -Filter "*$Pattern*" -ErrorAction SilentlyContinue
+}
