@@ -119,3 +119,23 @@ tx() {
 mkcd() {
   mkdir -p "$1" && cd "$1"
 }
+
+# switch up several parent directories
+up() {
+  local d=""
+  for ((i=1;i<=$1;i++)); do
+    d+="../"
+  done
+  cd "$d"
+}
+
+# find file quickly
+ffile() {
+  find . -type f -iname "*$1*"
+}
+
+# find directory
+fdir() {
+  find . -type d -iname "*$1*"
+}
+
