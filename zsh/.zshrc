@@ -160,9 +160,6 @@ done
 # EZA Theme
 export EZA_CONFIG_DIR="$HOME/.config/.dotfiles/eza"
 
-# Obsidian review alias
-alias or='cd ${OBSIDIAN_VAULT:-$HOME/Google Drive/My Drive/obsidian-work} && nvim ./inbox/*.md'
-
 # ===============================================================
 # Autosuggestions styling & bindings
 # ===============================================================
