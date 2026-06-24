@@ -464,3 +464,8 @@ function fdir {
   )
   Get-ChildItem -Recurse -Directory -Filter "*$Pattern*" -ErrorAction SilentlyContinue
 }
+
+# reload profile
+function reload {
+  . $PROFILE
+}
