@@ -7,6 +7,7 @@ typeset -A CUSTOM_DIRS_PATH
 # Set custom directories
 CUSTOM_DIRS_PATH=(
   brook "$HOME/projects/brookfield"
+  wnd   "$HOME/projects/brookfield/xmcloud/work/work-notes"
   conf  "$HOME/.config"
   dot   "$HOME/.config/.dotfiles"
   jsd   "$HOME/projects/js-projects"
@@ -27,6 +28,7 @@ CUSTOM_DIRS_PATH=(
 # Custom directories description
 CUSTOM_DIRS_DESC=(
   brook  "Brookfield Projects Directory"
+  wnd    "Brookfield Temporary Work Notes Directory"
   conf   "Configuration Files Directory"
   dot    "Dotfiles Directory"
   jsd    "JavaScript Projects Directory"
@@ -82,6 +84,7 @@ list-dirs() {
 
 # --- Functions ---
 brook() { cd "$CUSTOM_DIRS_PATH[brook]" || echo "Error: Path not found"; }
+wnd()   { cd "$CUSTOM_DIRS_PATH[wnd]"   || echo "Error: Path not found"; }
 conf()  { cd "$CUSTOM_DIRS_PATH[conf]"  || echo "Error: Path not found"; }
 dot()   { cd "$CUSTOM_DIRS_PATH[dot]"   || echo "Error: Path not found"; }
 jsd()   { cd "$CUSTOM_DIRS_PATH[jsd]"   || echo "Error: Path not found"; }
