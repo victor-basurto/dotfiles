@@ -15,6 +15,7 @@ return {
   { "bullets-vim/bullets.vim" },
   {
     "folke/snacks.nvim",
+    lazy = false,
     ---@type snacks.Config
     opts = {
       picker = {
