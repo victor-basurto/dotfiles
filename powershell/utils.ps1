@@ -86,6 +86,7 @@ Launches a blank prompt. Type any phrase (e.g., "Set-Alias") to query files on t
 # Global Aliases
 #####################################################
 # Aliases
+Set-Alias -Name rl -Value $PROFILE
 Set-Alias -Name "v" -Value "nvim"
 Set-Alias -Name "vim" -Value "nvim"
 Set-Alias -Name "ll" -Value "ls"
@@ -106,6 +107,7 @@ $PowerShellDir  = Join-Path $env:USERPROFILE ".config\.dotfiles\powershell"
 $WebsitesDir    = Join-Path $env:USERPROFILE "projects\brookfield\websites"
 $SitecoreDir    = Join-Path $env:USERPROFILE "projects\brookfield\sitecore"
 $XMDir          = Join-Path $env:USERPROFILE "projects\brookfield\xmcloud\work"
+$WNDir          = Join-Path $env:USERPROFILE "projects\brookfield\xmcloud\work\work-notes"
 $MonoDir        = Join-Path $env:USERPROFILE "projects\brookfield\xmcloud\work\brookfield-monorepo"
 $BrookDir       = Join-Path $env:USERPROFILE "projects\brookfield"
 $NextJSDir      = Join-Path $env:USERPROFILE "projects\nextjs-projects"
@@ -144,6 +146,7 @@ function ps1       { _GoTo $PowerShellDir "PowerShell Configuration Directory" }
 function webd      { _GoTo $WebsitesDir   "Websites Directory" }
 function sitecore  { _GoTo $SitecoreDir "Sitecore Project Directory" }
 function xmd       { _GoTo $XMDir        "XM Cloud Projects Directory" }
+function wnd       { _GoTo $WNDir        "XM Cloud Work Notes Directory" }
 function brook     { _GoTo $BrookDir     "Brookfield Projects Directory" }
 function nex       { _GoTo $NextJSDir    "Next.js Projects Directory" }
 function reactd    { _GoTo $ReactDir     "React Projects Directory" }
@@ -203,7 +206,7 @@ Register-ArgumentCompleter -CommandName mono -ParameterName Site -ScriptBlock {
 #####################################################
 # list-dirs — display all shortcuts
 #####################################################
-function list-dirs {
+function Get-Dirs {
   Write-Host "--- Custom Directory Shortcuts ---"
   Write-Host "----------------------------------"
 
@@ -216,6 +219,7 @@ function list-dirs {
     @{ Keyword = "webd";        Description = "Websites Directory";                   Path = $WebsitesDir },
     @{ Keyword = "sitecore";    Description = "Sitecore Project Directory";           Path = $SitecoreDir },
     @{ Keyword = "xmd";         Description = "XM Cloud Projects Directory";          Path = $XMDir },
+    @{ Keyword = "wnd";         Description = "XM Cloud Work Notes Directory";        Path = $WNDir },
     @{ Keyword = "brook";       Description = "Brookfield Projects Directory";        Path = $BrookDir },
     @{ Keyword = "nex";         Description = "Next.js Projects Directory";           Path = $NextJSDir },
     @{ Keyword = "reactd";      Description = "React Projects Directory";             Path = $ReactDir },
@@ -463,9 +467,4 @@ function fdir {
     [string]$Pattern
   )
   Get-ChildItem -Recurse -Directory -Filter "*$Pattern*" -ErrorAction SilentlyContinue
-}
-
-# reload profile
-function reload {
-  . $PROFILE
 }
