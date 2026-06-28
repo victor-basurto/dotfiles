@@ -1,6 +1,6 @@
 # directory utils
 source "$HOME/.config/zsh/functions/dir-utils.zsh"
-source "$HOME/.config/zsh/functions/utils.zsh"
+source "$HOME/.config/zsh/functions/terminal-utils.zsh"
 source "$HOME/.config/zsh/functions/eza-utils.zsh"
 
 # obsidian utils
