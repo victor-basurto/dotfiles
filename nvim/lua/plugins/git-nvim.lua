@@ -12,4 +12,8 @@ return {
       vim.keymap.set("n", "<leader>gd", ":Gitsigns diffthis<CR>", { desc = "diff" })
     end,
   },
+  {
+    -- TODO: setup keymaps and commands
+    "sindrets/diffview.nvim",
+  },
 }
