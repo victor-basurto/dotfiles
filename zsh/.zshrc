@@ -124,10 +124,11 @@ eval "$(starship init zsh)"
 # ALIASES & FUNCTIONS
 # ===============================================================
 alias v="nvim"
-alias ls="lsd"
-alias l="ls -l"
-alias ll="ls -la"
-alias la="ls -a"
+alias ld="lsd"
+alias ls="ld -la"
+alias l="ld -l"
+alias ll="ld -la"
+alias la="ld -a"
 alias cat="bat --paging=never"      # beautiful syntax highlighting
 
 # git aliases
