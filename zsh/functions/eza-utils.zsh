@@ -1,26 +1,28 @@
+# LEGACY
 # Tree with Optional Depth
 # usage:
 #   lt        # depth 3
 #   lt 2      # depth 2
 #   lt 4 src  # depth 4 in src
-lt() {
-local level_arg=3
-
-  if [[ -n "$1" && "$1" =~ ^[0-9]+$ ]]; then
-    level_arg="$1"
-    shift
-  fi
-
-  local root
-  root="$(find_project_root)"
-
-  eza \
-    --tree \
-    --level="$level_arg" \
-    --group-directories-first \
-    "$root" \
-    "$@"
-}
+# lt() {
+# local level_arg=3
+#
+#   if [[ -n "$1" && "$1" =~ ^[0-9]+$ ]]; then
+#     level_arg="$1"
+#     shift
+#   fi
+#
+#   local root
+#   root="$(find_project_root)"
+#
+#   eza \
+#     --tree \
+#     --level="$level_arg" \
+#     --group-directories-first \
+#     "$root" \
+#     "$@"
+# }
+# END LEGACY
 
 # Show Only Folders (Project Structure View)
 # ltdirs
