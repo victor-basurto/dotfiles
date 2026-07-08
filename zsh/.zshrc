@@ -131,6 +131,8 @@ alias ll="ld -la"
 alias la="ld -a"
 alias cat="bat --paging=never"      # beautiful syntax highlighting
 
+alias brewup="brew update && brew upgrade && brew cleanup"
+
 # git aliases
 alias gc="git commit -m"
 alias gp="git push"
