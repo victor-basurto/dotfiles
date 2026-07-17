@@ -65,6 +65,9 @@ serlogin() {
 serdev() {
   dotnet sitecore ser pull -n dev
 }
+serfix() {
+  dotnet sitecore ser validation --fix
+}
 
 # AEROSPACE
 # list active windows with id and name
