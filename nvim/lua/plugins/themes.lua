@@ -10,7 +10,7 @@ return {
     enabled = true,
     config = function()
       require("catppuccin").setup({
-        flavour = "frappe", -- latte, frappe, macchiato, mocha
+        flavour = "mocha", -- latte, frappe, macchiato, mocha
         background = {
           light = "latte",
           dark = "mocha",
@@ -36,7 +36,7 @@ return {
           functions = { "italic" },
           keywords = { "italic" },
           strings = {},
-          variables = { "italic" },
+          variables = {},
           numbers = {},
           booleans = { "italic" },
           properties = {},
