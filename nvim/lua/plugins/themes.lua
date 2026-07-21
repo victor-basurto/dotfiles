@@ -6,55 +6,108 @@ return {
   {
     "catppuccin/nvim",
     name = "catppuccin",
-    lazy = false,
     priority = 1000,
     enabled = true,
     config = function()
       require("catppuccin").setup({
-        flavour = "macchiato", -- latte, frappe, macchiato, mocha
+        flavour = "frappe", -- latte, frappe, macchiato, mocha
         background = {
           light = "latte",
-          dark = "frappe",
+          dark = "mocha",
         },
         transparent_background = true,
-        show_end_of_buffer = false,
-        term_colors = true, -- This is important for tmux/ghostty
+        float = {
+          transparent = false,
+          solid = false,
+        },
+        term_colors = true,
+        dim_inactive = {
+          enabled = true, -- dims the background color of inactive window
+          shade = "dark",
+          percentage = 0.15,
+        },
+        no_italic = false,
+        no_bold = false,
+        no_underline = false,
+        styles = {
+          comments = { "italic" },
+          conditionals = { "italic" },
+          loops = { "italic" },
+          functions = { "italic" },
+          keywords = { "italic" },
+          strings = {},
+          variables = { "italic" },
+          numbers = {},
+          booleans = { "italic" },
+          properties = {},
+          types = { "italic" },
+          operators = { "italic" },
+        },
+        lsp_styles = {
+          virtual_text = {
+            errors = { "italic" },
+            hints = { "italic" },
+            warnings = { "italic" },
+            information = { "italic" },
+            ok = { "italic" },
+          },
+          underlines = {
+            errors = { "underline" },
+            hints = { "underline" },
+            warnings = { "underline" },
+            information = { "underline" },
+            ok = { "underline" },
+          },
+          inlay_hints = {
+            background = true,
+          },
+        },
+        color_overrides = {},
+        custom_highlights = {},
+        auto_integrations = true,
         integrations = {
-          treesitter = true,
-          -- Add these specifically:
-          html = true,
-          javascript = true,
-          typescript = true,
-          native_lsp = {
+          cmp = false,
+          blink_cmp = {
+            style = "bordered",
+          },
+          gitsigns = true,
+          nvimtree = true,
+          notify = false,
+          mini = {
             enabled = true,
-            virtual_text = {
-              errors = { "italic" },
-              hints = { "italic" },
-              warnings = { "italic" },
-              information = { "italic" },
-            },
-            underlines = {
-              errors = { "undercurl" },
-              hints = { "undercurl" },
-              warnings = { "undercurl" },
-              information = { "undercurl" },
+            indentscope_color = "",
+          },
+          noice = true,
+          snacks = {
+            enabled = false,
+            indent_scope_color = "lavender", -- catppuccin color (eg. `lavender`) Default: overlay2
+          },
+          lsp_trouble = true,
+          lualine = {
+            -- lualine color overrides in the following hierarchy: Catppuccin Flavor -> Mode -> Lualine Section
+            -- The Catppuccin flavor entry can be any Catpuccin flavor or "all" to apply to all flavors
+            -- The flavor entry can be either a table or a function which consumes the current Catppuccin palette, just like custom_highlights and color_overrides
+            all = function(colors)
+              ---@type CtpIntegrationLualineOverride
+              return {
+                -- Specifying a normal-mode status line override for section a's background and b's foreground to use lavender like the main Catppuccin theme
+                normal = {
+                  a = { bg = colors.lavender, gui = "italic" },
+                  b = { fg = colors.lavender },
+                },
+              }
+            end,
+            -- A macchiato-specific override, which takes priority over 'all'. Also using the direct table syntax instead of function in case you do not rely on dynamic palette colors
+            macchiato = {
+              normal = {
+                a = { bg = "#abcdef" },
+              },
             },
           },
-          bufferline = true,
         },
       })
-
-      vim.cmd("colorscheme catppuccin")
+      vim.cmd("colorscheme catppuccin-nvim")
     end,
-    dependencies = {
-      "akinsho/bufferline.nvim",
-      optional = true,
-      opts = function(_, opts)
-        if (vim.g.colors_name or ""):find("catppuccin") then
-          opts.highlights = require("catppuccin.groups.integrations.bufferline").get_theme()
-        end
-      end,
-    },
   },
   {
     "akinsho/bufferline.nvim",
@@ -213,6 +266,7 @@ return {
   --         completion = {
   --           color = "surface0",
   --         },
+  --         cursor = { enabled = true }
   --       },
   --     })
   --     vim.cmd("colorscheme evergarden")
