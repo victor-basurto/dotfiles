@@ -5,7 +5,6 @@ gui:
   mouseEvents: true
   showBottomLine: false
   showCommandLog: false
-
   theme:
     activeBorderColor:
       - "#8caaee" # Lavender
@@ -24,20 +23,17 @@ gui:
       - "#e78284" # Red
     defaultFgColor:
       - "#c6d0f5" # Text
-
 git:
-  paging:
-    colorArg: always
-    pager: delta --dark --paging=never
+  pagers:
+    - colorArg: always
+      pager: delta --dark --paging=never
   log:
     order: topo-order
     showGraph: when-maximised
     showWholeGraph: false
-
 os:
   edit: "nvim"
   open: "xdg-open" # use "open" on macOS, "start" on Windows
-
 keybinding:
   universal:
     quit: "q"
@@ -51,7 +47,6 @@ keybinding:
     moveUpCommit: "<up>"
   branches:
     createPullRequest: "p"
-
 customCommands:
   - key: "D"
     context: "files"
