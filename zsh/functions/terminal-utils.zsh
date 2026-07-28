@@ -58,17 +58,6 @@ gprompt() {
   fi
 }
 
-# Serialization alias
-serlogin() {
-  dotnet sitecore cloud login
-}
-serdev() {
-  dotnet sitecore ser pull -n dev
-}
-serfix() {
-  dotnet sitecore ser validate --fix
-}
-
 # AEROSPACE
 # list active windows with id and name
 aero-active() {
@@ -147,10 +136,22 @@ reload() {
   source ~/.zshrc
 }
 
-
 #--------------------------------------------------
-# MKDIR utils
+# SERIALIZATION - XMCloud Sitecore
 #---------------------------------------------------
+# xmcloud login
+serlogin() {
+  dotnet sitecore cloud login
+}
+# pull dev
+serdev() {
+  dotnet sitecore ser pull -n dev
+}
+# fix serialization command
+serfix() {
+  dotnet sitecore ser validate --fix
+}
+
 ser_module() {
   # lowercase params
   local site=$(echo "$1" | tr '[:upper:]' '[:lower:]')
