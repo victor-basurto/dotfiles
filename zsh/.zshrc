@@ -174,7 +174,11 @@ bindkey '^f'   autosuggest-accept     # Ctrl+F = accept suggestion (better than 
 # Uncomment to measure zsh loading time along with top zprof
 # zprof
 export MANPAGER="nvim -c ASMANPAGER -"
-
+# ===============================================================
+# Allow .NET tools (like Sitecore CLI) to roll 
+# forward/across major runtime versions
+# ===============================================================
+export DOTNET_ROLL_FORWARD="Major"
 # ===============================================================
 # TUXEDO WRAPPERS & COMPDEF
 # ===============================================================
