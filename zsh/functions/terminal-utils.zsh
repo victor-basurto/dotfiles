@@ -147,3 +147,45 @@ reload() {
   source ~/.zshrc
 }
 
+
+#--------------------------------------------------
+# MKDIR utils
+#---------------------------------------------------
+ser_module() {
+  # lowercase params
+  local site=$(echo "$1" | tr '[:upper:]' '[:lower:]')
+
+  case "$site" in
+    "livealamar")
+      dotnet sitecore ser pull -n dev -i LiveAtAlamar-HeadlessSxaWebsite-Content
+      ;;
+    "brds")
+      dotnet sitecore ser pull -n dev -i BrdsLand-HeadlessSxaWebsite-Content
+      ;;
+
+    "centralpark")
+      dotnet sitecore ser pull -n dev -i CentralPark-HeadlessSxaWebsite-Content
+      ;;
+
+    "deeringpark")
+      dotnet sitecore ser pull -n dev -i DeeringPark-HeadlessSxaWebsite-Content
+      ;;
+
+    "livingston")
+      dotnet sitecore ser pull -n dev -i Livingston-HeadlessSxaWebsite-Content
+      ;;
+
+    "seton")
+      dotnet sitecore ser pull -n dev -i SetonRidge-HeadlessSxaWebsite-Content
+      ;;
+
+    "waterset")
+      dotnet sitecore ser pull -n dev -i WatersetMobilityFees-HeadlessSxaWebsite-Content
+      ;;
+    *)
+      echo "Error: Unknown site '$1'"
+      echo "Valid options: livealamar, brds, centralpark, deeringpark, livingston, seton, waterset"
+      return 1
+      ;;
+  esac
+}
