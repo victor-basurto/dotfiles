@@ -152,39 +152,90 @@ serfix() {
   dotnet sitecore ser validate --fix
 }
 
+# ==============================================================================
+# Function: ser_module
+# Description: Pulls Sitecore serialization modules (Content or Media) for 
+#              specific XM Cloud tenant sites using the Sitecore CLI.
+# Usage:       ser_module <site> [--media|-m] [--help|-h]
+# Options:     --media, -m   Pull the Media module instead of Content module
+#              --help, -h    Display this help message
+# Sites:       livealamar, brds, centralpark, deeringpark, livingston, 
+#              seton, waterset
+# Examples:    ser_module livealamar
+#              ser_module livealamar --media
+# ==============================================================================
 ser_module() {
-  # lowercase params
-  local site=$(echo "$1" | tr '[:upper:]' '[:lower:]')
+  local site=""
+  local type="Content"
 
+  # loop through all passed arguments to process flags and target site
+  for arg in "$@"; do
+    case "$arg" in 
+      --help|-h)
+        # Show usage information and list of supported sites
+        echo "Usage: ser_module <site> [--media|-m]"
+        echo ""
+        echo "Pulls serialized Sitecore items for the specified site."
+        echo ""
+        echo "Options:"
+        echo "  --media, -m   Pull '-Media' module instead of default '-Content' module"
+        echo "  --help, -h    Show this help message"
+        echo ""
+        echo "Valid sites:"
+        echo "  livealamar, brds, centralpark, deeringpark, livingston, seton, waterset"
+        return 0
+        ;;
+      --media|-m)
+        # switch target module suffix from content to media
+        type="Media"
+        ;;
+      *)
+        # assign the first non-flag argument as the site name (converted to lowercase)
+        if [[ -z "$site" ]]; then
+          site=$(echo "$arg" | tr '[:upper:]' '[:lower:]')
+        fi
+        ;;
+    esac
+  done
+
+  # execute the pull command based on the selected site and type
   case "$site" in
     "livealamar")
-      dotnet sitecore ser pull -n dev -i LiveAtAlamar-HeadlessSxaWebsite-Content
+      dotnet sitecore ser pull -n dev -i "LiveAtAlamar-HeadlessSxaWebsite-$type"
       ;;
     "brds")
-      dotnet sitecore ser pull -n dev -i BrdsLand-HeadlessSxaWebsite-Content
+      dotnet sitecore ser pull -n dev -i "BrdsLand-HeadlessSxaWebsite-$type"
       ;;
 
     "centralpark")
-      dotnet sitecore ser pull -n dev -i CentralPark-HeadlessSxaWebsite-Content
+      dotnet sitecore ser pull -n dev -i "CentralPark-HeadlessSxaWebsite-$type"
       ;;
 
     "deeringpark")
-      dotnet sitecore ser pull -n dev -i DeeringPark-HeadlessSxaWebsite-Content
+      dotnet sitecore ser pull -n dev -i "DeeringPark-HeadlessSxaWebsite-$type"
       ;;
 
     "livingston")
-      dotnet sitecore ser pull -n dev -i Livingston-HeadlessSxaWebsite-Content
+      dotnet sitecore ser pull -n dev -i "Livingston-HeadlessSxaWebsite-$type"
       ;;
 
     "seton")
-      dotnet sitecore ser pull -n dev -i SetonRidge-HeadlessSxaWebsite-Content
+      dotnet sitecore ser pull -n dev -i "SetonRidge-HeadlessSxaWebsite-$type"
       ;;
 
     "waterset")
-      dotnet sitecore ser pull -n dev -i WatersetMobilityFees-HeadlessSxaWebsite-Content
+      dotnet sitecore ser pull -n dev -i "WatersetMobilityFees-HeadlessSxaWebsite-$type"
+      ;;
+    "")
+      # error when no site parameter is provided
+      echo "Error: No site provided."
+      echo "Usage: ser_module <site> [--media|-m]"
+      echo "Run 'ser_module --help' for details."
+      return 1
       ;;
     *)
-      echo "Error: Unknown site '$1'"
+      # error when the provided site doesn't match any known options
+      echo "Error: Unknown site '$site'"
       echo "Valid options: livealamar, brds, centralpark, deeringpark, livingston, seton, waterset"
       return 1
       ;;
