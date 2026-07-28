@@ -104,6 +104,12 @@ return {
         vim.env.DOTNET_ROOT = "C:\\Program Files\\dotnet"
       end
 
+      lspconfig.bashls.setup({
+        capabilities = capabilities,
+        on_attach = lsp_utils.on_attach,
+        filetypes = { "sh", "bash", "zsh" },
+      })
+
       -- vim.lsp.enable("omnisharp")
       lspconfig.omnisharp.setup({
         capabilities = capabilities,
