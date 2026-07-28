@@ -66,7 +66,7 @@ serdev() {
   dotnet sitecore ser pull -n dev
 }
 serfix() {
-  dotnet sitecore ser validation --fix
+  dotnet sitecore ser validate --fix
 }
 
 # AEROSPACE
