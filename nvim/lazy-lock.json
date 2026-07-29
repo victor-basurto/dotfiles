@@ -4,7 +4,7 @@
   "SchemaStore.nvim": { "branch": "main", "commit": "19e40cef03a380bfb578793a08222826118664dd" },
   "async.nvim": { "branch": "main", "commit": "46adf61a022d5c923f981d527443f406e7d0f63e" },
   "blink-cmp-dictionary": { "branch": "master", "commit": "898a958cece34da20524d04ebc032a92a9565643" },
-  "blink.cmp": { "branch": "main", "commit": "dbcf63b90b358f058637ea370202e3849013383b" },
+  "blink.cmp": { "branch": "main", "commit": "d26c6b0a4ea9188b9d10fdd5b180deba7675e3cd" },
   "blink.lib": { "branch": "main", "commit": "2789206e10a0e4880f808c2aaf52bc57d876b481" },
   "bufferline.nvim": { "branch": "main", "commit": "655133c3b4c3e5e05ec549b9f8cc2894ac6f51b3" },
   "bullets.vim": { "branch": "master", "commit": "81570b98ca44b4100b3ddcf8d9ca74b9a9b0c884" },
