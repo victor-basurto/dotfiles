@@ -137,6 +137,24 @@ reload() {
 }
 
 #--------------------------------------------------
+# NPM Quick Commands
+#--------------------------------------------------
+# npm run build shortcut
+rbuild() {
+  npm run build
+}
+
+# npm run dev shortcut
+rdev() {
+  npm run dev
+}
+
+# build and run
+build_run() {
+  npm run build && npm run dev
+}
+
+#--------------------------------------------------
 # SERIALIZATION - XMCloud Sitecore
 #---------------------------------------------------
 # xmcloud login
