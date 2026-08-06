@@ -254,6 +254,15 @@ function which ($command) {
 function serlogin { dotnet sitecore cloud login }
 function serdev { dotnet sitecore ser pull -n dev }
 #####################################################
+# NPM Quick Commands
+#####################################################
+# npm run build shortcut
+function rbuild() { npm run build }
+# npm run dev shortcut
+function rdev() { npm run dev }
+# build and run
+function build_run() { npm run build && npm run dev }
+#####################################################
 # Prompt Generator Template
 #####################################################
 function New-WorkPrompt {
