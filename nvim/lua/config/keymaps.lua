@@ -793,7 +793,7 @@ wk.add({
 -- useful when debuging js,ts files
 keymap.set("n", "<leader>Ucl", function()
   local var = vim.fn.expand("<cword>")
-  local log = string.format("console.log('%s: ', %s);", var, var)
+  local log = string.format("console.log('[DEBUG]: %s: ', %s);", var, var)
   vim.fn.setreg("+", log)
   print("copied: " .. log)
 end, { desc = "[LOG] Copy console.log variable under cursor" })
@@ -802,7 +802,7 @@ end, { desc = "[LOG] Copy console.log variable under cursor" })
 -- `console.log('$variableName: ', $variableName)`
 keymap.set("n", "<leader>UcL", function()
   local var = vim.fn.expand("<cWORD>")
-  local log = string.format("console.log('%s: ', %s);", var, var)
+  local log = string.format("console.log('[DEBUG]: %s: ', %s);", var, var)
   vim.fn.setreg("+", log)
   print("copied: " .. log)
 end, { desc = "[LOG] Full Token Copy console.log variable under cursor" })
