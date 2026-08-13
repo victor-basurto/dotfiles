@@ -48,3 +48,10 @@ vim.filetype.add({
     razor = "razor",
   },
 })
+
+vim.api.nvim_create_autocmd("BufReadPost", {
+  pattern = "*[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]*.md",
+  callback = function()
+    require("utilities.odn").setup()
+  end,
+})
