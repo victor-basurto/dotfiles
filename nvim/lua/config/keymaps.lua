@@ -6,6 +6,7 @@ local wk = require("which-key")
 local obsidian_utils = require("utilities.obsidian_utils")
 local md_utils = require("utilities.markdown_utils")
 local utils = require("utilities.utils")
+local MiniMap = require("mini.map")
 -------------------------------------------------------
 --               Discipline
 -------------------------------------------------------
@@ -465,6 +466,29 @@ end, { desc = "[P]Fold the heading cursor currently on" })
 --               End Linkarzu Hack Section
 -------------------------------------------------------------------------
 
+-- ############################################################################
+--                          MiniMap
+-- ############################################################################
+wk.add({
+  mode = { "n", "v" },
+  { "<leader>UM", group = "[M]inimap" },
+  { "<leader>UMc", group = "[c]lose" },
+  { "<leader>UMf", group = "[f]focus toggle" },
+  { "<leader>UMo", group = "[o]pen" },
+  { "<leader>UMr", group = "[r]efresh" },
+  { "<leader>UMs", group = "[s]ide toggle" },
+  { "<leader>UMt", group = "[t]oggle" },
+})
+keymap.set("n", "<leader>UMc", MiniMap.close)
+keymap.set("n", "<leader>UMf", MiniMap.toggle_focus)
+keymap.set("n", "<leader>UMo", MiniMap.open)
+keymap.set("n", "<leader>UMr", MiniMap.refresh)
+keymap.set("n", "<leader>UMs", MiniMap.toggle_side)
+keymap.set("n", "<leader>UMt", MiniMap.toggle)
+
+-- ############################################################################
+--                          END MiniMap
+-- ############################################################################
 -- ############################################################################
 --                          END Markdown
 -- ############################################################################
