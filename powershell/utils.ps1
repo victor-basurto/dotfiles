@@ -253,6 +253,7 @@ function which ($command) {
 #####################################################
 function serlogin { dotnet sitecore cloud login }
 function serdev { dotnet sitecore ser pull -n dev }
+function serfix { dotnet sitecore ser validate --fix }
 
 function ser_module {
     <#
