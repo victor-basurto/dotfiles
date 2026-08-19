@@ -253,6 +253,81 @@ function which ($command) {
 #####################################################
 function serlogin { dotnet sitecore cloud login }
 function serdev { dotnet sitecore ser pull -n dev }
+
+function ser_module {
+    <#
+    .SYNOPSIS
+        Pulls Sitecore serialization modules (Content or Media) for a specific
+        XM Cloud tenant site using the Sitecore CLI.
+
+    .DESCRIPTION
+        Wraps `dotnet sitecore ser pull` for the known Brookfield tenant sites,
+        resolving a short site alias to its full serialization module id and
+        pulling the requested module type (Content by default, or Media).
+
+    .PARAMETER Site
+        The site to pull. One of: livealamar, brds, centralpark, deeringpark,
+        livingston, seton, waterset. Case-insensitive.
+
+    .PARAMETER Media
+        Pull the "-Media" module instead of the default "-Content" module.
+
+    .EXAMPLE
+        ser_module livealamar
+
+        Pulls the Content module for the LiveAtAlamar site.
+
+    .EXAMPLE
+        ser_module livealamar -Media
+
+        Pulls the Media module for the LiveAtAlamar site.
+
+    .EXAMPLE
+        ser_module waterset -m
+
+        Pulls the Media module for the Waterset site, using the -m alias.
+
+    .NOTES
+        Valid sites: livealamar, brds, centralpark, deeringpark, livingston,
+        seton, waterset.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Position = 0)]
+        [string]$Site,
+
+        [Alias('m')]
+        [switch]$Media
+    )
+
+    $moduleIdBySite = @{
+        'livealamar'  = 'LiveAtAlamar-HeadlessSxaWebsite'
+        'brds'        = 'BrdsLand-HeadlessSxaWebsite'
+        'centralpark' = 'CentralPark-HeadlessSxaWebsite'
+        'deeringpark' = 'DeeringPark-HeadlessSxaWebsite'
+        'livingston'  = 'Livingston-HeadlessSxaWebsite'
+        'seton'       = 'SetonRidge-HeadlessSxaWebsite'
+        'waterset'    = 'WatersetMobilityFees-HeadlessSxaWebsite'
+        'cityplace'   = 'GardenLightCityPlace-HeadlessSxaWebsite'
+    }
+
+    if (-not $Site) {
+        Write-Host "Error: No site provided."
+        Write-Host "Usage: ser_module <site> [-Media|-m]"
+        Write-Host "Valid options: $($moduleIdBySite.Keys -join ', ')"
+        return
+    }
+
+    $key = $Site.ToLower()
+    if (-not $moduleIdBySite.ContainsKey($key)) {
+        Write-Host "Error: Unknown site '$Site'"
+        Write-Host "Valid options: $($moduleIdBySite.Keys -join ', ')"
+        return
+    }
+
+    $type = if ($Media) { 'Media' } else { 'Content' }
+    dotnet sitecore ser pull -n dev -i "$($moduleIdBySite[$key])-$type"
+}
 #####################################################
 # NPM Quick Commands
 #####################################################
