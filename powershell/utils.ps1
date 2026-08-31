@@ -553,3 +553,11 @@ function fdir {
   )
   Get-ChildItem -Recurse -Directory -Filter "*$Pattern*" -ErrorAction SilentlyContinue
 }
+
+# switch to mono, fetch and pull on mono-repo from any directory
+function devup {
+  # switch to mono-repo
+  mono
+  # fetch and pull
+  g devup
+}
