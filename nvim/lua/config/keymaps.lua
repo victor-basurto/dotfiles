@@ -131,6 +131,7 @@ wk.add({
   { "<leader>f", group = "[Snacks] Snacks" }, -- snacks
   { "<leader>ff", group = "[Snacks] picker" }, -- find files
   { "<leader>fg", group = "[Snacks] grep" }, -- live grep
+  { "<leader>fG", group = "[Snacks] grep include hidden" }, -- live grep include hidden
   { "<leader>fb", group = "[Snacks] buffers" }, -- buffers
   { "<leader>fh", group = "[Snacks] help tags" }, -- help tags
   { "<leader>fi", group = "[Snacks] resume" }, -- resume
@@ -147,6 +148,11 @@ end, { desc = "[Snacks] find files" })
 keymap.set("n", "<leader>fg", function()
   Snacks.picker.grep()
 end, { desc = "[Snacks] live grep" })
+keymap.set("n", "<leader>fG", function()
+  Snacks.picker.grep({
+    hidden = true,
+  })
+end, { desc = "[Snacks] live grep include hidden" })
 keymap.set("n", "<leader>fb", function()
   Snacks.picker.buffers()
 end, { desc = "[Snacks] buffers" })
