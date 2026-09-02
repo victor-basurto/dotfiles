@@ -85,24 +85,8 @@ return {
   },
   {
     "kristijanhusak/vim-dadbod-completion",
-  },
-  {
-    "kristijanhusak/vim-dadbod-completion",
     ft = { "sql", "mysql", "plsql" },
-    config = function()
-      require("blink.cmp").setup({
-        sources = {
-          default = { "lsp", "path", "buffer" },
-          providers = {
-            ["vim-dadbod-completion"] = {
-              module = "vim_dadbod_completion",
-              name = "vim-dadbod-completion",
-              score_offset = 100,
-            },
-          },
-        },
-      })
-    end,
+    -- blink.cmp picks this up via sources.per_filetype in lua/plugins/blink.lua
   },
   {
     "kristijanhusak/vim-dadbod-ui",

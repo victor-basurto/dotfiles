@@ -43,7 +43,17 @@ return {
     -- Merge custom sources cleanly with standard built-ins
     opts.sources = vim.tbl_deep_extend("force", opts.sources or {}, {
       default = { "lazydev", "lsp", "path", "snippets", "buffer" },
+      per_filetype = {
+        sql = { "dadbod", "buffer" },
+        mysql = { "dadbod", "buffer" },
+        plsql = { "dadbod", "buffer" },
+      },
       providers = {
+        dadbod = {
+          name = "Dadbod",
+          module = "vim_dadbod_completion.blink",
+          score_offset = 100,
+        },
         lazydev = {
           name = "LazyDev",
           module = "lazydev.integrations.blink",
