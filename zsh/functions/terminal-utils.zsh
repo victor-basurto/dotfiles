@@ -259,3 +259,19 @@ ser_module() {
       ;;
   esac
 }
+# ==============================================================================
+# Tailwind Fuzzy Search
+# Description: Search for specific tailwindcss class or names or words
+# Usage:       twgrep "className"
+#              twgrep "hover:"
+#              twgrep "dark:"
+# ==============================================================================
+twgrep() {
+  rg -n \
+    --hidden \
+    -g '*.{ts,tsx,js,jsx,css}' \
+    -g '!node_modules/**' \
+    -g '!**/.next/**' \
+    -g '!**/.turbo/**' \
+    "$@"
+}
