@@ -338,6 +338,14 @@ function rbuild() { npm run build }
 function rdev() { npm run dev }
 # build and run
 function build_run() { npm run build && npm run dev }
+
+# switch to mono, fetch and pull on mono-repo from any directory
+function devup {
+  # switch to mono-repo
+  mono
+  # fetch and pull
+  g devup
+}
 #####################################################
 # Prompt Generator Template
 #####################################################
@@ -554,10 +562,23 @@ function fdir {
   Get-ChildItem -Recurse -Directory -Filter "*$Pattern*" -ErrorAction SilentlyContinue
 }
 
-# switch to mono, fetch and pull on mono-repo from any directory
-function devup {
-  # switch to mono-repo
-  mono
-  # fetch and pull
-  g devup
+#####################################################
+# Branching
+#####################################################
+#-----------------------------------
+# Git Branch Selector with Preview
+#-----------------------------------
+# Usage: fzb
+function fzb {
+  $selection = git branch -a --color=always | fzf --ansi --height 60% --border `
+  --header 'Select branch to switch to' `
+  --preview 'git log --graph --color=always --format="%C(yellow)%h%Creset - %C(bold blue)<%an>%Creset%C(auto)%d%Creset %s %Cgreen(%cr)%Creset" -n 20 {1}' `
+  --preview-window 'right:50%:wrap'
+
+  if ($selection) {
+    $branch = $selection -replace '^[ \*]+', '' -replace '^remotes/', '' -replace '^origin/', ''
+    if ($branch) {
+      git switch $branch
+    }
+  }
 }
