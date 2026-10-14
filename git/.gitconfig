@@ -91,6 +91,8 @@
 # Branch behavior
 # ===============================
 [branch]
+  # Sorts branches by most recently committed first when running `git branch`
+  sort = -committerdate
   # When you create a branch from a remote branch:
   # Git auto-links tracking branch
   # e.g. `git switch -c feature origin/feature`
@@ -241,14 +243,65 @@
   # use this command when switching to an existing branch and you want to update develop and then rebase and push force your changes
   # basically it will fetch-all and update
   ship = !git sync && git pushf;
+  # is only really needed if a coworker pushed changes to your specific feature branch while you were away, and you need to grab Their
+  # work before continuing yours.
   syncf = !git fetch origin $(git branch --show-current) && git rebase origin/$(git branch --show-current)
   # prevent divergence
   # usage: g up
-  up = !git sync && git syncf
+  up = !git syncf && git sync
   # Replays your commits on top of remote commits
   # use this command before creating a PR
   # usage: g rib
   rib = "!git rebase -i origin/develop"
+
+
+  #-----------------------
+  # NEW GIT RELEASE FLOW
+  #-----------------------
+	# Fetch, then create a new branch from the latest stage (origin/release_new) with no upstream.
+	# Usage: git startr feat/vb/BRL-222-change-h5-to-h4
+	startr = "!f() { [ -n \"$1\" ] || { echo \"usage: git startr <type/initials/JIRA-KEY-summary>\"; return 1; }; git fetch origin && git switch -c \"$1\" --no-track origin/release_new; }; f"
+
+	# Rebase the current branch onto the latest stage. Only before the branch's first merge into develop.
+	# Usage: git syncr
+	syncr = "!git fetch origin release_new && git rebase origin/release_new"
+
+	# syncr + push (push -u the first time, --force-with-lease after that).
+	# Usage: git shipr
+	shipr = "!git syncr && git pushf"
+
+	# Take a coworker's pushes to this branch first, then rebase onto the latest stage.
+	# Usage: git upr
+	upr = "!git syncf && git syncr"
+
+	# Interactive rebase of your commits since stage (squash/fixup/reword before the first PR).
+	# Usage: git ribr
+	ribr = "!git rebase -i origin/release_new"
+
+	# PR into develop has conflicts: create a throwaway merge/<name>-into-develop branch from develop
+	# and merge the current branch into it, so conflicts are fixed there, not on your feature branch.
+	# Usage (from your feature branch): git todev
+	todev = "!f() { b=$(git branch --show-current); git fetch origin && git switch -c \"merge/${b##*/}-into-develop\" --no-track origin/develop && git merge --no-ff --no-edit \"$b\"; }; f"
+
+	# Start a sprint release: create release/<version> from the latest stage.
+	# Usage: git rel 4.2.0
+	rel = "!f() { [ -n \"$1\" ] || { echo \"usage: git rel <x.y.z>\"; return 1; }; git fetch origin && git switch -c \"release/$1\" --no-track origin/release_new; }; f"
+
+	# Merge QA-approved branches (from origin) into the current release branch, one by one.
+	# Stops at the first conflict: fix, git add ., git commit, then rerun with the remaining branches.
+	# Usage: git relmerge feat/vb/BRL-222-change-h5-to-h4 feat/sk/BRL-223-dropdown-paragraph
+	relmerge = "!f() { for b in \"$@\"; do git merge --no-ff \"origin/$b\" -m \"Merge $b into $(git branch --show-current)\" || return 1; done; }; f"
+
+	# After the release/hotfix PR is merged: update local release_new, then create and push an annotated tag v<version>.
+	# Usage: git reltag 4.2.0
+	reltag = "!f() { [ -n \"$1\" ] || { echo \"usage: git reltag <x.y.z>\"; return 1; }; git fetch origin && git switch release_new && git pull --ff-only origin release_new && git tag -a \"v$1\" -m \"Release $1\" && git push origin \"v$1\"; }; f"
+
+	# List branches already merged into dev but not yet in the release (the release candidates).
+	# Compares against the local release branch, else origin's copy, else stage.
+	# Output is ready for relmerge. Branch names come from `git config flow.dev` / `flow.stage`
+	# (defaults: develop / release_new).
+	# Usage: git relpending 4.2.0   (or just: git relpending, while on a release/* branch)
+	relpending = "!f() { d=$(git config --get flow.dev || echo develop); s=$(git config --get flow.stage || echo release_new); r=${1:+release/$1}; r=${r:-$(git branch --show-current)}; case \"$r\" in release/*) ;; *) echo \"usage: git relpending <x.y.z> (or run it on a release/* branch)\"; return 1;; esac; git fetch -q origin || return 1; if git rev-parse -q --verify \"refs/heads/$r\" >/dev/null; then t=$r; elif git rev-parse -q --verify \"refs/remotes/origin/$r\" >/dev/null; then t=origin/$r; else t=origin/$s; fi; git branch -r --format=\"%(refname:short)\" --merged \"origin/$d\" --no-merged \"$t\" | grep -vE \"^origin(/HEAD)?$|^origin/($d|$s|main|release/.*|merge/.*)$\" | sed \"s#^origin/##\"; }; f"
   
   #-----------------------
   # BEGIN WORK
@@ -320,7 +373,6 @@
   # usage: git dump HEAD
   # usage: git dump <hash>
   dump = cat-file -p
-
 # ===============================
 # Credential handling
 # ===============================
