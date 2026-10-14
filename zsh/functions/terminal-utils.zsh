@@ -221,10 +221,15 @@ ser_module() {
     "livealamar")
       dotnet sitecore ser pull -n dev -i "LiveAtAlamar-HeadlessSxaWebsite-$type"
       ;;
+
     "brds")
       dotnet sitecore ser pull -n dev -i "BrdsLand-HeadlessSxaWebsite-$type"
       ;;
 
+    "briarchapel")
+      dotnet sitecore ser pull -n dev -i "BriarChapel-HeadlessSxaWebsite-$type"
+      ;;
+      
     "centralpark")
       dotnet sitecore ser pull -n dev -i "CentralPark-HeadlessSxaWebsite-$type"
       ;;
@@ -233,12 +238,40 @@ ser_module() {
       dotnet sitecore ser pull -n dev -i "DeeringPark-HeadlessSxaWebsite-$type"
       ;;
 
+    "elyson")
+      dotnet sitecore ser pull -n dev -i "Elyson-HeadlessSxaWebsite-$type"
+      ;;
+
+    "gardenlight")
+      dotnet sitecore ser pull -n dev -i "GardenLightCityPlace-HeadlessSxaWebsite-$type"
+      ;;
+
+    "lakepointe")
+      dotnet sitecore ser pull -n dev -i "Lakepointe-HeadlessSxaWebsite-$type"
+      ;;
+
+    "livealamar")
+      dotnet sitecore ser pull -n dev -i "LiveAtAlamar-HeadlessSxaWebsite-$type"
+      ;;
+
     "livingston")
       dotnet sitecore ser pull -n dev -i "Livingston-HeadlessSxaWebsite-$type"
       ;;
 
-    "seton")
+    "rockland")
+      dotnet sitecore ser pull -n dev -i "Rocklandpark-HeadlessSxaWebsite-$type"
+      ;;
+
+    "setonridge")
       dotnet sitecore ser pull -n dev -i "SetonRidge-HeadlessSxaWebsite-$type"
+      ;;
+
+    "seton")
+      dotnet sitecore ser pull -n dev -i "Seton-HeadlessSxaWebsite-$type"
+      ;;
+
+    "orchards")
+      dotnet sitecore ser pull -n dev -i "TheOrchards-HeadlessSxaWebsite-$type"
       ;;
 
     "waterset")
@@ -254,7 +287,7 @@ ser_module() {
     *)
       # error when the provided site doesn't match any known options
       echo "Error: Unknown site '$site'"
-      echo "Valid options: livealamar, brds, centralpark, deeringpark, livingston, seton, waterset"
+      echo "Valid options: briarchapel, elyson, gardenlight, livealamar, lakepointe, brds, centralpark, deeringpark, livingston, seton, waterset"
       return 1
       ;;
   esac
