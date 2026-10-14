@@ -323,12 +323,6 @@ wk.add({
   -- TOC for obsidian
   { "<leader>motoc", desc = "[c]ontents TOC obisidian wikilinks" }, -- create Obsidian TOC
   { "<leader>motoC", desc = "[C]ontents TOC browser compatible" }, -- create default TOC (browser compatible)
-  -- Utils
-  { "<leader>ou", group = "[u]tils" }, -- obsidian utils
-  { "<leader>oub", group = "[b]acklinks" }, -- obsidian backlinks
-  { "<leader>oud", group = "[d]ailies" }, -- obsidian dailies
-  { "<leader>oul", group = "[l]inks" }, -- obsidian links
-  { "<leader>out", group = "[t]ags" }, -- obsidian tags
 })
 keymap.set("n", "<leader>mf1", function()
   md_utils.fold_headings_cmd({ 6, 5, 4, 3, 2, 1 })
@@ -352,11 +346,6 @@ keymap.set(
   md_utils.show_markdown_headings,
   { desc = "[s]how current, next and same-level headings" }
 )
--- utils
-keymap.set("n", "<leader>oub", ":Obsidian backlinks<CR>")
-keymap.set("n", "<leader>oud", ":Obsidian dailies<CR>")
-keymap.set("n", "<leader>oul", ":Obsidian links<CR>")
-keymap.set("n", "<leader>out", ":Obsidian tags<CR>")
 -------------------------------------------------------------------------------
 --               END Markdown Folding Keymaps
 -------------------------------------------------------------------------------
@@ -534,6 +523,7 @@ wk.add({
   -- insert template
   { "<leader>oi", group = "[i]nsert" }, -- naming
   { "<leader>oin", group = "[n]otes" }, -- insert new note from template
+  { "<leader>oip", group = "[p]ersonal" }, -- obsidian insert personal template
   { "<leader>oit", group = "[t]odo" }, -- insert new todo note from template
   { "<leader>oiw", group = "[w]ork-tracker" }, -- insert new work-tracker note from template
 
@@ -549,6 +539,13 @@ wk.add({
   { "<leader>oW", group = "[W]indows" }, -- command
   { "<leader>oWk", group = "[k] zettlekasten move to folder" }, -- save note to zettlekasten in windows
   { "<leader>oWD", group = "[D]elte note" }, -- delete note in windows
+
+  -- Utils
+  { "<leader>ou", group = "[u]tils" }, -- obsidian utils
+  { "<leader>oub", group = "[b]acklinks" }, -- obsidian backlinks
+  { "<leader>oud", group = "[d]ailies" }, -- obsidian dailies
+  { "<leader>oul", group = "[l]inks" }, -- obsidian links
+  { "<leader>out", group = "[t]ags" }, -- obsidian tags
 })
 -------------------------------------------------------------------------------
 --                         Obsidian Keymaps
@@ -571,9 +568,16 @@ keymap.set("n", "<leader>ofT", ":s/\\(# TODO: \\)[^_]*_\\(.*\\)/\\1\\2/ | s/-/ /
 keymap.set("n", "<leader>oin", ":Obsidian template notes<CR>", { desc = "Insert notes template" })
 keymap.set("n", "<leader>oit", ":Obsidian template todo<CR>", { desc = "Insert todo template" })
 keymap.set("n", "<leader>oiw", ":Obsidian template work-tracker<CR>", { desc = "Insert work-tracker template" })
+keymap.set("n", "<leader>oip", ":Obsidian template personal<CR>", { desc = "Insert personal template" })
 
 -- BACKLINKS
 keymap.set("n", "<leader>oBl", ":Obsidian backlinks<CR>")
+
+-- utils
+keymap.set("n", "<leader>oub", ":Obsidian backlinks<CR>")
+keymap.set("n", "<leader>oud", ":Obsidian dailies<CR>")
+keymap.set("n", "<leader>oul", ":Obsidian links<CR>")
+keymap.set("n", "<leader>out", ":Obsidian tags<CR>")
 
 -- NEW NOTES
 -------------------------------------------------------------------------------

@@ -47,3 +47,55 @@ param (
   -c $subCmd `
   -c "write"
 }
+
+# Create a personal note at vault root level (not inbox).
+# Usage:
+#   onp "My Personal Note"
+function onp {
+param (
+    [Parameter(Position=0)]
+    [string]$FileName
+  )
+
+  if ([string]::IsNullOrWhiteSpace($FileName)) {
+    Write-Error "Error: a file name must be provided, e.g. onp `"My Personal Note`""
+    return
+  }
+
+  if (-not $vaultPath) {
+    Write-Error "Error: OBSIDIAN_VAULT environment variable is not set."
+    return
+  }
+
+  # Note structure
+  $slug = $FileName -replace ' ', '-'
+  $datePrefix = Get-Date -Format "yyyy-MM-dd"
+  $formattedFileName = "${datePrefix}_${slug}.md"
+  $stem = [System.IO.Path]::GetFileNameWithoutExtension($formattedFileName)
+
+  # Clean title: "testing-note" -> "Testing Note"
+  $textInfo = (Get-Culture).TextInfo
+  $cleanTitle = $textInfo.ToTitleCase($FileName)
+
+  # Switch to obsidian vault
+  Set-Location -Path $vaultPath -ErrorAction Stop
+
+  $personalDir = Join-Path $vaultPath "personal"
+  if (-not (Test-Path $personalDir)) {
+    New-Item -ItemType Directory -Path $personalDir | Out-Null
+  }
+
+  $filePath = Join-Path $personalDir $formattedFileName
+
+  # Ensure file exists before opening
+  if (-not (Test-Path $filePath)) {
+    New-Item -ItemType File -Path $filePath | Out-Null
+  }
+
+  # Open in Neovim and run commands
+  nvim $filePath `
+  -c "write" `
+  -c "Obsidian template personal" `
+  -c "%s/# $stem/# $cleanTitle/" `
+  -c "write"
+}

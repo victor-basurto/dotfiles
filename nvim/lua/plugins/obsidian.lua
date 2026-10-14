@@ -94,14 +94,21 @@ return {
         if type(links) == "string" then
           links = { links }
         end
-        local target_folder = meta.target_folder or ""
-        local target_subfolder = meta.target_subfolder or ""
         local urls = meta.urls or {}
+        -- Detect personal notes by folder; set path-based defaults for new notes
+        local is_personal = note.path and tostring(note.path):find("/personal/") ~= nil
+        local target_folder = meta.target_folder or (is_personal and "personal" or "")
+        local target_subfolder = meta.target_subfolder or ""
+
+        local tags = note.tags or {}
+        if is_personal and not vim.tbl_contains(tags, "personal") then
+          tags = vim.list_extend({ "personal" }, tags)
+        end
 
         local out = {
           id = note.id,
           aliases = note.aliases,
-          tags = note.tags,
+          tags = tags,
           date = date,
           links = links,
           target_folder = target_folder,

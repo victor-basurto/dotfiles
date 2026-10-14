@@ -52,3 +52,30 @@ on() {
     -c "$sub_cmd" \
     -c "write"
 }
+# Create a personal note at vault root level (not inbox).
+# Usage:
+#   onp "My Personal Note"
+onp() {
+  if [ -z "$1" ]; then
+    echo "Error: a file name must be provided, e.g. onp \"My Personal Note\""
+    return 1
+  fi
+
+  # note structure
+  local file_name=$(echo "$1" | tr ' ' '-')
+  local formatted_file_name=$(date "+%Y-%m-%d")_${file_name}.md
+  local stem="${formatted_file_name%.md}"
+  # Clean title: "testing-note" → "Testing Note"
+  local clean_title=$(echo "$file_name" | sed 's/-/ /g' | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) substr($i,2); print}')
+
+  # switch to obsidian vault
+  cd "${OBSIDIAN_VAULT:?OBSIDIAN_VAULT is not set}" || return 1
+
+  mkdir -p "personal"
+  touch "personal/${formatted_file_name}"
+  nvim "personal/${formatted_file_name}" \
+    -c "write" \
+    -c "Obsidian template personal" \
+    -c "%s/# ${stem}/# ${clean_title}/" \
+    -c "write"
+}
