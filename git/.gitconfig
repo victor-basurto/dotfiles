@@ -302,6 +302,9 @@
 	# (defaults: develop / release_new).
 	# Usage: git relpending 4.2.0   (or just: git relpending, while on a release/* branch)
 	relpending = "!f() { d=$(git config --get flow.dev || echo develop); s=$(git config --get flow.stage || echo release_new); r=${1:+release/$1}; r=${r:-$(git branch --show-current)}; case \"$r\" in release/*) ;; *) echo \"usage: git relpending <x.y.z> (or run it on a release/* branch)\"; return 1;; esac; git fetch -q origin || return 1; if git rev-parse -q --verify \"refs/heads/$r\" >/dev/null; then t=$r; elif git rev-parse -q --verify \"refs/remotes/origin/$r\" >/dev/null; then t=origin/$r; else t=origin/$s; fi; git branch -r --format=\"%(refname:short)\" --merged \"origin/$d\" --no-merged \"$t\" | grep -vE \"^origin(/HEAD)?$|^origin/($d|$s|main|release/.*|merge/.*)$\" | sed \"s#^origin/##\"; }; f"
+
+  # List current tags. Useful if you are creating new tags and you would like to check what is the latest tags in the repo
+	showtags = "!f() { git fetch -q origin --tags; if [ -n \"$1\" ]; then git tag -l --sort=-v:refname | head -n \"$1\"; else git tag -l --sort=-v:refname; fi; }; f" 
   
   #-----------------------
   # BEGIN WORK
