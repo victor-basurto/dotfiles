@@ -103,6 +103,7 @@ config.cell_width = 0.9
 config.bold_brightens_ansi_colors = "BrightAndBold"
 config.font_size = 13
 config.window_background_opacity = 0.98
+config.adjust_window_size_when_changing_font_size = false
 
 -- Return the configuration
 return config
