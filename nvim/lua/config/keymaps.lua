@@ -7,6 +7,7 @@ local obsidian_utils = require("utilities.obsidian_utils")
 local md_utils = require("utilities.markdown_utils")
 local utils = require("utilities.utils")
 local MiniMap = require("mini.map")
+local opencode = require("opencode")
 -------------------------------------------------------
 --               Discipline
 -------------------------------------------------------
@@ -680,80 +681,40 @@ keymap.set(
 -- })
 wk.add({
   mode = { "n", "x" },
-  { "<leader>a", group = "[ai] opencode" },
-  { "<leader>ag", group = "[ai] opencode range" },
-
-  -- ask questions
-  {
-    "<leader>aa",
-    function()
-      -- Safely schedule the execution onto the main loop to prevent the json_decode crash
-      vim.schedule(function()
-        require("opencode").ask("@this: ")
-      end)
-    end,
-    desc = "[a]sk question",
-  },
-
-  -- select opencode
-  {
-    "<leader>as",
-    function()
-      -- Safely schedule the execution onto the main loop to prevent the json_decode crash
-      vim.schedule(function()
-        require("opencode").select()
-      end)
-    end,
-    desc = "[s]elect opencode...",
-  },
-  -- add range opencode
-  {
-    "<leader>agr",
-    function()
-      -- Safely schedule the execution onto the main loop to prevent the json_decode crash
-      vim.schedule(function()
-        require("opencode").operator("@this ")
-      end)
-    end,
-    desc = "[r] add range to opencode",
-  },
-  -- add range opencode
-  {
-    "<leader>ago",
-    function()
-      -- Safely schedule the execution onto the main loop to prevent the json_decode crash
-      vim.schedule(function()
-        require("opencode").operator("@this ")
-      end)
-    end,
-    desc = "[o] add line to opencode",
-    expr = true,
-  },
-  -- 2. Global Normal Mode Mappings (Scrolling shortcuts)
-  {
-    mode = "n",
-    {
-      "<S-C-u>",
-      function()
-        require("opencode").command("session.half.page.up")
-      end,
-      desc = "Scroll opencode up",
-    },
-    {
-      "<S-C-d>",
-      function()
-        require("opencode").command("session.half.page.down")
-      end,
-      desc = "Scroll opencode down",
-    },
-  },
+  { "<leader>a", group = "[ai] OpenCode" },
+  { "<leader>ao", group = "[o]pen Opencode TUI" },
+  { "<leader>aa", group = "[a]sk question from context" },
+  { "<leader>as", group = "[s]elect OpenCode actions" },
+  { "<leader>ar", group = "[r]ange selection" },
 })
--- vim.keymap."<S-C-u>", function()
---   require("opencode").command("session.half.page.up")
--- end, { desc = "Scroll opencode up" })
--- vim.keymap.set("n", "<S-C-d>", function()
---   require("opencode").command("session.half.page.down")
--- end, { desc = "Scroll opencode down" })
+-- open opencode TUI
+keymap.set("n", "<leader>ao", function()
+  require("snacks.terminal").toggle("opencode", {
+    win = {
+      position = "right",
+      enter = false,
+    },
+  })
+end)
+-- ask questions
+keymap.set("n", "<leader>aa", function()
+  opencode.ask("@this: ")
+end, { desc = "ask question from context" })
+-- select opencode
+keymap.set("n", "<leader>as", function()
+  opencode.select()
+end, { desc = "select opencode actions" })
+-- add range opencode
+keymap.set("n", "<leader>ar", function()
+  opencode.operator("@this: ")
+end, { desc = "send range to opencode" })
+-- scrolling
+keymap.set("n", "<S-C-u>", function()
+  opencode.command("session.half.page.up")
+end, { desc = "scroll opencode up" })
+keymap.set("n", "<S-C-d>", function()
+  opencode.command("session.half.page.down")
+end, { desc = "scroll opencode down" })
 -- ############################################################################
 --                        end OpenCode
 -- ############################################################################
