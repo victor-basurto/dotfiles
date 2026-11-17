@@ -688,14 +688,9 @@ wk.add({
   { "<leader>ar", group = "[r]ange selection" },
 })
 -- open opencode TUI
-keymap.set("n", "<leader>ao", function()
-  require("snacks.terminal").toggle("opencode", {
-    win = {
-      position = "right",
-      enter = false,
-    },
-  })
-end)
+keymap.set({ "n", "t" }, "<leader>ao", function()
+  vim.cmd("vsplit term://opencode")
+end, { desc = "[o]pen OpenCode TUI" })
 -- ask questions
 keymap.set("n", "<leader>aa", function()
   opencode.ask("@this: ")
@@ -708,13 +703,35 @@ end, { desc = "select opencode actions" })
 keymap.set("n", "<leader>ar", function()
   opencode.operator("@this: ")
 end, { desc = "send range to opencode" })
--- scrolling
-keymap.set("n", "<S-C-u>", function()
-  opencode.command("session.half.page.up")
-end, { desc = "scroll opencode up" })
-keymap.set("n", "<S-C-d>", function()
-  opencode.command("session.half.page.down")
-end, { desc = "scroll opencode down" })
+-- Scrolling the OpenCode TUI.
+-- `opencode.command("session.*")` targets the API/session, not the TUI viewport,
+-- and normal-mode-only mappings never fire while focus is inside the terminal.
+-- Send the TUI's native navigation keys straight to its terminal job instead.
+--
+-- Bind <C-u>/<C-d> (not <S-C-u>/<S-C-d>): most terminals, WezTerm included
+-- unless the kitty keyboard protocol is enabled, encode Ctrl+Shift+U/D as the
+-- plain control bytes 0x15/0x04, so a Shift-modified mapping never fires in
+-- terminal mode. The physical Ctrl+Shift+U/D press therefore lands here, and
+-- the TUI receives a real PageUp/PageDown instead of its own ctrl+u/ctrl+d
+-- input-editing bindings.
+vim.api.nvim_create_autocmd("TermOpen", {
+  pattern = "term://*opencode*",
+  callback = function(ev)
+    local buf = ev.buf
+    local job = vim.b[buf].terminal_job_id
+    -- `pageup`/`pagedown` are OpenCode's session.page.up/.down defaults.
+    keymap.set("t", "<C-u>", function()
+      if job then
+        vim.api.nvim_chan_send(job, "\27[5~")
+      end
+    end, { buffer = buf, desc = "scroll OpenCode up" })
+    keymap.set("t", "<C-d>", function()
+      if job then
+        vim.api.nvim_chan_send(job, "\27[6~")
+      end
+    end, { buffer = buf, desc = "scroll OpenCode down" })
+  end,
+})
 -- ############################################################################
 --                        end OpenCode
 -- ############################################################################

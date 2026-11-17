@@ -1,11 +1,6 @@
 -- utilities/lsp_utils.lua
 local M = {}
 
--- Helper function to check filetype
-local function is_filetype(bufnr, filetype)
-  return vim.bo[bufnr].filetype == filetype
-end
-
 -- Simplified function to enable hints once
 function M.enable_hints(client, bufnr)
   -- Check if the client supports inlay hints (and if the Neovim version supports it)
@@ -22,12 +17,6 @@ function M.on_attach(client, bufnr)
   buf_set_keymap(bufnr, "n", "K", "<cmd>lua require('utilities.lsp_utils').safe_hover()<CR>", opts)
   buf_set_keymap(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
 
-  -- Conditional logic for Lua and TypeScript LSPs
-  if is_filetype(bufnr, "lua") and client.name == "lua_ls" then
-    print("Lua LSP attached to buffer " .. bufnr)
-  elseif is_filetype(bufnr, "typescript") and client.name == "tsserver" then
-    print("TypeScript LSP attached to buffer " .. bufnr)
-  end
   buf_set_keymap(bufnr, "n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
   buf_set_keymap(bufnr, "n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
   buf_set_keymap(bufnr, "n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)

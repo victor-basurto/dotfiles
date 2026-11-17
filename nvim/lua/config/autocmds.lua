@@ -55,8 +55,8 @@ vim.api.nvim_create_autocmd("BufReadPost", {
     require("utilities.odn").setup()
   end,
 })
-vim.api.nvim_create_autocmd("BufReadPost", {
-  callback = function()
-    MiniMap.open()
-  end,
-})
+-- vim.api.nvim_create_autocmd("BufReadPost", {
+--   callback = function()
+--     MiniMap.open()
+--   end,
+-- })
